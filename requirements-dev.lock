@@ -10,6 +10,8 @@
 #   universal: false
 
 -e file:.
+annotated-types==0.7.0
+    # via pydantic
 asttokens==3.0.0
     # via stack-data
 beautifulsoup4==4.13.4
@@ -64,6 +66,12 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
+pydantic==2.11.7
+    # via pydantic-settings
+pydantic-core==2.33.2
+    # via pydantic
+pydantic-settings==2.10.1
+    # via site2
 pyee==13.0.0
     # via playwright
 pygments==2.19.2
@@ -74,6 +82,8 @@ pygments==2.19.2
 pypdf==5.7.0
     # via site2
 pytest==8.4.1
+python-dotenv==1.1.1
+    # via pydantic-settings
 pyyaml==6.0.2
     # via pre-commit
 rich==14.0.0
@@ -91,8 +101,14 @@ typer==0.16.0
     # via site2
 typing-extensions==4.14.1
     # via beautifulsoup4
+    # via pydantic
+    # via pydantic-core
     # via pyee
     # via typer
+    # via typing-inspection
+typing-inspection==0.4.1
+    # via pydantic
+    # via pydantic-settings
 virtualenv==20.31.2
     # via pre-commit
 wcwidth==0.2.13

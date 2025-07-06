@@ -1,0 +1,106 @@
+# site2 CLI Contract Definition
+version: 1.0.0
+commands:
+  - name: site2 auto
+    description: "Convert website to single markdown or PDF file"
+    arguments:
+      - name: uri
+        type: string
+        required: true
+        pattern: "^https?://.+"
+        description: "Target website URL"
+    options:
+      - name: format
+        type: enum
+        values: [md, pdf]
+        default: md
+        description: "Output format"
+    output:
+      type: stdout
+      content_type:
+        - "text/markdown"
+        - "application/pdf"
+    errors:
+      - code: E001
+        name: INVALID_URL
+        message: "Invalid URL format"
+      - code: E002
+        name: FETCH_FAILED
+        message: "Failed to fetch website content"
+
+  - name: "site2 fetch"
+    description: "Fetch and cache website content"
+    arguments:
+      - name: uri
+        type: string
+        required: true
+        pattern: "^https?://.+"
+    options:
+      - name: force
+        type: boolean
+        default: false
+        description: "Force fetch even if cache exists"
+    output:
+      type: json
+      schema:
+        type: object
+        properties:
+          cached_files:
+            type: array
+            items:
+              type: object
+              properties:
+                url: { type: string }
+                path: { type: string }
+                size: { type: integer }
+                timestamp: { type: string, format: date-time }
+          total_size: { type: integer }
+          cache_dir: { type: string }
+    errors:
+      - code: E101
+        name: CACHE_EXISTS
+        message: "Cache already exists"
+      - code: E102
+        name: CRAWL_TIMEOUT
+        message: "Crawl operation timed out"
+
+  - name: "site2 detect main"
+    description: "Detect main content CSS selector"
+    arguments:
+      - name: file_or_uri
+        type: string
+        required: true
+    output:
+      type: json
+      schema:
+        type: object
+        properties:
+          selector: { type: string }
+          confidence: { type: number, minimum: 0, maximum: 1 }
+          sample_text: { type: string, maxLength: 200 }
+
+  - name: "site2 build"
+    description: "Build output from cached or provided files"
+    arguments:
+      - name: files_or_uris
+        type: array
+        required: true
+        minItems: 1
+    options:
+      - name: format
+        type: enum
+        values: [md, pdf]
+        default: md
+      - name: output
+        type: path
+        description: "Output file path (default: stdout)"
+    input:
+      accept_stdin: true
+      format: "text/plain"  # File paths, one per line
+    output:
+      type:
+        - stdout
+        - file
+      content_type:
+        - "text/markdown"
+        - "application/pdf"
