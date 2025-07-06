@@ -10,3 +10,11 @@ wheels/
 .venv
 .vscode
 .cache
+
+# Test fixtures (downloaded websites)
+tests/fixtures/websites/pytest-bdd-docs/
+tests/fixtures/websites/*/
+
+# But keep simple test sites
+!tests/fixtures/websites/simple-site/
+!tests/fixtures/websites/README.md

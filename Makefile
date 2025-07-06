@@ -20,16 +20,15 @@ contract-generate-tests: ## 契約からテストを生成
 contract-check: ## 実装が契約に準拠しているか確認
 	python scripts/check_contract_compliance.py
 
+# --- テストデータ準備 ---
+prepare-fixtures: ## テスト用のFixtureデータを準備
+	chmod +x scripts/prepare_test_fixtures.sh
+	./scripts/prepare_test_fixtures.sh
+
+clean-fixtures: ## Fixtureデータをクリーン
+	rm -rf tests/fixtures/websites/pytest-bdd-docs
+
 # --- テスト駆動開発 ---
-test-tutorial: ## チュートリアルBDDテストを実行
-	rye run pytest tests/features/test_tutorial.py -v
-
-test-bdd: ## BDDテストを実行（チュートリアル以外）
-	rye run pytest tests/features -v -k "not tutorial"
-
-test-bdd-all: ## すべてのBDDテストを実行
-	rye run pytest tests/features -v
-
 test-unit: ## 単体テストを実行
 	rye run pytest tests/unit -v
 
@@ -39,7 +38,16 @@ test-integration: ## 統合テストを実行
 test-e2e: ## E2Eテストを実行
 	rye run pytest tests/e2e -v
 
-test: test-unit test-integration ## すべてのテストを実行
+test-bdd: prepare-fixtures ## BDDテストを実行（Fixture準備込み）
+	rye run pytest tests/features -v -m "not tutorial"
+
+test-bdd-server: prepare-fixtures ## サーバーを使うBDDテストを実行
+	rye run pytest tests/features/test_fetch_with_server.py -v -s
+
+test-tutorial: ## チュートリアルBDDテストを実行
+	rye run pytest tests/features/test_tutorial.py -v
+
+test: test-unit test-integration test-bdd ## すべてのテストを実行
 
 test-watch: ## ファイル変更を監視してテストを自動実行
 	rye run ptw tests/unit -- -v

@@ -41,7 +41,7 @@ else
         --no-parent \
         --wait=0.5 \
         --random-wait \
-        -P "$FIXTURE_DIR/pytest-bdd-docs" \
+        -P "$PYTEST_BDD_DIR" \
         "https://pytest-bdd.readthedocs.io/en/stable/"
 
     # ディレクトリ構造を整理
