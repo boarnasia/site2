@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 import typer
 
@@ -12,6 +13,7 @@ class OutputFormat(str, Enum):
 
 app_plops = {
     "rich_markup_mode": None,
+    "help": "site2 - Convert websites to single markdown or PDF files",
 }
 
 app = typer.Typer(**app_plops)
@@ -24,7 +26,7 @@ def auto(
         "md", "--format", "-f", help="Output format (md or pdf)."
     ),
 ):
-    """Fetch a URI and output in specified format."""
+    """Convert website to single markdown or PDF file and output to stdout."""
     """
     <query>
     このサブコマンド名でいいのだろうか？
@@ -40,13 +42,13 @@ def fetch(
         False, "--force", "-f", help="Force fetching even if already cached."
     ),
 ):
-    """Pull a URIs and put to cache."""
+    """Fetch and cache website content recursively."""
     typer.echo(f"Pull Urls from: {uri}, force: {force}")
 
 
 @app.command("fetch:list")
 def fetch_list():
-    """List all cached URIs."""
+    """List all cached sites."""
     """
     <query>
     このサブコマンド名でいいのだろうか？
@@ -59,7 +61,7 @@ def fetch_list():
 def detect_main(
     uri: str = typer.Argument(..., help="The URI to detect main block."),
 ):
-    """Detect main block from URI."""
+    """Detect CSS selector for main content block."""
     typer.echo(f"Detectting main block from: {uri}")
 
 
@@ -67,7 +69,7 @@ def detect_main(
 def detect_nav(
     uri: str = typer.Argument(..., help="The URI to detect navication block."),
 ):
-    """Detect navication block from URI."""
+    """Detect CSS selector for navigation block."""
     typer.echo(f"Detecting navication block from: {uri}")
 
 
@@ -75,19 +77,19 @@ def detect_nav(
 def detect_order(
     uri: str = typer.Argument(..., help="The URI to detect order of URIs."),
 ):
-    """Detectting URIs order from URI."""
+    """Detect and output document order to stdout."""
     typer.echo(f"Detectting URIs order from: {uri}")
 
 
 @app.command("build")
 def build(
-    uri: str = typer.Argument(..., help="The URI to detect order of URIs."),
+    files_or_uris: List[str] = typer.Argument(..., help="Files or URIs to build."),
     format: OutputFormat = typer.Option(
         "md", "--format", "-f", help="Output format (md or pdf)."
     ),
 ):
-    """Build md|pdf from URI."""
-    typer.echo(f"Build {format.name} from URI: {uri}")
+    """Build and merge files/URIs to specified format and output to stdout."""
+    typer.echo(f"Build {format.name} from: {', '.join(files_or_uris)}")
 
 
 if __name__ == "__main__":
