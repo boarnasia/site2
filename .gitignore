@@ -9,3 +9,4 @@ wheels/
 # dotfiles
 .venv
 .vscode
+.cache
