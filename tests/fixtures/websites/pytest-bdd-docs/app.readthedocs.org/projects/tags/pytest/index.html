@@ -1,0 +1,4337 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+
+
+    <title>
+  Projects tagged with pytest
+ - Read the Docs Community </title>
+
+
+
+      <meta name="description"
+            content="Read the Docs is a documentation publishing and hosting platform for technical documentation" />
+      <meta name="keywords" content="documentation hosting" />
+
+
+
+      <link rel="icon" type="image/png" href="../../../../app-assets.readthedocs.org/images/favicon.f231b6609d0b.png" />
+      <link rel="stylesheet" type="text/css" media="all" href="../../../../app-assets.readthedocs.org/readthedocsext/theme/css/site.99cbf49e4c7d.css" />
+
+
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+
+
+
+      <script id="site-config" type="application/json">{"debug": false, "webpack_public_path": "https://app-assets.readthedocs.org/readthedocsext/theme/", "production_domain": "app.readthedocs.org", "sentry": {"dsn": "https://4ef8546f95006f22644e24a9f666c2a5@o40776.ingest.us.sentry.io/4507963896365056", "environment": "community"}}</script>
+
+
+      <script src="https://kit.fontawesome.com/66c8860b51.js"
+              crossorigin="anonymous"></script>
+
+  </head>
+  <body class="">
+
+
+
+
+
+
+
+
+<div class="ui basic fitted attached segment"
+     data-bind="using: HeaderView()">
+
+
+  <script type="application/json" data-bind="jsonInit: config">
+    {
+      "api_projects_list_url": "/api/v3/projects/"
+    }
+  </script>
+
+  <div class="ui container">
+    <div class="ui middle aligned grid">
+
+
+        <div class="four wide computer five wide tablet eleven wide mobile left aligned column">
+          <div class="ui horizontally fitted basic segment">
+            <a href="../../../index.html" aria-label="Read the Docs homepage">
+              <img class="ui image"
+                   src="../../../../app-assets.readthedocs.org/readthedocsext/theme/images/logo-wordmark-dark.8035ede2e46d.svg"
+                   width="220"
+                   alt="Read the Docs logo" />
+            </a>
+          </div>
+        </div>
+
+
+
+
+        <div class="five wide mobile only right aligned column">
+          <div class="ui wide dropdown"
+               data-bind="semanticui: {dropdown: {action: 'select'}}">
+
+
+            <i class="fad fa-bars large icon" style="--fa-secondary-opacity: 0.8;"></i>
+
+            <div class="menu">
+
+
+
+
+
+<div class="header">Navigation</div>
+
+<a class="item" href="../../../dashboard/index.html">
+  <i class="fa-duotone fa-list icon"></i>
+  Projects
+</a>
+
+
+
+<div class="divider"></div>
+
+<div class="header">Signed in as: AnonymousUser</div>
+<a class="item" href="../../../accounts/edit/index.html">
+  <i class="fa-duotone fa-gears icon"></i>
+  Settings
+</a>
+<a class="item" data-bind="click: $root.post_child_form">
+  <i class="fa-duotone fa-sign-out icon"></i>
+  Log out
+  <form method="post" action="https://app.readthedocs.org/accounts/logout/">
+    <input type="hidden" name="csrfmiddlewaretoken" value="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC">
+  </form>
+</a>
+
+<div class="divider"></div>
+
+<div class="header">Help</div>
+<a class="item" href="../../../support/index.html">
+  <i class="fad fa-envelope primary icon"></i>
+  Support
+</a>
+<a class="item" href="https://docs.readthedocs.io">
+  <i class="fad fa-book primary icon"></i>
+  Docs
+  <span class="description">
+    <i class="fad fa-external-link icon"></i>
+  </span>
+</a>
+<a class="item" href="https://docs.readthedocs.io/page/tutorial/">
+  <i class="fad fa-rocket primary icon"></i>
+  Getting started
+  <span class="description">
+    <i class="fad fa-external-link icon"></i>
+  </span>
+</a>
+<a class="item" href="http://status.readthedocs.com">
+
+    <i class="fad fa-circle-check primary icon"></i>
+    Status
+
+      <span class="description">
+        <i class="fad fa-external-link icon"></i>
+      </span>
+
+
+</a>
+</div>
+          </div>
+        </div>
+
+
+
+
+        <div class="twelve wide computer eleven wide tablet left aligned tablet only computer only column">
+          <div class="ui big borderless secondary menu">
+
+
+
+
+
+            <div class="right menu">
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="item">
+                      <a href="../../../accounts/signup/index.html">Sign up</a>
+                    </div>
+                    <div class="item">
+                      <a class="ui button" href="../../../index.html">Log in</a>
+                    </div>
+
+
+
+
+            </div>
+
+          </div>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+      <div class="ui very padded container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div >
+
+    <div class="ui stackable text menu">
+
+  <div class="header item">Projects tagged</div>
+  <div class="active item">
+    <div class="ui link select dropdown" data-bind="semanticui: {dropdown: {}}">
+      pytest
+      <i class="fa-solid fa-caret-down icon"></i>
+      <div class="menu">
+        <div class="active item">pytest</div>
+      </div>
+    </div>
+  </div>
+
+
+
+        <div class="right menu">
+
+            <div class="item">
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+      <div class="ui vertically fitted segment">
+        <table class="ui very basic stacking table">
+
+
+
+
+
+          <tbody>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <img class="ui  image"
+       src="https://avatars.githubusercontent.com/u/90926044?v=4"
+       alt="agruezo-random-quote-generator project" />
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/agruezo-random-quote-generator/">agruezo-random-quote-generator</a>
+  <div class="sub header">
+
+
+        <time data-content="Oct. 21, 2022, 2:51 a.m.">
+
+
+            Last built 2 years, 8 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/agruezo-random-quote-generator/builds/18401610/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/agruezo-random-quote-generator/builds/18401610/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #18401610
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #18401610
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Oct. 21, 2022, 2:51 a.m.">2 years, 8 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      b3572a2e
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        31 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/agruezo-random-quote-generator/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project agruezo-random-quote-generator">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/agruezo-random-quote-generator/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="569493"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/aiida-testing/">aiida-test-cache</a>
+  <div class="sub header">
+
+
+        <time data-content="June 24, 2025, 11:12 p.m.">
+
+
+            Last built 1 week, 4 days ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/aiida-testing/builds/28630912/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/aiida-testing/builds/28630912/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #28630912
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #28630912
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="June 24, 2025, 11:12 p.m.">1 week, 4 days ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      2eeca565
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        25 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/aiida-testing/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project aiida-test-cache">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/aiida-testing/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="513682"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/ai-news-writer/">ai_news_writer</a>
+  <div class="sub header">
+
+
+        <time data-content="Nov. 12, 2019, 12:35 p.m.">
+
+
+            Last built 5 years, 7 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/ai-news-writer/builds/9949515/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/ai-news-writer/builds/9949515/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #9949515
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #9949515
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Nov. 12, 2019, 12:35 p.m.">5 years, 7 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      230f5687
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        36 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/ai-news-writer/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project ai_news_writer">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/ai-news-writer/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="597078"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/async-responses/">Async Responses</a>
+  <div class="sub header">
+
+
+        <time data-content="April 22, 2020, 6:11 a.m.">
+
+
+            Last built 5 years, 2 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/async-responses/builds/10886646/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/async-responses/builds/10886646/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #10886646
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #10886646
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="April 22, 2020, 6:11 a.m.">5 years, 2 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      c7926a4e
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        59 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/async-responses/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project Async Responses">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/async-responses/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <img class="ui  image"
+       src="https://avatars.githubusercontent.com/u/12397890?v=4"
+       alt="boar project" />
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/boar/">boar</a>
+  <div class="sub header">
+
+
+        <time data-content="Jan. 2, 2023, 9:54 a.m.">
+
+
+            Last built 2 years, 6 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/boar/builds/19052286/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/boar/builds/19052286/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        red
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-xmark" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #19052286
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        red
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-xmark
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #19052286
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Jan. 2, 2023, 9:54 a.m.">2 years, 6 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+  <p>We encountered a problem with a command while building your project. To resolve this error, double check your project configuration and installed dependencies are correct and have not changed recently.</p>
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      c75aa01a
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        32 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/boar/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project boar">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/boar/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="31628"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/capturer/">capturer</a>
+  <div class="sub header">
+
+
+        <time data-content="March 7, 2020, 12:36 a.m.">
+
+
+            Last built 5 years, 3 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/capturer/builds/10567741/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/capturer/builds/10567741/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #10567741
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #10567741
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="March 7, 2020, 12:36 a.m.">5 years, 3 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      a430a9fd
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        33 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/capturer/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project capturer">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/capturer/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="11138"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/cfme-tests/">cfme_tests</a>
+  <div class="sub header">
+
+
+        <time data-content="Sept. 20, 2019, 2:55 p.m.">
+
+
+            Last built 5 years, 9 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/cfme-tests/builds/9688378/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/cfme-tests/builds/9688378/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  17.58.0
+
+
+
+
+      <div class="detail">
+
+
+  #9688378
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  17.58.0 #9688378
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Sept. 20, 2019, 2:55 p.m.">5 years, 9 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      5174ef41
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        580 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/cfme-tests/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project cfme_tests">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/cfme-tests/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="697044"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/chainmock/">chainmock</a>
+  <div class="sub header">
+
+
+        <time data-content="June 21, 2025, 8:47 a.m.">
+
+
+            Last built 2 weeks, 1 day ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/chainmock/builds/28592868/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/chainmock/builds/28592868/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #28592868
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #28592868
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="June 21, 2025, 8:47 a.m.">2 weeks, 1 day ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      b1b39256
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        49 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/chainmock/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project chainmock">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/chainmock/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="96290"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/ci-testing-python/">ci-testing-python</a>
+  <div class="sub header">
+
+
+        <time data-content="Sept. 27, 2017, 4:52 p.m.">
+
+
+            Last built 7 years, 9 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/ci-testing-python/builds/6036359/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/ci-testing-python/builds/6036359/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  stable
+
+
+
+
+      <div class="detail">
+
+
+  #6036359
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  stable #6036359
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Sept. 27, 2017, 4:52 p.m.">7 years, 9 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      8f137f04
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        72 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/ci-testing-python/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project ci-testing-python">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/ci-testing-python/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="231149"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/ci-watson/">ci_watson</a>
+  <div class="sub header">
+
+
+        <time data-content="June 18, 2025, 5:51 p.m.">
+
+
+            Last built 2 weeks, 3 days ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/ci-watson/builds/28561236/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/ci-watson/builds/28561236/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #28561236
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #28561236
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="June 18, 2025, 5:51 p.m.">2 weeks, 3 days ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      d4214834
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        39 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/ci-watson/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project ci_watson">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/ci-watson/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="245487"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/cookiecutter-cms/">cookiecutter-cms</a>
+  <div class="sub header">
+
+
+        <time data-content="Oct. 26, 2023, 5:01 p.m.">
+
+
+            Last built 1 year, 8 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/cookiecutter-cms/builds/22356281/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/cookiecutter-cms/builds/22356281/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        red
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-xmark" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #22356281
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        red
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-xmark
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #22356281
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Oct. 26, 2023, 5:01 p.m.">1 year, 8 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+  <p>Problem in your project&#x27;s configuration. No default configuration file found at repository&#x27;s root.</p>
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        1 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/cookiecutter-cms/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project cookiecutter-cms">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/cookiecutter-cms/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="33986"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/cookiecutter-pytest-plugin/">cookiecutter-pytest-plugin</a>
+  <div class="sub header">
+
+
+        <time data-content="Nov. 29, 2018, 10:17 a.m.">
+
+
+            Last built 6 years, 7 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/cookiecutter-pytest-plugin/builds/8168591/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/cookiecutter-pytest-plugin/builds/8168591/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #8168591
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #8168591
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Nov. 29, 2018, 10:17 a.m.">6 years, 7 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      7322e2ed
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        53 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/cookiecutter-pytest-plugin/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project cookiecutter-pytest-plugin">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/cookiecutter-pytest-plugin/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="637458"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/cookiecutter-python-package/">cookiecutter-python-package</a>
+  <div class="sub header">
+
+
+        <time data-content="Feb. 8, 2022, 4:38 a.m.">
+
+
+            Last built 3 years, 4 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/cookiecutter-python-package/builds/16016573/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/cookiecutter-python-package/builds/16016573/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        red
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-xmark" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #16016573
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        red
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-xmark
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #16016573
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="Feb. 8, 2022, 4:38 a.m.">3 years, 4 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+  <p>Duplicated build.</p>
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-spinner-third loading icon"></i>
+        Finished
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/cookiecutter-python-package/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project cookiecutter-python-package">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/cookiecutter-python-package/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="115166"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/cookiecutter-qa/">cookiecutter-qa</a>
+  <div class="sub header">
+
+
+        <time data-content="April 4, 2018, 10:32 p.m.">
+
+
+            Last built 7 years, 3 months ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/cookiecutter-qa/builds/6993963/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/cookiecutter-qa/builds/6993963/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #6993963
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #6993963
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="April 4, 2018, 10:32 p.m.">7 years, 3 months ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      30941fa4
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        64 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/cookiecutter-qa/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project cookiecutter-qa">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/cookiecutter-qa/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+
+                <tr class="middle aligned">
+
+
+
+
+                    <td class="">
+                      <div class="ui tiny header">
+
+
+
+
+
+
+
+  <readthedocs-avatar class="ui  image"
+                      seed="138595"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+
+                        <div class="content">
+
+  <a href="https://app.readthedocs.org/projects/coveralls-python/">coveralls-python</a>
+  <div class="sub header">
+
+
+        <time data-content="June 30, 2025, 5:09 a.m.">
+
+
+            Last built 6 days, 11 hours ago
+
+        </time>
+
+
+  </div>
+
+                        </div>
+                      </div>
+                    </td>
+
+
+
+                    <td>
+
+
+                    </td>
+
+
+
+
+                      <td class="collapsing">
+                        <div class="ui relaxed stackable small middle aligned horizontal list">
+
+
+
+
+
+<div data-bind="with: $root.PopupcardView('/api/v3/projects/coveralls-python/builds/28683549/')">
+  <a class="ui basic label"
+     data-bind="semanticui: { popup: popup_config() }"
+     href="https://app.readthedocs.org/projects/coveralls-python/builds/28683549/">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+
+
+
+
+
+
+        green
+
+
+
+
+
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+
+
+
+
+
+  latest
+
+
+
+
+      <div class="detail">
+
+
+  #28683549
+
+      </div>
+
+  </a>
+  <div class="ui flowing popup" data-bind="using: data">
+    <div class="ui small basic horizontal card"
+         data-bind="css: { loading: $parent.is_loading() }">
+
+
+
+
+
+      <div class="content" data-bind="if: $parent.is_loaded()">
+
+
+
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check
+
+
+
+
+  right floated" ></i>
+
+
+
+
+        <div class="header">
+
+
+
+  latest #28683549
+
+        </div>
+
+        <div class="meta">
+
+
+  <time data-content="June 30, 2025, 5:09 a.m.">6 days, 11 hours ago</time>
+
+        </div>
+
+        <div class="description">
+
+
+
+
+        </div>
+      </div>
+
+      <div class="extra content" data-bind="if: $parent.is_loaded()">
+
+
+
+    <span>
+      <i class="fad fa-code-commit icon"></i>
+      ea3527bd
+    </span>
+
+  <div class="right floated">
+
+      <span>
+        <i class="fad fa-timer icon"></i>
+        34 seconds
+      </span>
+
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                      </td>
+
+
+
+
+                    <td class="right aligned collapsing">
+
+  <readthedocs-api csrf-token="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC"
+                   url="/api/v3/projects/coveralls-python/?expand=permissions">
+    <div class="ui small icon buttons">
+      <readthedocs-item-docs
+                             label="View documentation for project coveralls-python">
+      </readthedocs-item-docs>
+      <button class="ui dropdown button">
+        <i class="fa-solid fa-ellipsis icon"></i>
+        <readthedocs-menu-project-admin class="menu" url-settings="/dashboard/coveralls-python/edit/">
+        </readthedocs-menu-project-admin>
+      </button>
+    </div>
+  </readthedocs-api>
+
+                    </td>
+
+
+
+              </tr>
+
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+
+  <div class="ui pagination menu">
+
+
+      <a class="disabled icon item"><i class="fa-solid fa-arrow-left icon"></i></a>
+
+
+
+
+
+
+            <div class="active item">1</div>
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=2" class="item">2</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=3" class="item">3</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=4" class="item">4</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=5" class="item">5</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=6" class="item">6</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=7" class="item">7</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=8" class="item">8</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=9" class="item">9</a>
+
+
+
+
+
+
+
+              <a href="https://app.readthedocs.org/projects/tags/pytest/?page=10" class="item">10</a>
+
+
+
+
+
+
+
+      <a class="icon item" href="https://app.readthedocs.org/projects/tags/pytest/?page=2"><i class="fa-solid fa-arrow-right icon"></i></a>
+
+
+  </div>
+
+
+
+
+
+
+</div>
+
+
+      </div>
+
+
+
+
+
+
+
+
+<footer class="ui basic very padded inverted attached segment">
+  <div class="ui container">
+
+
+      <div class="ui four column stackable grid very padded">
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Stay updated</h4>
+              <a class="item" href="https://about.readthedocs.com/blog/">Blog</a>
+              <a class="item"
+                 href="https://landing.mailerlite.com/webforms/landing/t0a9l4">Newsletter</a>
+              <a class="item" href="https://status.readthedocs.com/">Status</a>
+              <div class="item">
+                <a href="https://github.com/readthedocs/"
+                   aria-label="Read the Docs on GitHub"
+                   rel="noopener noreferrer"><i class="icon large fab fa-github"></i></a>
+                <a href="https://twitter.com/readthedocs"
+                   aria-label="Read the Docs on Twitter"
+                   rel="noopener noreferrer"><i class="icon large fab fa-twitter"></i></a>
+                <a href="https://fosstodon.org/@readthedocs"
+                   aria-label="Read the Docs on Mastodon / Fediverse"
+                   rel="me"><i class="icon large fab fa-mastodon"></i></a>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Learn more</h4>
+              <a class="item" href="https://docs.readthedocs.io" target="_blank">Documentation</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/tutorial/index.html"
+                 target="_blank">Getting started guide</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/config-file/"
+                 target="_blank">Configure your project</a>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Services</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/pricing/"
+                 target="_blank">Pricing</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/features/"
+                 target="_blank">Features</a>
+              <a class="item"
+                 href="https://www.ethicalads.io/advertisers/?ref=rtd"
+                 target="_blank">Advertise with Us</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/privacy-policy.html"
+                 target="_blank">Privacy Policy</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/terms-of-service.html"
+                 target="_blank">Terms of Service</a>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">About us</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/company/"
+                 target="_blank">Company</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/team.html"
+                 target="_blank">Team</a>
+              <a class="item"
+                 href="https://dev.readthedocs.io/page/contribute.html"
+                 target="_blank">Contributing</a>
+
+
+              <h4 class="ui inverted sub header">Tools</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/sphinx/"
+                 target="_blank">Sphinx</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/mkdocs/"
+                 target="_blank">MkDocs</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/jupyter-book/"
+                 target="_blank">Jupyter Book</a>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="ui basic center aligned inverted segment">
+        <div class="ui very relaxed horizontal inverted list">
+          <div class="left aligned item">
+            <i class="large fa-duotone fa-code-branch icon"></i>
+            <div class="content">
+              <div class="header">Version</div>
+              <div class="description">
+                <a href="https://docs.readthedocs.io/page/changelog.html"
+                   target="_blank">14.1.0</a>
+              </div>
+            </div>
+          </div>
+          <div class="left aligned item">
+            <i class="large fa-duotone fa-language icon"></i>
+            <div class="content">
+              <div class="header">Language</div>
+              <div class="description">
+
+
+                  <form action="https://app.readthedocs.org/i18n/setlang/" method="post">
+                    <div class="field">
+                      <input name="next" type="hidden" value="/" />
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="b8Hd7y6h6gmZ4pwnrLWhT5UPduCH7wnuzIC55XuZgFoHFhchq1r29mSnkWDFyjMC">
+                    <div class="ui very wide search dropdown"
+                         data-bind="semanticui: { dropdown: {direction: 'upward', fullTextSearch: true, cache: false}}">
+                      <input type="hidden" name="language" />
+                      <span class="default text">English</span>
+                      <i class="fa-solid fa-caret-down icon"></i>
+                      <div class="menu">
+                        <div class="ui icon search input">
+                          <i class="search icon"></i>
+                          <input type="text" />
+                        </div>
+                        <div class="divider"></div>
+
+                          <div class="vertical item "
+                               data-value="ca"
+                               data-text="català">
+                            <div class="description">
+                              Catalan
+                            </div>
+                            <div class="text">català</div>
+                          </div>
+
+                          <div class="vertical item active"
+                               data-value="en"
+                               data-text="English">
+                            <div class="description">
+                              English
+                            </div>
+                            <div class="text">English</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="es"
+                               data-text="español">
+                            <div class="description">
+                              Spanish
+                            </div>
+                            <div class="text">español</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="pt-br"
+                               data-text="Português Brasileiro">
+                            <div class="description">
+                              Brazilian Portuguese
+                            </div>
+                            <div class="text">Português Brasileiro</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="nb"
+                               data-text="norsk (bokmål)">
+                            <div class="description">
+                              Norwegian Bokmal
+                            </div>
+                            <div class="text">norsk (bokmål)</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="fr"
+                               data-text="français">
+                            <div class="description">
+                              French
+                            </div>
+                            <div class="text">français</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ru"
+                               data-text="Русский">
+                            <div class="description">
+                              Russian
+                            </div>
+                            <div class="text">Русский</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="de"
+                               data-text="Deutsch">
+                            <div class="description">
+                              German
+                            </div>
+                            <div class="text">Deutsch</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="gl"
+                               data-text="galego">
+                            <div class="description">
+                              Galician
+                            </div>
+                            <div class="text">galego</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="vi"
+                               data-text="Tiếng Việt">
+                            <div class="description">
+                              Vietnamese
+                            </div>
+                            <div class="text">Tiếng Việt</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="zh-cn"
+                               data-text="简体中文">
+                            <div class="description">
+                              Simplified Chinese
+                            </div>
+                            <div class="text">简体中文</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="zh-tw"
+                               data-text="繁體中文">
+                            <div class="description">
+                              Traditional Chinese
+                            </div>
+                            <div class="text">繁體中文</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ja"
+                               data-text="日本語">
+                            <div class="description">
+                              Japanese
+                            </div>
+                            <div class="text">日本語</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="uk"
+                               data-text="Українська">
+                            <div class="description">
+                              Ukrainian
+                            </div>
+                            <div class="text">Українська</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="it"
+                               data-text="italiano">
+                            <div class="description">
+                              Italian
+                            </div>
+                            <div class="text">italiano</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ko"
+                               data-text="한국어">
+                            <div class="description">
+                              Korean
+                            </div>
+                            <div class="text">한국어</div>
+                          </div>
+
+                      </div>
+                    </div>
+
+                    <button class="ui tiny compact basic inverted button">
+                      Update
+                    </button>
+                  </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="ui basic center aligned inverted segment">
+        <i class="fad fa-copyright icon"></i>
+        Copyright 2025, Read the Docs, Inc &amp; contributors
+      </div>
+
+
+
+
+
+        <div class="ui inverted horizontal divider very padded">Sponsored by</div>
+
+        <div class="ui six column doubling grid container">
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://aws.amazon.com" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../app-assets.readthedocs.org/images/sponsors/aws.e8af7274bc7e.png"
+                     alt="Amazon Web Services" />
+                AWS
+                <div class="sub header">Cloud Computing</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://cloudflare.com" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../app-assets.readthedocs.org/images/sponsors/cloudflare.d6e78f9ba0ea.png"
+                     alt="CloudFlare">
+                Cloudflare
+                <div class="sub header">DNS &amp; SSL</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://sentry.io/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../app-assets.readthedocs.org/images/sponsors/sentry.69bffb7378b8.png"
+                     alt="Sentry">
+                Sentry
+                <div class="sub header">Monitoring</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://www.elastic.co/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../app-assets.readthedocs.org/images/sponsors/elastic.933a07e99e1c.png"
+                     alt="Elastic">
+                Elastic
+                <div class="sub header">Search</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://newrelic.com/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../app-assets.readthedocs.org/images/sponsors/newrelic.7b6a28df19ab.png"
+                     alt="New Relic">
+                New Relic
+                <div class="sub header">Performance</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+  </div>
+</footer>
+
+
+
+
+      <script type="text/javascript" src="../../../../app-assets.readthedocs.org/readthedocsext/theme/js/vendor.de3b07fa35a6.js"></script>
+      <script type="text/javascript" src="../../../../app-assets.readthedocs.org/readthedocsext/theme/js/site.82253e925ba5.js"></script>
+
+  </body>
+</html>

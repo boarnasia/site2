@@ -1,0 +1,536 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+
+
+    <title>
+  Log in
+ - Read the Docs Community </title>
+
+
+
+
+
+
+
+      <link rel="icon" type="image/png" href="../app-assets.readthedocs.org/images/favicon.f231b6609d0b.png" />
+      <link rel="stylesheet" type="text/css" media="all" href="../app-assets.readthedocs.org/readthedocsext/theme/css/site.99cbf49e4c7d.css" />
+
+
+
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+
+
+
+
+      <script id="site-config" type="application/json">{"debug": false, "webpack_public_path": "https://app-assets.readthedocs.org/readthedocsext/theme/", "production_domain": "app.readthedocs.org", "sentry": {"dsn": "https://4ef8546f95006f22644e24a9f666c2a5@o40776.ingest.us.sentry.io/4507963896365056", "environment": "community"}}</script>
+
+
+      <script src="https://kit.fontawesome.com/66c8860b51.js"
+              crossorigin="anonymous"></script>
+
+
+  </head>
+  <body class="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="ui very padded container">
+    <div class="ui very tall centered grid">
+      <div class="left aligned middle aligned nine wide computer twelve wide tablet sixteen wide mobile column">
+        <div class="ui fluid card">
+          <div class="content">
+
+
+                <div class="header">
+
+
+    Log in to continue
+
+
+                </div>
+
+
+
+                <div class="description">
+
+
+
+  <div class="ui basic horizontally fitted segment">
+    <div class="ui form">
+      <div class="field">
+        <label>
+
+            Log in using:
+
+        </label>
+      </div>
+    </div>
+
+    <div class="ui small stackable teal centered fluid wrapping menu"
+         data-bind="semanticui: {tabs: {history: true, autoTabActivation: false}}">
+
+      <a class="item" data-tab="vcs">
+        <i class="fas fa-cloud icon"></i>
+
+          Connected account
+
+      </a>
+
+
+      <a class=" item"
+         data-tab="email">
+        <i class="fas fa-envelope icon"></i>
+
+          Email
+
+      </a>
+
+
+
+
+    </div>
+  </div>
+
+  <div class="ui basic center aligned tab segment" data-tab="vcs">
+    <div class="ui relaxed list">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li class="item">
+    <a class="ui button"
+       data-bind="click: $root.show_modal('github-select')"
+       title="GitHub">
+      <i class="fa-brands fa-github icon"></i>
+      Log in using GitHub
+    </a>
+  </li>
+  <div class="ui tiny modal" data-modal-id="github-select">
+    <div class="header">
+      Log in using GitHub
+    </div>
+    <div class="content">
+      <p>
+        Read the Docs now supports two methods for connecting your GitHub account:
+      </p>
+      <div class="ui segment">
+        <div class="ui small divided items">
+
+            <div class="item">
+              <div class="content">
+                <div class="header">
+
+                    Our GitHub OAuth app
+                    <span class="ui compact small basic label">Default</span>
+
+                </div>
+                <div class="description">
+                  <p>
+
+
+
+
+                          For users that connected their GitHub accounts before June 24, 2025.
+
+
+
+                  </p>
+                </div>
+                <div class="extra">
+
+
+
+
+
+  <form class="ui form"
+        method="post"
+        action="https://app.readthedocs.org/accounts/github/login/?process=login">
+    <input type="hidden" name="csrfmiddlewaretoken" value="P6kfgfNdujaZQJf1W5p4tXghDOIcuEBfdGf7eEbVEIcHrBVVVlUPJeePKgJaVr0n">
+
+    <button class="ui right floated primary button"
+            type="submit"
+            title="GitHub">
+      <i class="fa-brands fa-github icon"></i>
+      Log in using GitHub OAuth
+    </button>
+
+  </form>
+
+
+
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="content">
+                <div class="header">
+
+                    Our GitHub App
+                    <span class="ui violet compact small basic label">Beta</span>
+
+                </div>
+                <div class="description">
+                  <p>
+
+
+
+
+                          For users that have switched their connected GitHub accounts already.
+
+
+
+                  </p>
+                </div>
+                <div class="extra">
+
+
+
+
+
+  <form class="ui form"
+        method="post"
+        action="https://app.readthedocs.org/accounts/githubapp/login/?process=login">
+    <input type="hidden" name="csrfmiddlewaretoken" value="P6kfgfNdujaZQJf1W5p4tXghDOIcuEBfdGf7eEbVEIcHrBVVVlUPJeePKgJaVr0n">
+
+    <button class="ui right floated basic button"
+            type="submit"
+            title="GitHub">
+      <i class="fa-brands fa-github icon"></i>
+      Log in using GitHub App
+    </button>
+
+  </form>
+
+
+
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+
+      <div class="ui info message">
+        <i class="fas fa-info-circle icon"></i>
+        To learn more about our new GitHub App integration,
+        <a href="https://about.readthedocs.com/blog/2025/06/announcing-our-github-app-beta/">read our beta announcement</a>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Cancel</div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="item">
+
+
+
+
+  <form class="ui form"
+        method="post"
+        action="https://app.readthedocs.org/accounts/gitlab/login/?process=login">
+    <input type="hidden" name="csrfmiddlewaretoken" value="P6kfgfNdujaZQJf1W5p4tXghDOIcuEBfdGf7eEbVEIcHrBVVVlUPJeePKgJaVr0n">
+
+    <button class="ui  button"
+            type="submit"
+            title="GitLab">
+      <i class="fa-brands fa-gitlab icon"></i>
+      Log in using GitLab
+    </button>
+
+  </form>
+
+
+    </li>
+
+
+
+    <li class="item">
+
+
+
+
+  <form class="ui form"
+        method="post"
+        action="https://app.readthedocs.org/accounts/bitbucket_oauth2/login/?process=login">
+    <input type="hidden" name="csrfmiddlewaretoken" value="P6kfgfNdujaZQJf1W5p4tXghDOIcuEBfdGf7eEbVEIcHrBVVVlUPJeePKgJaVr0n">
+
+    <button class="ui  button"
+            type="submit"
+            title="Bitbucket">
+      <i class="fa-brands fa-bitbucket icon"></i>
+      Log in using Bitbucket
+    </button>
+
+  </form>
+
+
+    </li>
+
+
+
+
+    </div>
+  </div>
+  <div class="ui basic vertically fitted tab segment" data-tab="email">
+
+      <p class="ui center aligned vertically fitted small basic fluid segment">
+
+        Need an account? <a href="accounts/signup/index.html#/email">Sign up</a> first.
+      </p>
+
+      <form class="ui form"
+            method="post"
+            action="index.html#/email">
+        <input type="hidden" name="csrfmiddlewaretoken" value="P6kfgfNdujaZQJf1W5p4tXghDOIcuEBfdGf7eEbVEIcHrBVVVlUPJeePKgJaVr0n">
+        <div class="ui basic fieldset segment">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="div_id_login" class="required field">
+
+
+
+      <label for="id_login" class="ui ">
+        Login
+
+      </label>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="">
+          <input type="text" name="login" placeholder="Username or email" autocomplete="email" class="textinput textInput" required id="id_login">
+
+
+        </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="div_id_password" class="required field">
+
+
+
+      <label for="id_password" class="ui " data-html="&lt;a href=&quot;/accounts/password/reset/&quot;&gt;Forgot your password?&lt;/a&gt;" data-bind="semanticui: {popup: {hoverable: true}}">
+        Password
+
+          <i class="ui grey fa-duotone fa-circle-question icon"></i>
+
+      </label>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="">
+          <input type="password" name="password" placeholder="Password" autocomplete="current-password" class="textinput textInput" required aria-describedby="id_password_helptext" id="id_password">
+
+
+        </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="field">
+    <div class="ui checkbox">
+
+
+  <div id="div_id_remember" class="">
+
+
+
+
+  <input type="checkbox" name="remember" class="checkboxinput form-check-input" id="id_remember">
+
+
+    <label for="id_remember" class="form-check-label">
+      Remember Me
+
+
+    </label>
+
+
+
+
+
+
+  </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+        <div class="ui stackable relaxed text menu">
+          <a class="item" href="https://app.readthedocs.org/accounts/password/reset/">Forgot your password?</a>
+          <div class="right menu">
+            <button class="ui primary button" type="submit">Log in</button>
+          </div>
+        </div>
+
+      </form>
+
+  </div>
+
+
+
+
+
+                </div>
+
+
+
+          </div>
+
+            <div class="extra content">
+
+
+    <div class="right floated">
+
+      <a href="index.html"
+         aria-label="Read the Docs">
+        <img class="ui middle aligned image"
+             src="../app-assets.readthedocs.org/readthedocsext/theme/images/logo-wordmark-dark.8035ede2e46d.svg"
+             width="140"
+             alt="Read the Docs logo" />
+      </a>
+
+    </div>
+
+
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+      <script type="text/javascript" src="../app-assets.readthedocs.org/readthedocsext/theme/js/vendor.de3b07fa35a6.js"></script>
+      <script type="text/javascript" src="../app-assets.readthedocs.org/readthedocsext/theme/js/site.82253e925ba5.js"></script>
+
+
+  </body>
+</html>

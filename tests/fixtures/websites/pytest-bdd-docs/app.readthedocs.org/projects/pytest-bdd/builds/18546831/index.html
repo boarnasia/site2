@@ -1,0 +1,1072 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+
+
+    <title>
+  pytest-bdd
+ - Read the Docs Community </title>
+
+
+
+      <meta name="description"
+            content="Read the Docs is a documentation publishing and hosting platform for technical documentation" />
+      <meta name="keywords" content="documentation hosting" />
+
+
+
+      <link rel="icon" type="image/png" href="../../../../../app-assets.readthedocs.org/images/favicon.f231b6609d0b.png" />
+      <link rel="stylesheet" type="text/css" media="all" href="../../../../../app-assets.readthedocs.org/readthedocsext/theme/css/site.99cbf49e4c7d.css" />
+
+
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+
+
+
+      <script id="site-config" type="application/json">{"debug": false, "webpack_public_path": "https://app-assets.readthedocs.org/readthedocsext/theme/", "production_domain": "app.readthedocs.org", "sentry": {"dsn": "https://4ef8546f95006f22644e24a9f666c2a5@o40776.ingest.us.sentry.io/4507963896365056", "environment": "community"}}</script>
+
+
+      <script src="https://kit.fontawesome.com/66c8860b51.js"
+              crossorigin="anonymous"></script>
+
+  </head>
+  <body class="">
+
+
+
+
+
+
+
+
+<div class="ui basic fitted attached segment"
+     data-bind="using: HeaderView()">
+
+
+  <script type="application/json" data-bind="jsonInit: config">
+    {
+      "api_projects_list_url": "/api/v3/projects/"
+    }
+  </script>
+
+  <div class="ui container">
+    <div class="ui middle aligned grid">
+
+
+        <div class="four wide computer five wide tablet eleven wide mobile left aligned column">
+          <div class="ui horizontally fitted basic segment">
+            <a href="../../../../index.html" aria-label="Read the Docs homepage">
+              <img class="ui image"
+                   src="../../../../../app-assets.readthedocs.org/readthedocsext/theme/images/logo-wordmark-dark.8035ede2e46d.svg"
+                   width="220"
+                   alt="Read the Docs logo" />
+            </a>
+          </div>
+        </div>
+
+
+
+
+        <div class="five wide mobile only right aligned column">
+          <div class="ui wide dropdown"
+               data-bind="semanticui: {dropdown: {action: 'select'}}">
+
+
+            <i class="fad fa-bars large icon" style="--fa-secondary-opacity: 0.8;"></i>
+
+            <div class="menu">
+
+
+
+
+
+<div class="header">Navigation</div>
+
+<a class="item" href="../../../../dashboard/index.html">
+  <i class="fa-duotone fa-list icon"></i>
+  Projects
+</a>
+
+
+
+<div class="divider"></div>
+
+<div class="header">Signed in as: AnonymousUser</div>
+<a class="item" href="../../../../accounts/edit/index.html">
+  <i class="fa-duotone fa-gears icon"></i>
+  Settings
+</a>
+<a class="item" data-bind="click: $root.post_child_form">
+  <i class="fa-duotone fa-sign-out icon"></i>
+  Log out
+  <form method="post" action="https://app.readthedocs.org/accounts/logout/">
+    <input type="hidden" name="csrfmiddlewaretoken" value="kNlNB3rFK1oOTFYrFmoFxHRh5cgrzQTsIngFzsPnUqqwuxElECTqNYPPcEhp0DiA">
+  </form>
+</a>
+
+<div class="divider"></div>
+
+<div class="header">Help</div>
+<a class="item" href="../../../../support/index.html">
+  <i class="fad fa-envelope primary icon"></i>
+  Support
+</a>
+<a class="item" href="https://docs.readthedocs.io">
+  <i class="fad fa-book primary icon"></i>
+  Docs
+  <span class="description">
+    <i class="fad fa-external-link icon"></i>
+  </span>
+</a>
+<a class="item" href="https://docs.readthedocs.io/page/tutorial/">
+  <i class="fad fa-rocket primary icon"></i>
+  Getting started
+  <span class="description">
+    <i class="fad fa-external-link icon"></i>
+  </span>
+</a>
+<a class="item" href="http://status.readthedocs.com">
+
+    <i class="fad fa-circle-check primary icon"></i>
+    Status
+
+      <span class="description">
+        <i class="fad fa-external-link icon"></i>
+      </span>
+
+
+</a>
+</div>
+          </div>
+        </div>
+
+
+
+
+        <div class="twelve wide computer eleven wide tablet left aligned tablet only computer only column">
+          <div class="ui big borderless secondary menu">
+
+
+
+
+
+            <div class="right menu">
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="item">
+                      <a href="../../../../accounts/signup/index.html">Sign up</a>
+                    </div>
+                    <div class="item">
+                      <a class="ui button" href="../../../../index.html">Log in</a>
+                    </div>
+
+
+
+
+            </div>
+
+          </div>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+      <div class="ui very padded container">
+
+
+
+    <readthedocs-notification-list url="/api/v3/projects/pytest-bdd/notifications/"
+                                   csrf-token="kNlNB3rFK1oOTFYrFmoFxHRh5cgrzQTsIngFzsPnUqqwuxElECTqNYPPcEhp0DiA"
+                                   class="ui basic segment relaxed list">
+    </readthedocs-notification-list>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="ui top attached segment"
+       data-bind="using: CollapsingHeaderView(true)">
+
+
+      <div class="ui stacking grid">
+
+
+          <div class="eight wide computer eight wide tablet sixteen wide mobile middle aligned column">
+
+
+
+
+
+
+  <readthedocs-avatar class="ui micro rounded right spaced inline image"
+                      seed="6877"
+                      url="https://app-assets.readthedocs.org/readthedocsext/theme/css/images/avatar-1.f6df3623a091.png">
+  </readthedocs-avatar>
+
+
+            <a class="ui medium text" href="../../../../../readthedocs.org/projects/pytest-bdd/index.html">pytest-bdd</a>
+          </div>
+
+
+
+          <div class="right aligned eight wide computer eight wide tablet sixteen wide left aligned mobile middle aligned column">
+
+
+
+
+<span
+
+    data-content="English"
+    aria-label="English"
+
+
+  class="ui label">
+
+    <i class="fa-solid fa-language icon"></i>
+
+  EN
+</span>
+
+
+
+
+            <a class="ui icon primary label"
+               data-bind="click: toggle_collapsed"
+               data-content="More project information">
+              <i class="fas fa-caret-down icon" data-bind="class: dropdown_class"></i>
+            </a>
+          </div>
+
+
+
+          <div class="eight wide computer eight wide tablet sixteen wide mobile column ko hidden"
+               data-bind="css: { hidden: is_collapsed() }">
+
+
+
+                <p>BDD support for pytest</p>
+
+
+
+
+
+
+                <a class="ui teal basic label"
+                   href="../../../tags/bdd/index.html">bdd</a>
+
+                <a class="ui teal basic label"
+                   href="../../../tags/gherkin/index.html">gherkin</a>
+
+                <a class="ui teal basic label"
+                   href="../../../tags/pytest/index.html">pytest</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+
+          <div class="right aligned eight wide computer eight wide tablet sixteen wide mobile column ko hidden"
+               data-bind="css: { hidden: is_collapsed() }">
+
+
+              <div class="ui sub header">Maintainers</div>
+
+
+
+              <div class="ui overlapping avatar images">
+
+                  <a href="../../../../profiles/olegpidsadnyi/index.html">
+                    <img alt="User  avatar"
+                         class="ui image"
+                         src="https://secure.gravatar.com/avatar/1fce0a8088f50b082a4c87c6cd9e1bc3.jpg?s=32&amp;d=https%3A%2F%2Fassets.readthedocs.org%2Fstatic%2Fimages%2Fsilhouette.png&amp;r=g" />
+                  </a>
+
+                  <a href="../../../../profiles/bubenkoff/index.html">
+                    <img alt="User  avatar"
+                         class="ui image"
+                         src="https://secure.gravatar.com/avatar/4e2517ef01ac77a6a0b251336a6ce224.jpg?s=32&amp;d=https%3A%2F%2Fassets.readthedocs.org%2Fstatic%2Fimages%2Fsilhouette.png&amp;r=g" />
+                  </a>
+
+                  <a href="../../../../profiles/youtux/index.html">
+                    <img alt="User  avatar"
+                         class="ui image"
+                         src="https://secure.gravatar.com/avatar/f467e9195967a6d03ed28d14c6326eb3.jpg?s=32&amp;d=https%3A%2F%2Fassets.readthedocs.org%2Fstatic%2Fimages%2Fsilhouette.png&amp;r=g" />
+                  </a>
+
+
+
+
+
+
+              </div>
+
+
+
+              <div class="ui sub header">Repository</div>
+
+
+                <a href="https://github.com/pytest-dev/pytest-bdd.git" class="ui basic nowrap label">
+                  <i class="fas fa-code-fork icon"></i>
+                  <code>https://github.com/pytest-dev/pytest-bdd.git</code>
+                </a>
+
+
+          </div>
+
+
+      </div>
+
+
+  </div>
+
+
+    <div class="ui bottom attached stackable menu">
+      <a class="item "
+         href="../../../../../readthedocs.org/projects/pytest-bdd/index.html">
+        Versions
+        <span class="ui tiny teal circular label">26</span>
+      </a>
+      <a class="item active" href="../index.html">
+        Builds
+        <span class="ui tiny teal circular label">684</span>
+      </a>
+      <div class="right menu">
+
+
+
+      </div>
+    </div>
+
+    <div class="ui mini modal" data-modal-id="project-debug">
+      <div class="header">Debug information</div>
+
+      <div class="content">
+
+          <h3>Spam</h3>
+          <div class="ui sub header">Spam score</div>
+          <span>0</span>
+
+
+      </div>
+      <div class="actions">
+        <a href="index.html#" class="ui negative button">Close</a>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  <div data-bind="using: BuildDetailView({}, '/api/v2/build/18546831/', '/api/v3/projects/pytest-bdd/builds/18546831/notifications/')">
+
+
+      <div class="ui top attached segment">
+        <div class="ui stackable grid">
+
+
+
+            <div class="ui eleven wide column">
+              <div class="ui header">
+
+                <span data-bind="with: {state: {code: state()}, success: success()}">
+
+
+
+
+
+<i class="ui icon
+
+
+  small
+
+
+
+
+
+        green
+
+
+
+
+
+
+    inverted circular
+
+
+
+
+
+      fa-solid fa-check" ></i>
+
+
+                </span>
+
+
+
+
+
+
+<span class="ui large breadcrumb">
+  <span class="section">
+
+
+      <a href="https://app.readthedocs.org/projects/pytest-bdd/?slug=6.1.0">
+
+
+
+
+      Version 6.1.0
+
+
+
+      </a>
+
+  </span>
+
+
+    <span class="divider">/</span>
+
+    <a class="section" href="../index.html%3Fversion__slug=6.1.0.html">
+      Builds
+    </a>
+
+  <span class="divider">/</span>
+  <span class="active section">
+
+      <a href="index.html">
+
+    <span class="ui grey text">
+      #18546831
+    </span>
+
+      </a>
+
+  </span>
+</span>
+</a>
+
+
+              </div>
+
+              <div class="ui basic segment loading padded"
+                   data-bind="css: { loading: is_loading() }">
+                <div class="ui active progress"
+                     data-bind="semanticui: {progress: progress_config()}">
+                  <div class="bar">
+                    <div class="progress"></div>
+                  </div>
+                  <div class="label"></div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <div class="ui five wide middle aligned column">
+              <div class="ui relaxed list ko hidden"
+                   data-bind="css: { hidden: is_loading() }">
+                <div class="item">
+                  <i class="grey fa-duotone fa-calendar icon"></i>
+                  <div class="content">
+                    <span class="sub header">Started</span>
+                    <time data-bind="attr: { 'data-tooltip': date_display() }, text: date_display_since"></time>
+                  </div>
+                </div>
+
+                <div class="item">
+                  <i class="grey fa-duotone fa-clock icon"></i>
+                  <div class="content">
+                    <span class="sub header">Duration</span>
+                    <span data-bind="text: length_display"></span>
+                  </div>
+                </div>
+
+
+                <div class="item">
+                  <i class="grey fa-duotone fa-code-branch icon"></i>
+                  <div class="content">
+
+                      <span class="sub header">Tag</span>
+                      6.1.0
+
+                    <code class="ko hidden" data-bind="css: { hidden: !commit() }">
+                      <a data-bind="attr: {href: commit_url}">
+                        <span>(</span><span data-bind="text: commit_short">e5f2134507b7d8582f2a4e3fe5a7220841ee0660</span><span>)</span>
+                      </a>
+                    </code>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+
+
+    <div class="ui attached stackable menu">
+      <a class="active item">
+        <i class="fa-duotone fa-terminal icon"></i>
+        Output
+      </a>
+      <a class="item" href="https://app.readthedocs.org/api/v2/build/18546831.txt">
+        <i class="fa-duotone fa-memo-circle-info icon"></i>
+        Raw log
+      </a>
+      <a class="ui item"
+         data-bind="click: toggle_debug, css: {active: show_debug()}">
+        <i class="fa-duotone fa-microscope icon"></i>
+        Debug
+      </a>
+      <div class="item">
+        <div class="ui small checkbox">
+          <input type="checkbox" data-bind="checked: is_wrapped" />
+          <label>Wrap output</label>
+        </div>
+      </div>
+      <div class="right menu">
+
+
+
+
+        <a class="disabled item"
+           data-bind="css: {disabled: !can_view_docs()}, attr: {href: docs_url}"
+           aria-label="View documentation for this build"
+           target="_blank"
+           title="View documentation for this build">
+          <i class="fa-duotone fa-book icon"></i>
+          View docs
+        </a>
+      </div>
+    </div>
+
+
+
+
+
+        <div class="ko hidden ui attached fitted inverted basic segment"
+             data-bind="css: { hidden: !has_notifications() }, foreach: notifications">
+          <readthedocs-notification inverted="true"
+                                    csrf-token="kNlNB3rFK1oOTFYrFmoFxHRh5cgrzQTsIngFzsPnUqqwuxElECTqNYPPcEhp0DiA"
+                                    data-bind="webcomponent: {notification: $data}">
+          </readthedocs-notification>
+        </div>
+
+
+        <div class="ko hidden ui attached fitted inverted basic segment"
+             data-bind="css: { hidden: !error() }">
+          <div class="ui inverted error notification message">
+            <div class="header">
+              <i class="fad fa-circle-exclamation icon"></i>
+              There was an error with this build
+            </div>
+            <p data-bind="text: error"></p>
+          </div>
+        </div>
+
+
+      <div class="ui inverted bottom attached horizontally scrolling segment transition slide">
+
+
+        <div class="ui hidden active dimmer" data-bind="visible: is_loading()">
+          <div class="ui text loader">Loading</div>
+        </div>
+        <div class="ui basic segment very padded"
+             data-bind="visible: is_loading()"></div>
+
+        <table class="ko hidden ui small very basic compact inverted selectable command unstackable table"
+               data-bind="css: { hidden: !commands(), 'single line': !is_wrapped() }, foreach: commands">
+          <tbody>
+            <tr class="top aligned command"
+                data-bind="visible: is_visible() || $parent.show_debug()">
+              <td class="collapsing">
+                <a class="ui icon left floated" data-bind="click: toggle_expanded">
+                  <i class="grey fa-solid fa-angle-right icon"
+                     data-bind="class: is_expanded() ? 'fa-angle-down' : 'fa-angle-right'"></i>
+                </a>
+              </td>
+              <td class="command">
+                <code class="ui text"
+                      data-bind="text: command, class: command_class, click: toggle_expanded"></code>
+                <a class="ui mini inverted label"
+                   data-bind="text: 'Running', visible: !finished()"></a>
+                <a class="ui mini inverted label"
+                   data-bind="text: run_time() + 's', visible: finished()"></a>
+                <a class="ui mini inverted label"
+                   data-bind="text: 'Exit: ' + exit_code(), visible: finished() && exit_code() > 0"></a>
+              </td>
+            </tr>
+          </tbody>
+          <tbody data-bind="visible: (is_visible() || $parent.show_debug()) && is_expanded(), foreach: output_lines">
+            <tr data-bind="css: {'left olive marked': is_selected()}"
+                class="top aligned">
+              <td class="collapsing line number">
+                <a class="ui small grey left floated text"
+                   data-bind="attr: {href: '#' + anchor_id(), 'data-selected': is_selected()}, click: function() { $parents[1].set_selected_line($data) }">
+                  <code data-bind="text: line_number()"></code>
+                </a>
+              </td>
+              <td class="stdout">
+                <code data-bind="text: output"></code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ko hidden"
+             data-bind="css: { hidden: is_loading() || !is_polling() }">
+          <div data-bind="visible: is_polling"
+               class="ui active inverted mini centered inline text loader">
+          </div>
+        </div>
+
+      </div>
+
+
+  </div>
+
+      </div>
+
+
+
+
+
+
+
+
+<footer class="ui basic very padded inverted attached segment">
+  <div class="ui container">
+
+
+      <div class="ui four column stackable grid very padded">
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Stay updated</h4>
+              <a class="item" href="https://about.readthedocs.com/blog/">Blog</a>
+              <a class="item"
+                 href="https://landing.mailerlite.com/webforms/landing/t0a9l4">Newsletter</a>
+              <a class="item" href="https://status.readthedocs.com/">Status</a>
+              <div class="item">
+                <a href="https://github.com/readthedocs/"
+                   aria-label="Read the Docs on GitHub"
+                   rel="noopener noreferrer"><i class="icon large fab fa-github"></i></a>
+                <a href="https://twitter.com/readthedocs"
+                   aria-label="Read the Docs on Twitter"
+                   rel="noopener noreferrer"><i class="icon large fab fa-twitter"></i></a>
+                <a href="https://fosstodon.org/@readthedocs"
+                   aria-label="Read the Docs on Mastodon / Fediverse"
+                   rel="me"><i class="icon large fab fa-mastodon"></i></a>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Learn more</h4>
+              <a class="item" href="https://docs.readthedocs.io" target="_blank">Documentation</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/tutorial/index.html"
+                 target="_blank">Getting started guide</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/config-file/"
+                 target="_blank">Configure your project</a>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">Services</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/pricing/"
+                 target="_blank">Pricing</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/features/"
+                 target="_blank">Features</a>
+              <a class="item"
+                 href="https://www.ethicalads.io/advertisers/?ref=rtd"
+                 target="_blank">Advertise with Us</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/privacy-policy.html"
+                 target="_blank">Privacy Policy</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/terms-of-service.html"
+                 target="_blank">Terms of Service</a>
+
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="ui vertical inverted text menu">
+
+              <h4 class="ui inverted sub header">About us</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/company/"
+                 target="_blank">Company</a>
+              <a class="item"
+                 href="https://docs.readthedocs.io/page/team.html"
+                 target="_blank">Team</a>
+              <a class="item"
+                 href="https://dev.readthedocs.io/page/contribute.html"
+                 target="_blank">Contributing</a>
+
+
+              <h4 class="ui inverted sub header">Tools</h4>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/sphinx/"
+                 target="_blank">Sphinx</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/mkdocs/"
+                 target="_blank">MkDocs</a>
+              <a class="item"
+                 href="https://about.readthedocs.com/tools/jupyter-book/"
+                 target="_blank">Jupyter Book</a>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="ui basic center aligned inverted segment">
+        <div class="ui very relaxed horizontal inverted list">
+          <div class="left aligned item">
+            <i class="large fa-duotone fa-code-branch icon"></i>
+            <div class="content">
+              <div class="header">Version</div>
+              <div class="description">
+                <a href="https://docs.readthedocs.io/page/changelog.html"
+                   target="_blank">14.1.0</a>
+              </div>
+            </div>
+          </div>
+          <div class="left aligned item">
+            <i class="large fa-duotone fa-language icon"></i>
+            <div class="content">
+              <div class="header">Language</div>
+              <div class="description">
+
+
+                  <form action="https://app.readthedocs.org/i18n/setlang/" method="post">
+                    <div class="field">
+                      <input name="next" type="hidden" value="/" />
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="kNlNB3rFK1oOTFYrFmoFxHRh5cgrzQTsIngFzsPnUqqwuxElECTqNYPPcEhp0DiA">
+                    <div class="ui very wide search dropdown"
+                         data-bind="semanticui: { dropdown: {direction: 'upward', fullTextSearch: true, cache: false}}">
+                      <input type="hidden" name="language" />
+                      <span class="default text">English</span>
+                      <i class="fa-solid fa-caret-down icon"></i>
+                      <div class="menu">
+                        <div class="ui icon search input">
+                          <i class="search icon"></i>
+                          <input type="text" />
+                        </div>
+                        <div class="divider"></div>
+
+                          <div class="vertical item "
+                               data-value="ca"
+                               data-text="català">
+                            <div class="description">
+                              Catalan
+                            </div>
+                            <div class="text">català</div>
+                          </div>
+
+                          <div class="vertical item active"
+                               data-value="en"
+                               data-text="English">
+                            <div class="description">
+                              English
+                            </div>
+                            <div class="text">English</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="es"
+                               data-text="español">
+                            <div class="description">
+                              Spanish
+                            </div>
+                            <div class="text">español</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="pt-br"
+                               data-text="Português Brasileiro">
+                            <div class="description">
+                              Brazilian Portuguese
+                            </div>
+                            <div class="text">Português Brasileiro</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="nb"
+                               data-text="norsk (bokmål)">
+                            <div class="description">
+                              Norwegian Bokmal
+                            </div>
+                            <div class="text">norsk (bokmål)</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="fr"
+                               data-text="français">
+                            <div class="description">
+                              French
+                            </div>
+                            <div class="text">français</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ru"
+                               data-text="Русский">
+                            <div class="description">
+                              Russian
+                            </div>
+                            <div class="text">Русский</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="de"
+                               data-text="Deutsch">
+                            <div class="description">
+                              German
+                            </div>
+                            <div class="text">Deutsch</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="gl"
+                               data-text="galego">
+                            <div class="description">
+                              Galician
+                            </div>
+                            <div class="text">galego</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="vi"
+                               data-text="Tiếng Việt">
+                            <div class="description">
+                              Vietnamese
+                            </div>
+                            <div class="text">Tiếng Việt</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="zh-cn"
+                               data-text="简体中文">
+                            <div class="description">
+                              Simplified Chinese
+                            </div>
+                            <div class="text">简体中文</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="zh-tw"
+                               data-text="繁體中文">
+                            <div class="description">
+                              Traditional Chinese
+                            </div>
+                            <div class="text">繁體中文</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ja"
+                               data-text="日本語">
+                            <div class="description">
+                              Japanese
+                            </div>
+                            <div class="text">日本語</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="uk"
+                               data-text="Українська">
+                            <div class="description">
+                              Ukrainian
+                            </div>
+                            <div class="text">Українська</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="it"
+                               data-text="italiano">
+                            <div class="description">
+                              Italian
+                            </div>
+                            <div class="text">italiano</div>
+                          </div>
+
+                          <div class="vertical item "
+                               data-value="ko"
+                               data-text="한국어">
+                            <div class="description">
+                              Korean
+                            </div>
+                            <div class="text">한국어</div>
+                          </div>
+
+                      </div>
+                    </div>
+
+                    <button class="ui tiny compact basic inverted button">
+                      Update
+                    </button>
+                  </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="ui basic center aligned inverted segment">
+        <i class="fad fa-copyright icon"></i>
+        Copyright 2025, Read the Docs, Inc &amp; contributors
+      </div>
+
+
+
+
+
+        <div class="ui inverted horizontal divider very padded">Sponsored by</div>
+
+        <div class="ui six column doubling grid container">
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://aws.amazon.com" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../../app-assets.readthedocs.org/images/sponsors/aws.e8af7274bc7e.png"
+                     alt="Amazon Web Services" />
+                AWS
+                <div class="sub header">Cloud Computing</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://cloudflare.com" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../../app-assets.readthedocs.org/images/sponsors/cloudflare.d6e78f9ba0ea.png"
+                     alt="CloudFlare">
+                Cloudflare
+                <div class="sub header">DNS &amp; SSL</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://sentry.io/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../../app-assets.readthedocs.org/images/sponsors/sentry.69bffb7378b8.png"
+                     alt="Sentry">
+                Sentry
+                <div class="sub header">Monitoring</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://www.elastic.co/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../../app-assets.readthedocs.org/images/sponsors/elastic.933a07e99e1c.png"
+                     alt="Elastic">
+                Elastic
+                <div class="sub header">Search</div>
+              </a>
+            </div>
+          </div>
+          <div class="column bottom aligned centered">
+            <div class="ui tiny inverted header centered">
+              <a href="https://newrelic.com/" rel="noopener" target="_blank">
+                <img class="ui tiny centered image"
+                     src="../../../../../app-assets.readthedocs.org/images/sponsors/newrelic.7b6a28df19ab.png"
+                     alt="New Relic">
+                New Relic
+                <div class="sub header">Performance</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+  </div>
+</footer>
+
+
+
+
+      <script type="text/javascript" src="../../../../../app-assets.readthedocs.org/readthedocsext/theme/js/vendor.de3b07fa35a6.js"></script>
+      <script type="text/javascript" src="../../../../../app-assets.readthedocs.org/readthedocsext/theme/js/site.82253e925ba5.js"></script>
+
+  </body>
+</html>
