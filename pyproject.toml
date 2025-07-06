@@ -26,6 +26,9 @@ dev-dependencies = [
     "pre-commit>=4.2.0",
 ]
 
+[tool.rye.scripts]
+site2 = "python -m site2.cli"
+
 [tool.hatch.metadata]
 allow-direct-references = true
 
