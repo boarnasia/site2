@@ -8,10 +8,21 @@ import google.generativeai as genai
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract main content CSS selector from web pages (Gemini version)")
+    parser = argparse.ArgumentParser(
+        description="Extract main content CSS selector from web pages (Gemini version)"
+    )
     parser.add_argument("url", help="Target web page URL")
-    parser.add_argument("--format", choices=["css", "xpath"], default="css", help="Output format: CSS selector or XPath (default: css)")
-    parser.add_argument("--explain", action="store_true", help="Include explanation of the selected element")
+    parser.add_argument(
+        "--format",
+        choices=["css", "xpath"],
+        default="css",
+        help="Output format: CSS selector or XPath (default: css)",
+    )
+    parser.add_argument(
+        "--explain",
+        action="store_true",
+        help="Include explanation of the selected element",
+    )
     args = parser.parse_args()
 
     load_dotenv()
@@ -23,7 +34,11 @@ def main():
     processed_html = preprocess_html(html)
 
     format_instruction = "CSSセレクタ" if args.format == "css" else "XPath"
-    format_examples = "main article, div#main article, .content" if args.format == "css" else "//main//article, //div[@id='main']//article"
+    format_examples = (
+        "main article, div#main article, .content"
+        if args.format == "css"
+        else "//main//article, //div[@id='main']//article"
+    )
 
     explain_instruction = ""
     if args.explain:
@@ -70,7 +85,13 @@ HTML:
                     extracted["explanation"] = exp_match.group(1)
             print(json.dumps(extracted, ensure_ascii=False, indent=2))
         else:
-            print(json.dumps({"error": "Failed to parse response", "raw_output": text}, ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    {"error": "Failed to parse response", "raw_output": text},
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
 
 
 if __name__ == "__main__":

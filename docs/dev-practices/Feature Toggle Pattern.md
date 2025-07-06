@@ -53,11 +53,11 @@ def get_summary(article_text: str) -> str:
 
 # --- 使い方 ---
 # 環境変数を設定せずに実行: FEATURE_AI_SUMMARY=false
-get_summary("...") 
+get_summary("...")
 # > INFO: 標準の要約機能を使用します。
 
 # 環境変数を設定して実行: FEATURE_AI_SUMMARY=true
-get_summary("...") 
+get_summary("...")
 # > INFO: AI要約機能を使用します。
 ```
 
@@ -92,7 +92,7 @@ def get_ai_powered_search_results(query: str, user_id: str):
     """
     AIによる検索機能が有効なユーザーかどうかを判定し、結果を返す
     """
-    
+
     # ユーザー情報を識別子として渡す
     identity_flags = flagsmith.get_identity_flags(identifier=user_id)
 

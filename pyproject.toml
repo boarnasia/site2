@@ -5,7 +5,14 @@ description = "Add your description here"
 authors = [
     { name = "Uehara Masato", email = "masato.uehara.1975@gmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "typer>=0.16.0",
+    "playwright>=1.53.0",
+    "beautifulsoup4>=4.13.4",
+    "pypdf>=5.7.0",
+    "pydantic-settings>=2.10.1",
+    "pydantic>=2.11.7",
+]
 readme = "README.md"
 requires-python = ">= 3.10"
 
@@ -19,7 +26,13 @@ dev-dependencies = [
     "ipython>=9.4.0",
     "pytest>=8.4.1",
     "pre-commit>=4.2.0",
+    "pytest-bdd>=8.1.0",
+    "pytest-cov>=6.2.1",
+    "debugpy>=1.8.14",
 ]
+
+[tool.rye.scripts]
+site2 = "python -m site2.cli"
 
 [tool.hatch.metadata]
 allow-direct-references = true

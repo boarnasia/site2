@@ -73,8 +73,8 @@ behave --dry-run
 
 **出力結果:**
 
-```
-You can implement step definitions for undefined steps with these snippets:
+```python
+# You can implement step definitions for undefined steps with these snippets:
 
 @given(u'登録済みのユーザー "{user}" が存在する')
 def step_impl(context, user):

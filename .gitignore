@@ -9,3 +9,11 @@ wheels/
 # dotfiles
 .venv
 .vscode
+.cache
+
+# Test fixtures (downloaded websites)
+tests/fixtures/websites/*/
+
+# But keep simple test sites
+!tests/fixtures/websites/simple-site/
+!tests/fixtures/websites/README.md
