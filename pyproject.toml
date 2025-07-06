@@ -26,6 +26,8 @@ dev-dependencies = [
     "pytest>=8.4.1",
     "pre-commit>=4.2.0",
     "behave>=1.2.6",
+    "pytest-bdd>=8.1.0",
+    "pytest-cov>=6.2.1",
 ]
 
 [tool.rye.scripts]

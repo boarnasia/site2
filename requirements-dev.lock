@@ -21,6 +21,8 @@ cfgv==3.4.0
     # via pre-commit
 click==8.2.1
     # via typer
+coverage==7.9.2
+    # via pytest-cov
 decorator==5.2.1
     # via ipython
 distlib==0.3.9
@@ -29,6 +31,8 @@ executing==2.2.0
     # via stack-data
 filelock==3.18.0
     # via virtualenv
+gherkin-official==29.0.0
+    # via pytest-bdd
 greenlet==3.2.3
     # via playwright
 identify==2.6.12
@@ -40,8 +44,12 @@ ipython-pygments-lexers==1.1.1
     # via ipython
 jedi==0.19.2
     # via ipython
+mako==1.3.10
+    # via pytest-bdd
 markdown-it-py==3.0.0
     # via rich
+markupsafe==3.0.2
+    # via mako
 matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
@@ -50,11 +58,14 @@ nodeenv==1.9.1
     # via pre-commit
 packaging==25.0
     # via pytest
+    # via pytest-bdd
 parse==1.20.2
     # via behave
     # via parse-type
+    # via pytest-bdd
 parse-type==0.6.4
     # via behave
+    # via pytest-bdd
 parso==0.8.4
     # via jedi
 pexpect==4.9.0
@@ -65,6 +76,7 @@ playwright==1.53.0
     # via site2
 pluggy==1.6.0
     # via pytest
+    # via pytest-cov
 pre-commit==4.2.0
 prompt-toolkit==3.0.51
     # via ipython
@@ -88,6 +100,10 @@ pygments==2.19.2
 pypdf==5.7.0
     # via site2
 pytest==8.4.1
+    # via pytest-bdd
+    # via pytest-cov
+pytest-bdd==8.1.0
+pytest-cov==6.2.1
 python-dotenv==1.1.1
     # via pydantic-settings
 pyyaml==6.0.2
@@ -113,6 +129,7 @@ typing-extensions==4.14.1
     # via pydantic
     # via pydantic-core
     # via pyee
+    # via pytest-bdd
     # via typer
     # via typing-inspection
 typing-inspection==0.4.1
