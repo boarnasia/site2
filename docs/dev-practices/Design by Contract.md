@@ -70,7 +70,7 @@ def ensures(postcondition):
         def wrapper(self, *args, **kwargs):
             # 実行前の状態を保存
             old_balance = self.balance
-            
+
             # 関数を実行
             result = func(self, *args, **kwargs)
 
@@ -90,7 +90,7 @@ class BankAccount:
     def withdraw(self, amount: int) -> int:
         """残高が正しく更新されること"""
         # (仮にバグを混入させてみる)
-        # self.balance -= amount - 10 
+        # self.balance -= amount - 10
         self.balance -= amount
         return amount # 実際に出金した額を返す
 ```
@@ -118,7 +118,7 @@ def invariant(condition):
             if callable(method) and not name.startswith('_'):
                 setattr(cls, name, _check_invariant(method, condition))
         return cls
-    
+
     def _check_invariant(method, condition):
         def wrapper(self, *args, **kwargs):
             result = method(self, *args, **kwargs)
@@ -160,7 +160,7 @@ def requires(precondition):
         # 最適化モードでは、チェックを行わず元の関数をそのまま返す
         if not __debug__:
             return func
-        
+
         # (以降の実装は同じ...)
 ```
 

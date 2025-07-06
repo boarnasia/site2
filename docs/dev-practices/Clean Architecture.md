@@ -94,7 +94,7 @@ graph TD
         Controller["Controller (FastAPI)"]
         Repository["InMemoryUserRepository (具体的な実装)"]
     end
-    
+
     subgraph "内側の層"
         UseCase("UserCreateUseCase")
         Interface{{"IUserRepository (抽象的なインターフェース)"}}
