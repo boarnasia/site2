@@ -25,6 +25,7 @@ dev-dependencies = [
     "ipython>=9.4.0",
     "pytest>=8.4.1",
     "pre-commit>=4.2.0",
+    "behave>=1.2.6",
 ]
 
 [tool.rye.scripts]
