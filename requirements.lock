@@ -10,3 +10,33 @@
 #   universal: false
 
 -e file:.
+beautifulsoup4==4.13.4
+    # via site2
+click==8.2.1
+    # via typer
+greenlet==3.2.3
+    # via playwright
+markdown-it-py==3.0.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
+playwright==1.53.0
+    # via site2
+pyee==13.0.0
+    # via playwright
+pygments==2.19.2
+    # via rich
+pypdf==5.7.0
+    # via site2
+rich==14.0.0
+    # via typer
+shellingham==1.5.4
+    # via typer
+soupsieve==2.7
+    # via beautifulsoup4
+typer==0.16.0
+    # via site2
+typing-extensions==4.14.1
+    # via beautifulsoup4
+    # via pyee
+    # via typer
