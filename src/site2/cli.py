@@ -5,12 +5,13 @@ import typer
 
 class OutputFormat(str, Enum):
     """Output format for the CLI commands."""
+
     md = "md"
     pdf = "pdf"
 
 
 app_plops = {
-    'rich_markup_mode': None,
+    "rich_markup_mode": None,
 }
 
 app = typer.Typer(**app_plops)
@@ -31,6 +32,7 @@ def auto(
     """
     typer.echo(f"Fetching {uri} and outputting as {format.name}.")
 
+
 @app.command("fetch")
 def fetch(
     uri: str = typer.Argument(..., help="The URI to fetch and cache."),
@@ -41,6 +43,7 @@ def fetch(
     """Pull a URIs and put to cache."""
     typer.echo(f"Pull Urls from: {uri}, force: {force}")
 
+
 @app.command("fetch:list")
 def fetch_list():
     """List all cached URIs."""
@@ -49,7 +52,8 @@ def fetch_list():
     このサブコマンド名でいいのだろうか？
     </query>
     """
-    typer.echo(f"List cached URIs.")
+    typer.echo("List cached URIs.")
+
 
 @app.command("detect:main")
 def detect_main(
@@ -58,6 +62,7 @@ def detect_main(
     """Detect main block from URI."""
     typer.echo(f"Detectting main block from: {uri}")
 
+
 @app.command("detect:nav")
 def detect_nav(
     uri: str = typer.Argument(..., help="The URI to detect navication block."),
@@ -65,12 +70,14 @@ def detect_nav(
     """Detect navication block from URI."""
     typer.echo(f"Detecting navication block from: {uri}")
 
+
 @app.command("detect:order")
-def detect_nav(
+def detect_order(
     uri: str = typer.Argument(..., help="The URI to detect order of URIs."),
 ):
     """Detectting URIs order from URI."""
     typer.echo(f"Detectting URIs order from: {uri}")
+
 
 @app.command("build")
 def build(
