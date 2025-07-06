@@ -16,7 +16,6 @@ asttokens==3.0.0
     # via stack-data
 beautifulsoup4==4.13.4
     # via site2
-behave==1.2.6
 cfgv==3.4.0
     # via pre-commit
 click==8.2.1
@@ -60,11 +59,9 @@ packaging==25.0
     # via pytest
     # via pytest-bdd
 parse==1.20.2
-    # via behave
     # via parse-type
     # via pytest-bdd
 parse-type==0.6.4
-    # via behave
     # via pytest-bdd
 parso==0.8.4
     # via jedi
@@ -113,7 +110,6 @@ rich==14.0.0
 shellingham==1.5.4
     # via typer
 six==1.17.0
-    # via behave
     # via parse-type
 soupsieve==2.7
     # via beautifulsoup4

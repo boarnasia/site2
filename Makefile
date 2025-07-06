@@ -21,6 +21,15 @@ contract-check: ## 実装が契約に準拠しているか確認
 	python scripts/check_contract_compliance.py
 
 # --- テスト駆動開発 ---
+test-tutorial: ## チュートリアルBDDテストを実行
+	rye run pytest tests/features/test_tutorial.py -v
+
+test-bdd: ## BDDテストを実行（チュートリアル以外）
+	rye run pytest tests/features -v -k "not tutorial"
+
+test-bdd-all: ## すべてのBDDテストを実行
+	rye run pytest tests/features -v
+
 test-unit: ## 単体テストを実行
 	rye run pytest tests/unit -v
 
@@ -29,9 +38,6 @@ test-integration: ## 統合テストを実行
 
 test-e2e: ## E2Eテストを実行
 	rye run pytest tests/e2e -v
-
-test-bdd: ## BDDシナリオを実行
-	rye run behave features/
 
 test: test-unit test-integration ## すべてのテストを実行
 
