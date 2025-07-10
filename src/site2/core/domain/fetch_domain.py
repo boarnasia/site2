@@ -2,25 +2,24 @@
 site2 fetch機能のドメインモデル定義
 """
 
-from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Set
 import hashlib
 
-from pydantic import BaseModel, Field, ConfigDict, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
 
 
 # 値オブジェクト（Value Objects）
 class WebsiteURL(BaseModel):
     """WebサイトのURL（値オブジェクト）"""
 
+    value: HttpUrl
+    _slug: Optional[str] = None  # MD5ハッシュを使ったスラグ
+
     model_config = ConfigDict(
         frozen=True,
     )
-
-    value: HttpUrl
-    _slug: str = None  # MD5ハッシュを使ったスラグ
 
     def model_post_init(self, __context):
         path_hash = hashlib.md5(self.value.path.encode()).hexdigest()[:8]
@@ -35,19 +34,18 @@ class WebsiteURL(BaseModel):
         return self._slug
 
 
-class CrawlDepth(BaseModel, frozen=True):
-    """クロールの深さ（値オブジェクト/Pydantic版）"""
+class CrawlDepth(BaseModel):
+    """クロールの深さ（値オブジェクト）"""
+
+    value: int = Field(..., ge=0, le=10, description="0〜10の範囲")
 
     model_config = ConfigDict(
         frozen=True,
     )
 
-    value: int = Field(..., ge=0, le=10, description="0〜10の範囲")
-
 
 # エンティティ（Entities）
-@dataclass
-class CachedPage:
+class CachedPage(BaseModel):
     """キャッシュされたページ（エンティティ）"""
 
     page_url: WebsiteURL
@@ -69,16 +67,15 @@ class CachedPage:
         return age.total_seconds() > cache_duration_hours * 3600
 
 
-@dataclass
-class WebsiteCache:
-    """Webサイトのキャッシュ（集約ルート）"""
+class WebsiteCache(BaseModel):
+    """Webサイトのキャッシュ（集約ルート/Pydantic版）"""
 
     root_url: WebsiteURL
     cache_directory: Path
-    pages: List[CachedPage] = field(default_factory=list)
-    crawl_depth: CrawlDepth = CrawlDepth(value=3)
-    created_at: datetime = field(default_factory=datetime.now)
-    last_updated: datetime = field(default_factory=datetime.now)
+    pages: List[CachedPage] = Field(default_factory=list)
+    crawl_depth: CrawlDepth = Field(default_factory=lambda: CrawlDepth(value=3))
+    created_at: datetime = Field(default_factory=datetime.now)
+    last_updated: datetime = Field(default_factory=datetime.now)
 
     @property
     def id(self) -> str:
@@ -97,7 +94,6 @@ class WebsiteCache:
 
     def add_page(self, page: CachedPage) -> None:
         """ページを追加（ビジネスルール）"""
-        # 同じURLのページは上書き
         self.pages = [p for p in self.pages if p.id != page.id]
         self.pages.append(page)
         self.last_updated = datetime.now()
@@ -108,33 +104,30 @@ class WebsiteCache:
 
     def get_page_urls(self) -> Set[str]:
         """キャッシュ済みページのURL一覧"""
-        return {page.page_url.value for page in self.pages}
+        return {str(page.page_url.value) for page in self.pages}
 
 
 # ドメインイベント（Domain Events）
-@dataclass
-class PageFetched:
+class PageFetched(BaseModel):
     """ページ取得完了イベント"""
 
     website_cache_id: str
     page_url: str
     size_bytes: int
-    timestamp: datetime = field(default_factory=datetime.now)
+    timestamp: datetime = Field(default_factory=datetime.now)
 
 
-@dataclass
-class CacheCreated:
+class CacheCreated(BaseModel):
     """キャッシュ作成イベント"""
 
     website_cache_id: str
     root_url: str
-    timestamp: datetime = field(default_factory=datetime.now)
+    timestamp: datetime = Field(default_factory=datetime.now)
 
 
-@dataclass
-class CacheUpdated:
+class CacheUpdated(BaseModel):
     """キャッシュ更新イベント"""
 
     website_cache_id: str
     updated_pages: int
-    timestamp: datetime = field(default_factory=datetime.now)
+    timestamp: datetime = Field(default_factory=datetime.now)

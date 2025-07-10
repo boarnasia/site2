@@ -57,7 +57,7 @@ class TestDomainModel:
         """ページの古さ判定"""
         # 25時間前のページ
         old_page = CachedPage(
-            page_url=WebsiteURL("https://example.com/page1.html"),
+            page_url=WebsiteURL(value="https://example.com/page1.html"),
             local_path=Path("/cache/page1.html"),
             content_type="text/html",
             size_bytes=1024,
@@ -67,7 +67,7 @@ class TestDomainModel:
 
         # 1時間前のページ
         fresh_page = CachedPage(
-            page_url=WebsiteURL("https://example.com/page2.html"),
+            page_url=WebsiteURL(value="https://example.com/page2.html"),
             local_path=Path("/cache/page2.html"),
             content_type="text/html",
             size_bytes=1024,
@@ -78,13 +78,13 @@ class TestDomainModel:
     def test_website_cache_operations(self):
         """Webサイトキャッシュの操作"""
         cache = WebsiteCache(
-            root_url=WebsiteURL("https://example.com"),
+            root_url=WebsiteURL(value="https://example.com"),
             cache_directory=Path("/cache/example.com"),
         )
 
         # ページ追加
         page1 = CachedPage(
-            page_url=WebsiteURL("https://example.com/page1.html"),
+            page_url=WebsiteURL(value="https://example.com/page1.html"),
             local_path=Path("/cache/page1.html"),
             content_type="text/html",
             size_bytes=1024,
@@ -97,7 +97,7 @@ class TestDomainModel:
 
         # 同じURLのページを追加（上書き）
         page1_updated = CachedPage(
-            page_url=WebsiteURL("https://example.com/page1.html"),
+            page_url=WebsiteURL(value="https://example.com/page1.html"),
             local_path=Path("/cache/page1.html"),
             content_type="text/html",
             size_bytes=2048,
@@ -179,7 +179,7 @@ class TestFetchService:
             # 契約に従った振る舞いをモック
             request.validate()
 
-            url = WebsiteURL(request.url)
+            url = WebsiteURL(value=request.url)
             # depth = CrawlDepth(request.depth)
 
             # キャッシュ作成
