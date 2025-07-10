@@ -26,6 +26,7 @@ playwright==1.53.0
     # via site2
 pydantic==2.11.7
     # via pydantic-settings
+    # via site2
 pydantic-core==2.33.2
     # via pydantic
 pydantic-settings==2.10.1

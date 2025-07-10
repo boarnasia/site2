@@ -7,6 +7,8 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
 
+from pydantic import ValidationError
+
 from site2.core.domain.fetch_domain import (
     WebsiteURL,
     WebsiteCache,
@@ -28,28 +30,28 @@ class TestDomainModel:
 
     def test_website_url_valid(self):
         """有効なURLの作成"""
-        url = WebsiteURL("https://example.com")
-        assert url.value == "https://example.com"
+        url = WebsiteURL(value="https://example.com")
+        assert str(url.value) == "https://example.com/"
         assert url.domain == "example.com"
-        assert url.slug == "example.com_7d793037"  # MD5ハッシュの一部
+        assert url.slug == "example.com_6666cd76"  # MD5ハッシュの一部
 
     def test_website_url_invalid(self):
         """無効なURLは例外を発生"""
-        with pytest.raises(ValueError, match="Invalid URL scheme"):
-            WebsiteURL("ftp://example.com")
+        with pytest.raises(ValidationError, match="validation error"):
+            WebsiteURL(value="ftp://example.com")
 
-        with pytest.raises(ValueError, match="Invalid URL"):
-            WebsiteURL("not-a-url")
+        with pytest.raises(ValidationError, match="validation error"):
+            WebsiteURL(value="not-a-url")
 
     def test_crawl_depth_valid(self):
         """有効な深さの作成"""
-        depth = CrawlDepth(3)
+        depth = CrawlDepth(value=3)
         assert depth.value == 3
 
     def test_crawl_depth_invalid(self):
         """無効な深さは例外を発生"""
-        with pytest.raises(ValueError, match="Depth must be between"):
-            CrawlDepth(11)
+        with pytest.raises(ValidationError, match="validation error"):
+            CrawlDepth(value=11)
 
     def test_cached_page_staleness(self):
         """ページの古さ判定"""

@@ -84,6 +84,7 @@ pure-eval==0.2.3
     # via stack-data
 pydantic==2.11.7
     # via pydantic-settings
+    # via site2
 pydantic-core==2.33.2
     # via pydantic
 pydantic-settings==2.10.1

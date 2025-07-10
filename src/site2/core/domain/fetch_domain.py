@@ -6,47 +6,43 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Set
-from urllib.parse import urlparse
 import hashlib
+
+from pydantic import BaseModel, Field, ConfigDict, HttpUrl
 
 
 # 値オブジェクト（Value Objects）
-@dataclass(frozen=True)
-class WebsiteURL:
+class WebsiteURL(BaseModel):
     """WebサイトのURL（値オブジェクト）"""
 
-    value: str
+    model_config = ConfigDict(
+        frozen=True,
+    )
 
-    def __post_init__(self):
-        parsed = urlparse(self.value)
-        if parsed.scheme not in ("http", "https"):
-            raise ValueError(f"Invalid URL scheme: {parsed.scheme}")
-        if not parsed.netloc:
-            raise ValueError(f"Invalid URL: {self.value}")
+    value: HttpUrl
+    _slug: str = None  # MD5ハッシュを使ったスラグ
+
+    def model_post_init(self, __context):
+        path_hash = hashlib.md5(self.value.path.encode()).hexdigest()[:8]
+        object.__setattr__(self, "_slug", f"{self.value.host}_{path_hash}")
 
     @property
     def domain(self) -> str:
-        """ドメイン名を取得"""
-        return urlparse(self.value).netloc
+        return self.value.host
 
     @property
     def slug(self) -> str:
-        """URL からキャッシュ用のスラッグを生成"""
-        # シンプルな実装: ドメイン名 + パスのハッシュ
-        parsed = urlparse(self.value)
-        path_hash = hashlib.md5(parsed.path.encode()).hexdigest()[:8]
-        return f"{parsed.netloc}_{path_hash}"
+        return self._slug
 
 
-@dataclass(frozen=True)
-class CrawlDepth:
-    """クロールの深さ（値オブジェクト）"""
+class CrawlDepth(BaseModel, frozen=True):
+    """クロールの深さ（値オブジェクト/Pydantic版）"""
 
-    value: int
+    model_config = ConfigDict(
+        frozen=True,
+    )
 
-    def __post_init__(self):
-        if not 0 <= self.value <= 10:
-            raise ValueError(f"Depth must be between 0 and 10, got {self.value}")
+    value: int = Field(..., ge=0, le=10, description="0〜10の範囲")
 
 
 # エンティティ（Entities）
@@ -80,7 +76,7 @@ class WebsiteCache:
     root_url: WebsiteURL
     cache_directory: Path
     pages: List[CachedPage] = field(default_factory=list)
-    crawl_depth: CrawlDepth = CrawlDepth(3)
+    crawl_depth: CrawlDepth = CrawlDepth(value=3)
     created_at: datetime = field(default_factory=datetime.now)
     last_updated: datetime = field(default_factory=datetime.now)
 
