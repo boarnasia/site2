@@ -11,7 +11,7 @@
 ## 成果物
 
 1. **パイプライン設計書** ✓
-   - `docs/design/pipeline_design.md`
+   - `docs/architecture/pipeline_design.md`
    - 全体のデータフロー
    - 各ステップの入出力仕様
 
