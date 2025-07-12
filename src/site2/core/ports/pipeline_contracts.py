@@ -4,103 +4,124 @@ site2 パイプライン統合の契約定義（Contract-First Development）
 
 from typing import Protocol, List, Optional, Dict, Any, Union
 from pathlib import Path
-from dataclasses import dataclass, field
+
+from pydantic import BaseModel, Field, field_validator, ConfigDict, HttpUrl
 
 from .fetch_contracts import FetchServiceProtocol
 from .detect_contracts import DetectServiceProtocol
 from .build_contracts import BuildServiceProtocol, OutputFormat
+from ..domain.fetch_domain import CrawlDepth
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
-@dataclass
-class PipelineRequest:
+class PipelineRequest(BaseModel):
     """パイプライン実行要求の契約"""
 
-    url: str
-    format: OutputFormat
-    output_path: Optional[Path] = None
-    depth: int = 3
-    force_refresh: bool = False
-    main_selector: Optional[str] = None
-    nav_selector: Optional[str] = None
-    options: Dict[str, Any] = field(default_factory=dict)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.url.strip(), "URL cannot be empty"
-        assert self.url.startswith(("http://", "https://")), (
-            f"URL must be HTTP(S): {self.url}"
-        )
-        assert 0 <= self.depth <= 10, f"Depth must be 0-10: {self.depth}"
+    url: HttpUrl = Field(..., description="対象URL")
+    format: OutputFormat = Field(..., description="出力フォーマット")
+    output_path: Optional[Path] = Field(default=None, description="出力パス")
+    depth: CrawlDepth = Field(
+        default_factory=lambda: CrawlDepth(value=3), description="クロール深度"
+    )
+    force_refresh: bool = Field(default=False, description="強制更新フラグ")
+    main_selector: Optional[str] = Field(default=None, description="メインセレクタ")
+    nav_selector: Optional[str] = Field(
+        default=None, description="ナビゲーションセレクタ"
+    )
+    options: Dict[str, Any] = Field(default_factory=dict, description="オプション")
 
-        # 出力パスが指定されている場合、親ディレクトリが存在することを確認
-        if self.output_path:
-            assert self.output_path.parent.exists(), (
-                f"Output directory must exist: {self.output_path.parent}"
-            )
+    # HttpUrlで自動検証されるため、手動バリデーションは不要
+
+    @field_validator("output_path")
+    @classmethod
+    def validate_output_path(cls, v: Optional[Path]) -> Optional[Path]:
+        """出力パスの検証"""
+        if v and not v.parent.exists():
+            raise ValueError(f"Output directory must exist: {v.parent}")
+        return v
 
 
-@dataclass
-class PipelineStepResult:
+class PipelineStepResult(BaseModel):
     """パイプラインステップの結果"""
 
-    step_name: str
-    success: bool
-    duration_seconds: float
-    output: Any = None
-    warnings: List[str] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    step_name: str = Field(..., min_length=1, description="ステップ名")
+    success: bool = Field(..., description="成功フラグ")
+    duration_seconds: float = Field(..., ge=0, description="実行時間(秒)")
+    output: Any = Field(default=None, description="出力")
+    warnings: List[str] = Field(default_factory=list, description="警告一覧")
+    errors: List[str] = Field(default_factory=list, description="エラー一覧")
 
 
-@dataclass
-class PipelineResult:
+class PipelineResult(BaseModel):
     """パイプライン実行結果の契約"""
 
-    request: PipelineRequest
-    success: bool
-    final_output: Optional[Union[str, bytes]] = None
-    output_path: Optional[Path] = None
-    total_duration_seconds: float = 0.0
-    steps: List[PipelineStepResult] = field(default_factory=list)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert self.total_duration_seconds >= 0, "Duration must be non-negative"
+    request: PipelineRequest = Field(..., description="元のリクエスト")
+    success: bool = Field(..., description="成功フラグ")
+    final_output: Optional[Union[str, bytes]] = Field(
+        default=None, description="最終出力"
+    )
+    output_path: Optional[Path] = Field(default=None, description="出力パス")
+    total_duration_seconds: float = Field(
+        default=0.0, ge=0, description="総実行時間(秒)"
+    )
+    steps: List[PipelineStepResult] = Field(
+        default_factory=list, description="ステップ結果一覧"
+    )
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="メタデータ")
 
-        if self.success:
-            assert self.final_output is not None, "Must have output if successful"
+    @field_validator("final_output")
+    @classmethod
+    def validate_final_output(
+        cls, v: Optional[Union[str, bytes]], info
+    ) -> Optional[Union[str, bytes]]:
+        """最終出力の検証"""
+        success = info.data.get("success", False)
+        if success and v is None:
+            raise ValueError("Must have output if successful")
+        return v
 
-        # ステップごとの期間の合計は、総期間以下でなければならない
-        step_total = sum(step.duration_seconds for step in self.steps)
-        assert step_total <= self.total_duration_seconds + 1.0, (
-            "Step duration sum cannot exceed total duration significantly"
-        )
+    @field_validator("total_duration_seconds")
+    @classmethod
+    def validate_total_duration(cls, v: float, info) -> float:
+        """総実行時間の検証"""
+        steps = info.data.get("steps", [])
+        if steps:
+            step_total = sum(step.duration_seconds for step in steps)
+            if step_total > v + 1.0:
+                raise ValueError(
+                    "Step duration sum cannot exceed total duration significantly"
+                )
+        return v
 
 
-@dataclass
-class AutoCommandRequest:
+class AutoCommandRequest(BaseModel):
     """autoコマンドの要求"""
 
-    url: str
-    format: OutputFormat = OutputFormat.MARKDOWN
-    output_path: Optional[Path] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.url.strip(), "URL cannot be empty"
-        assert self.url.startswith(("http://", "https://")), (
-            f"URL must be HTTP(S): {self.url}"
-        )
+    url: HttpUrl = Field(..., description="対象URL")
+    format: OutputFormat = Field(
+        default=OutputFormat.MARKDOWN, description="出力フォーマット"
+    )
+    output_path: Optional[Path] = Field(default=None, description="出力パス")
+
+    # HttpUrlで自動検証されるため、手動バリデーションは不要
 
 
-@dataclass
-class AutoCommandResult:
+class AutoCommandResult(BaseModel):
     """autoコマンドの結果"""
 
-    success: bool
-    output_file: Optional[Path] = None
-    message: str = ""
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    success: bool = Field(..., description="成功フラグ")
+    output_file: Optional[Path] = Field(default=None, description="出力ファイル")
+    message: str = Field(default="", description="メッセージ")
     error: Optional[str] = None
 
     def validate(self) -> None:

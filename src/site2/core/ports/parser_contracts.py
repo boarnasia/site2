@@ -4,136 +4,179 @@ site2 HTMLパーサー機能の契約定義（Contract-First Development）
 
 from typing import Protocol, List, Optional, Dict
 from pathlib import Path
-from dataclasses import dataclass, field
+
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from bs4 import BeautifulSoup, Tag
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
-@dataclass
-class ParseRequest:
+class ParseRequest(BaseModel):
     """HTML解析要求の契約"""
 
-    file_path: Path
-    encoding: Optional[str] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.file_path.exists(), f"File must exist: {self.file_path}"
-        assert self.file_path.suffix.lower() in [".html", ".htm"], (
-            f"File must be HTML: {self.file_path}"
-        )
+    file_path: Path = Field(..., description="解析対象HTMLファイル")
+    encoding: Optional[str] = Field(default=None, description="文字エンコーディング")
+
+    @field_validator("file_path")
+    @classmethod
+    def validate_file_path(cls, v: Path) -> Path:
+        """ファイルパスの検証"""
+        if not v.exists():
+            raise ValueError(f"File must exist: {v}")
+        if v.suffix.lower() not in [".html", ".htm"]:
+            raise ValueError(f"File must be HTML: {v}")
+        return v
 
 
-@dataclass
-class ParseResult:
+class ParseResult(BaseModel):
     """HTML解析結果の契約"""
 
-    file_path: Path
-    soup: BeautifulSoup
-    encoding: str
-    parse_time_seconds: float
-    warnings: List[str] = field(default_factory=list)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert self.soup is not None, "BeautifulSoup object must not be None"
-        assert self.encoding.strip(), "Encoding must not be empty"
-        assert self.parse_time_seconds >= 0, "Parse time must be non-negative"
+    file_path: Path = Field(..., description="解析したHTMLファイル")
+    soup: BeautifulSoup = Field(..., description="BeautifulSoupオブジェクト")
+    encoding: str = Field(..., min_length=1, description="文字エンコーディング")
+    parse_time_seconds: float = Field(..., ge=0, description="解析時間(秒)")
+    warnings: List[str] = Field(default_factory=list, description="警告一覧")
+
+    @field_validator("soup")
+    @classmethod
+    def validate_soup(cls, v: BeautifulSoup) -> BeautifulSoup:
+        """BeautifulSoupオブジェクトの検証"""
+        if v is None:
+            raise ValueError("BeautifulSoup object must not be None")
+        return v
 
 
-@dataclass
-class TextExtractionRequest:
+class TextExtractionRequest(BaseModel):
     """テキスト抽出要求の契約"""
 
-    element: Tag
-    clean_whitespace: bool = True
-    remove_scripts: bool = True
-    remove_styles: bool = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.element is not None, "Element must not be None"
+    element: Tag = Field(..., description="抽出対象の要素")
+    clean_whitespace: bool = Field(default=True, description="空白文字クリーンアップ")
+    remove_scripts: bool = Field(default=True, description="スクリプト除去")
+    remove_styles: bool = Field(default=True, description="スタイル除去")
+
+    @field_validator("element")
+    @classmethod
+    def validate_element(cls, v: Tag) -> Tag:
+        """Tag要素の検証"""
+        if v is None:
+            raise ValueError("Element must not be None")
+        return v
 
 
-@dataclass
-class TextExtractionResult:
+class TextExtractionResult(BaseModel):
     """テキスト抽出結果の契約"""
 
-    original_element: Tag
-    extracted_text: str
-    text_length: int
-    cleaned: bool
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert self.text_length >= 0, "Text length must be non-negative"
-        assert self.text_length == len(self.extracted_text), (
-            "Text length must match actual text length"
-        )
+    original_element: Tag = Field(..., description="元の要素")
+    extracted_text: str = Field(..., description="抽出したテキスト")
+    text_length: int = Field(..., ge=0, description="テキスト長")
+    cleaned: bool = Field(..., description="クリーンアップ済みフラグ")
+
+    @field_validator("text_length")
+    @classmethod
+    def validate_text_length(cls, v: int, info) -> int:
+        """テキスト長の検証"""
+        extracted_text = info.data.get("extracted_text", "")
+        if v != len(extracted_text):
+            raise ValueError("Text length must match actual text length")
+        return v
 
 
-@dataclass
-class SelectorSearchRequest:
+class SelectorSearchRequest(BaseModel):
     """セレクタ検索要求の契約"""
 
-    soup: BeautifulSoup
-    selectors: List[str]
-    find_all: bool = False
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.soup is not None, "BeautifulSoup object must not be None"
-        assert len(self.selectors) > 0, "Must provide at least one selector"
-        for selector in self.selectors:
-            assert selector.strip(), "Selectors cannot be empty"
+    soup: BeautifulSoup = Field(..., description="BeautifulSoupオブジェクト")
+    selectors: List[str] = Field(..., min_length=1, description="検索セレクタ一覧")
+    find_all: bool = Field(default=False, description="全件検索フラグ")
+
+    @field_validator("soup")
+    @classmethod
+    def validate_soup(cls, v: BeautifulSoup) -> BeautifulSoup:
+        """BeautifulSoupオブジェクトの検証"""
+        if v is None:
+            raise ValueError("BeautifulSoup object must not be None")
+        return v
+
+    @field_validator("selectors")
+    @classmethod
+    def validate_selectors(cls, v: List[str]) -> List[str]:
+        """セレクタ一覧の検証"""
+        for selector in v:
+            if not selector.strip():
+                raise ValueError("Selectors cannot be empty")
+        return v
 
 
-@dataclass
-class SelectorSearchResult:
+class SelectorSearchResult(BaseModel):
     """セレクタ検索結果の契約"""
 
-    matched_selector: Optional[str]
-    elements: List[Tag]
-    search_method: str  # 'first_match', 'all_matches'
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        if self.matched_selector:
-            assert len(self.elements) > 0, "Must have elements if selector matched"
-        else:
-            assert len(self.elements) == 0, (
-                "Must not have elements if no selector matched"
+    matched_selector: Optional[str] = Field(
+        default=None, description="マッチしたセレクタ"
+    )
+    elements: List[Tag] = Field(default_factory=list, description="見つかった要素一覧")
+    search_method: str = Field(..., description="検索手法")
+
+    @field_validator("search_method")
+    @classmethod
+    def validate_search_method(cls, v: str) -> str:
+        """検索手法の検証"""
+        valid_methods = {"first_match", "all_matches"}
+        if v not in valid_methods:
+            raise ValueError(
+                f"Invalid search method: {v}. Must be one of {valid_methods}"
             )
+        return v
+
+    @field_validator("elements")
+    @classmethod
+    def validate_elements(cls, v: List[Tag], info) -> List[Tag]:
+        """要素一覧の検証"""
+        matched_selector = info.data.get("matched_selector")
+        if matched_selector and len(v) == 0:
+            raise ValueError("Must have elements if selector matched")
+        if not matched_selector and len(v) > 0:
+            raise ValueError("Must not have elements if no selector matched")
+        return v
 
 
-@dataclass
-class HTMLMetadata:
+class HTMLMetadata(BaseModel):
     """HTMLメタデータ"""
 
-    title: Optional[str] = None
-    description: Optional[str] = None
-    keywords: Optional[str] = None
-    author: Optional[str] = None
-    language: Optional[str] = None
-    meta_tags: Dict[str, str] = field(default_factory=dict)
-    og_tags: Dict[str, str] = field(default_factory=dict)
+    title: Optional[str] = Field(default=None, description="ページタイトル")
+    description: Optional[str] = Field(default=None, description="ページ説明")
+    keywords: Optional[str] = Field(default=None, description="キーワード")
+    author: Optional[str] = Field(default=None, description="作者")
+    language: Optional[str] = Field(default=None, description="言語")
+    meta_tags: Dict[str, str] = Field(default_factory=dict, description="メタタグ")
+    og_tags: Dict[str, str] = Field(default_factory=dict, description="OGタグ")
 
 
-@dataclass
-class HTMLStructureAnalysis:
+class HTMLStructureAnalysis(BaseModel):
     """HTML構造解析結果"""
 
-    has_main: bool
-    has_article: bool
-    has_nav: bool
-    has_header: bool
-    has_footer: bool
-    heading_count: Dict[str, int] = field(default_factory=dict)  # h1: 3, h2: 5, etc.
-    paragraph_count: int = 0
-    link_count: int = 0
-    image_count: int = 0
-    table_count: int = 0
-    list_count: int = 0
+    has_main: bool = Field(..., description="main要素の有無")
+    has_article: bool = Field(..., description="article要素の有無")
+    has_nav: bool = Field(..., description="nav要素の有無")
+    has_header: bool = Field(..., description="header要素の有無")
+    has_footer: bool = Field(..., description="footer要素の有無")
+    heading_count: Dict[str, int] = Field(
+        default_factory=dict, description="見出しカウント(h1: 3, h2: 5, etc.)"
+    )
+    paragraph_count: int = Field(default=0, ge=0, description="段落数")
+    link_count: int = Field(default=0, ge=0, description="リンク数")
+    image_count: int = Field(default=0, ge=0, description="画像数")
+    table_count: int = Field(default=0, ge=0, description="テーブル数")
+    list_count: int = Field(default=0, ge=0, description="リスト数")
 
 
 # サービスインターフェース（ポート）

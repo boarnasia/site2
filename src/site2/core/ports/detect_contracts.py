@@ -4,153 +4,197 @@ site2 detect機能の契約定義（Contract-First Development）
 
 from typing import Protocol, List, Optional
 from pathlib import Path
-from dataclasses import dataclass, field
+
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
-@dataclass
-class DetectMainRequest:
+class DetectMainRequest(BaseModel):
     """メインコンテンツ検出要求の契約"""
 
-    file_path: Path
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.file_path.exists(), f"File must exist: {self.file_path}"
-        assert self.file_path.suffix.lower() in [".html", ".htm"], (
-            f"File must be HTML: {self.file_path}"
-        )
+    file_path: Path = Field(..., description="検出対象のHTMLファイルパス")
+
+    @field_validator("file_path")
+    @classmethod
+    def validate_file_path(cls, v: Path) -> Path:
+        """ファイルパスの検証"""
+        if not v.exists():
+            raise ValueError(f"File must exist: {v}")
+        if v.suffix.lower() not in [".html", ".htm"]:
+            raise ValueError(f"File must be HTML: {v}")
+        return v
 
 
-@dataclass
-class SelectorCandidate:
+class SelectorCandidate(BaseModel):
     """セレクタ候補"""
 
-    selector: str
-    score: float
-    reasoning: str
-    element_count: int
+    selector: str = Field(..., min_length=1, description="CSSセレクタ")
+    score: float = Field(..., ge=0.0, le=1.0, description="スコア(0.0-1.0)")
+    reasoning: str = Field(..., min_length=1, description="選定理由")
+    element_count: int = Field(..., ge=0, description="要素数")
 
 
-@dataclass
-class DetectMainResult:
+class DetectMainResult(BaseModel):
     """メインコンテンツ検出結果の契約"""
 
-    file_path: Path
-    selectors: List[str]
-    confidence: float
-    primary_selector: str
-    candidates: List[SelectorCandidate] = field(default_factory=list)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert 0.0 <= self.confidence <= 1.0, "Confidence must be between 0.0 and 1.0"
-        assert len(self.selectors) > 0 or self.confidence == 0.0, (
-            "Must have selectors if confidence > 0"
-        )
-        if self.selectors:
-            assert self.primary_selector in self.selectors, (
-                "Primary selector must be in selectors list"
-            )
+    file_path: Path = Field(..., description="処理したHTMLファイルパス")
+    selectors: List[str] = Field(
+        default_factory=list, description="検出したセレクタ一覧"
+    )
+    confidence: float = Field(..., ge=0.0, le=1.0, description="信頼度(0.0-1.0)")
+    primary_selector: str = Field(..., min_length=1, description="メインセレクタ")
+    candidates: List[SelectorCandidate] = Field(
+        default_factory=list, description="候補セレクタ一覧"
+    )
+
+    @field_validator("primary_selector")
+    @classmethod
+    def validate_primary_selector(cls, v: str, info) -> str:
+        """メインセレクタの検証"""
+        # info.dataで他のフィールドにアクセス
+        selectors = info.data.get("selectors", [])
+        confidence = info.data.get("confidence", 0.0)
+
+        if confidence > 0.0 and len(selectors) == 0:
+            raise ValueError("Must have selectors if confidence > 0")
+
+        if selectors and v not in selectors:
+            raise ValueError("Primary selector must be in selectors list")
+
+        return v
 
 
-@dataclass
-class DetectNavRequest:
+class DetectNavRequest(BaseModel):
     """ナビゲーション検出要求の契約"""
 
-    file_path: Path
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.file_path.exists(), f"File must exist: {self.file_path}"
-        assert self.file_path.suffix.lower() in [".html", ".htm"], (
-            f"File must be HTML: {self.file_path}"
-        )
+    file_path: Path = Field(..., description="検出対象のHTMLファイルパス")
+
+    @field_validator("file_path")
+    @classmethod
+    def validate_file_path(cls, v: Path) -> Path:
+        """ファイルパスの検証"""
+        if not v.exists():
+            raise ValueError(f"File must exist: {v}")
+        if v.suffix.lower() not in [".html", ".htm"]:
+            raise ValueError(f"File must be HTML: {v}")
+        return v
 
 
-@dataclass
-class NavLink:
+class NavLink(BaseModel):
     """ナビゲーションリンク"""
 
-    text: str
-    href: str
-    level: int = 0
-    is_external: bool = False
+    text: str = Field(..., min_length=1, description="リンクテキスト")
+    href: str = Field(..., min_length=1, description="リンク先URL")
+    level: int = Field(default=0, ge=0, description="階層レベル")
+    is_external: bool = Field(default=False, description="外部リンクフラグ")
 
 
-@dataclass
-class DetectNavResult:
+class DetectNavResult(BaseModel):
     """ナビゲーション検出結果の契約"""
 
-    file_path: Path
-    selectors: List[str]
-    confidence: float
-    primary_selector: str
-    nav_links: List[NavLink] = field(default_factory=list)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert 0.0 <= self.confidence <= 1.0, "Confidence must be between 0.0 and 1.0"
-        assert len(self.selectors) > 0 or self.confidence == 0.0, (
-            "Must have selectors if confidence > 0"
-        )
-        if self.selectors:
-            assert self.primary_selector in self.selectors, (
-                "Primary selector must be in selectors list"
-            )
+    file_path: Path = Field(..., description="処理したHTMLファイルパス")
+    selectors: List[str] = Field(
+        default_factory=list, description="検出したセレクタ一覧"
+    )
+    confidence: float = Field(..., ge=0.0, le=1.0, description="信頼度(0.0-1.0)")
+    primary_selector: str = Field(..., min_length=1, description="メインセレクタ")
+    nav_links: List[NavLink] = Field(
+        default_factory=list, description="ナビゲーションリンク一覧"
+    )
+
+    @field_validator("primary_selector")
+    @classmethod
+    def validate_primary_selector(cls, v: str, info) -> str:
+        """メインセレクタの検証"""
+        selectors = info.data.get("selectors", [])
+        confidence = info.data.get("confidence", 0.0)
+
+        if confidence > 0.0 and len(selectors) == 0:
+            raise ValueError("Must have selectors if confidence > 0")
+
+        if selectors and v not in selectors:
+            raise ValueError("Primary selector must be in selectors list")
+
+        return v
 
 
-@dataclass
-class DetectOrderRequest:
+class DetectOrderRequest(BaseModel):
     """順序検出要求の契約"""
 
-    cache_directory: Path
-    nav_selector: Optional[str] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        assert self.cache_directory.exists(), (
-            f"Cache directory must exist: {self.cache_directory}"
-        )
-        assert self.cache_directory.is_dir(), (
-            f"Cache directory must be a directory: {self.cache_directory}"
-        )
+    cache_directory: Path = Field(..., description="キャッシュディレクトリ")
+    nav_selector: Optional[str] = Field(
+        default=None, description="ナビゲーションセレクタ"
+    )
+
+    @field_validator("cache_directory")
+    @classmethod
+    def validate_cache_directory(cls, v: Path) -> Path:
+        """キャッシュディレクトリの検証"""
+        if not v.exists():
+            raise ValueError(f"Cache directory must exist: {v}")
+        if not v.is_dir():
+            raise ValueError(f"Cache directory must be a directory: {v}")
+        return v
 
 
-@dataclass
-class OrderedFile:
+class OrderedFile(BaseModel):
     """順序付きファイル"""
 
-    file_path: Path
-    title: str
-    order: int
-    level: int = 0
-    parent_path: Optional[Path] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    file_path: Path = Field(..., description="ファイルパス")
+    title: str = Field(..., min_length=1, description="ファイルタイトル")
+    order: int = Field(..., ge=0, description="順序番号")
+    level: int = Field(default=0, ge=0, description="階層レベル")
+    parent_path: Optional[Path] = Field(default=None, description="親ファイルパス")
 
 
-@dataclass
-class DetectOrderResult:
+class DetectOrderResult(BaseModel):
     """順序検出結果の契約"""
 
-    cache_directory: Path
-    ordered_files: List[OrderedFile]
-    confidence: float
-    method: str  # 'navigation', 'alphabetical', 'numeric'
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert 0.0 <= self.confidence <= 1.0, "Confidence must be between 0.0 and 1.0"
-        assert self.method in ["navigation", "alphabetical", "numeric"], (
-            f"Invalid method: {self.method}"
-        )
+    cache_directory: Path = Field(..., description="キャッシュディレクトリ")
+    ordered_files: List[OrderedFile] = Field(
+        default_factory=list, description="順序付きファイル一覧"
+    )
+    confidence: float = Field(..., ge=0.0, le=1.0, description="信頼度(0.0-1.0)")
+    method: str = Field(..., description="検出手法")
 
+    @field_validator("method")
+    @classmethod
+    def validate_method(cls, v: str) -> str:
+        """検出手法の検証"""
+        valid_methods = {"navigation", "alphabetical", "numeric"}
+        if v not in valid_methods:
+            raise ValueError(f"Invalid method: {v}. Must be one of {valid_methods}")
+        return v
+
+    @field_validator("ordered_files")
+    @classmethod
+    def validate_ordered_files(cls, v: List[OrderedFile]) -> List[OrderedFile]:
+        """順序付きファイルの検証"""
         # 順序の重複チェック
-        orders = [f.order for f in self.ordered_files]
-        assert len(orders) == len(set(orders)), "Orders must be unique"
+        orders = [f.order for f in v]
+        if len(orders) != len(set(orders)):
+            raise ValueError("Orders must be unique")
 
         # ファイル存在チェック
-        for file in self.ordered_files:
-            assert file.file_path.exists(), f"File must exist: {file.file_path}"
+        for file in v:
+            if not file.file_path.exists():
+                raise ValueError(f"File must exist: {file.file_path}")
+
+        return v
 
 
 # サービスインターフェース（ポート）

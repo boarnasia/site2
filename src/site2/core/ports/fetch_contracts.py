@@ -4,65 +4,67 @@ site2 fetch機能の契約定義（Contract-First Development）
 
 from typing import Protocol, List, Optional, Dict, Any
 from pathlib import Path
-from dataclasses import dataclass, field
+
+from pydantic import BaseModel, Field, field_validator, ConfigDict, HttpUrl
 
 from ..domain.fetch_domain import WebsiteURL, WebsiteCache, CrawlDepth, CachedPage
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
-@dataclass
-class FetchRequest:
+class FetchRequest(BaseModel):
     """Fetch要求の契約"""
 
-    url: str
-    depth: int = 3
-    force_refresh: bool = False
-    cache_dir: Optional[str] = None
+    model_config = ConfigDict(str_strip_whitespace=True)
 
-    def validate(self) -> None:
-        """契約の事前条件を検証"""
-        # URLの検証はWebsiteURLに委譲
-        WebsiteURL(value=self.url)
-        # 深さの検証はCrawlDepthに委譲
-        CrawlDepth(value=self.depth)
+    url: HttpUrl = Field(..., description="Fetch対象のURL")
+    depth: CrawlDepth = Field(
+        default_factory=lambda: CrawlDepth(value=3), description="クロール深度"
+    )
+    force_refresh: bool = Field(default=False, description="強制更新フラグ")
+    cache_dir: Optional[str] = Field(default=None, description="キャッシュディレクトリ")
 
 
-@dataclass
-class FetchResult:
+class FetchResult(BaseModel):
     """Fetch結果の契約"""
 
-    cache_id: str
-    root_url: str
-    pages_fetched: int
-    pages_updated: int
-    total_size: int
-    cache_directory: str
-    errors: List[Dict[str, str]] = field(default_factory=list)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        assert self.pages_fetched >= 0, "pages_fetched must be non-negative"
-        assert self.pages_updated >= 0, "pages_updated must be non-negative"
-        assert self.total_size >= 0, "total_size must be non-negative"
-        assert Path(self.cache_directory).exists(), (
-            f"Cache directory must exist: {self.cache_directory}"
-        )
+    cache_id: str = Field(..., min_length=1, description="キャッシュID")
+    root_url: HttpUrl = Field(..., description="ルートURL")
+    pages_fetched: int = Field(..., ge=0, description="フェッチしたページ数")
+    pages_updated: int = Field(..., ge=0, description="更新したページ数")
+    total_size: int = Field(..., ge=0, description="合計サイズ")
+    cache_directory: str = Field(
+        ..., min_length=1, description="キャッシュディレクトリ"
+    )
+    errors: List[Dict[str, str]] = Field(default_factory=list, description="エラー一覧")
+
+    @field_validator("cache_directory")
+    @classmethod
+    def validate_cache_directory_exists(cls, v: str) -> str:
+        """キャッシュディレクトリの存在検証"""
+        if not Path(v).exists():
+            raise ValueError(f"Cache directory must exist: {v}")
+        return v
 
 
-@dataclass
-class CacheListResult:
+class CacheListResult(BaseModel):
     """キャッシュ一覧の契約"""
 
-    caches: List[Dict[str, Any]]
+    caches: List[Dict[str, Any]] = Field(
+        default_factory=list, description="キャッシュ一覧"
+    )
 
-    def validate(self) -> None:
-        """契約の事後条件を検証"""
-        for cache in self.caches:
-            assert "id" in cache, "Each cache must have an id"
-            assert "url" in cache, "Each cache must have a url"
-            assert "page_count" in cache, "Each cache must have page_count"
-            assert "total_size" in cache, "Each cache must have total_size"
-            assert "last_updated" in cache, "Each cache must have last_updated"
+    @field_validator("caches")
+    @classmethod
+    def validate_cache_structure(cls, v: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """キャッシュ構造の検証"""
+        required_keys = {"id", "url", "page_count", "total_size", "last_updated"}
+        for cache in v:
+            missing_keys = required_keys - set(cache.keys())
+            if missing_keys:
+                raise ValueError(f"Each cache must have keys: {missing_keys}")
+        return v
 
 
 # サービスインターフェース（ポート）
