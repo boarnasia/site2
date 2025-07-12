@@ -9,9 +9,9 @@
 
 ### Phase 1: 基盤実装
 
-- [ ] [01. 設計ドキュメントの完成](todos/20250706-01-complete-design-docs.md)
-- [ ] [17. ドメインモデルのPydantic移行](todos/20250711-17-migrate-to-pydantic.md)
-- [ ] [18. ドメインイベントのテスト実装](todos/20250711-18-domain-events-test-task.md)
+- [x] [01. 設計ドキュメントの完成](todos/20250706-01-complete-design-docs.md)
+- [x] [17. ドメインモデルのPydantic移行](todos/20250711-17-migrate-to-pydantic.md)
+- [x] [18. ドメインイベントのテスト実装](todos/20250711-18-domain-events-test-task.md)
 - [ ] [02. 共通インフラストラクチャの実装](todos/20250706-02-common-infrastructure.md)
 - [ ] [03. Fetchサービスの実装](todos/20250706-03-implement-fetch-service.md)
 

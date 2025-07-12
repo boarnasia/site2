@@ -3,7 +3,7 @@
 ## アーキテクチャ
 
 - [プロジェクト概要設計書](architecture/プロジェクト概要設計書.md)
-- [パイプライン設計](architecture/pipline_design.md)
+- [パイプライン設計](architecture/pipeline_design.md)
 
 ## 開発プラクティス
 

@@ -25,7 +25,7 @@ contract-check: ## 実装が契約に準拠しているか確認
 
 # --- テストデータ準備 ---
 prepare-fixtures: ## テスト用のFixtureデータを準備
-	./scripts/prepare_test_fixtures.sh
+	rye run python ./scripts/prepare_test_fixtures.py
 
 clean-fixtures: ## Fixtureデータをクリーン
 	rm -rf tests/fixtures

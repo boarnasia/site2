@@ -16,8 +16,8 @@
    - 各ステップの入出力仕様
 
 2. **各サービスの契約定義**
-   - `src/site2/core/ports/detect_contracts.py`
    - `src/site2/core/ports/build_contracts.py`
+   - `src/site2/core/ports/detect_contracts.py`
 
 3. **ドメインモデルの拡張**
    - `src/site2/core/domain/detect_domain.py`
@@ -88,10 +88,11 @@ class PipelineServiceProtocol(Protocol):
 
 ## 受け入れ基準
 
-- [ ] すべての契約が定義されている
-- [ ] 契約にはdocstringで事前条件・事後条件が記載されている
-- [ ] エラーケースが定義されている
-- [ ] 型ヒントが完全である
+- [x] パイプライン設計書が完成している
+- [x] すべての契約が定義されている
+- [x] 契約にはdocstringで事前条件・事後条件が記載されている
+- [x] エラーケースが定義されている
+- [x] 型ヒントが完全である
 
 ## 実装手順
 

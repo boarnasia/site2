@@ -76,9 +76,9 @@ class ContentFragment(BaseModel):
 
 ## テスト要件
 
-- [ ] ValidationErrorの適切なハンドリング
-- [ ] 既存テストの互換性確認
-- [ ] 新規バリデーションのテスト追加
+- [x] ValidationErrorの適切なハンドリング
+- [x] 既存テストの互換性確認
+- [x] 新規バリデーションのテスト追加
 
 ## 推定工数
 

@@ -8,16 +8,16 @@ site2は、WebサイトをMarkdown/PDFに変換するパイプラインを提供
 ## パイプライン全体図
 
 ```mermaid
-graph LR
-    A[URL] --> B[1. fetch]
+graph TD
+    A[URL] --> B[1\. fetch]
     B --> C{HTMLファイル群}
-    C --> D[2. detect:main]
-    C --> E[3. detect:nav]
+    C --> D[2\. detect:main]
+    C --> E[3\. detect:nav]
     D --> F[mainセレクタ]
     E --> G[navセレクタ]
-    G --> H[4. detect:order]
+    G --> H[4\. detect:order]
     H --> I[順序付きファイルリスト]
-    F --> J[5. build]
+    F --> J[5\. build]
     I --> J
     J --> K[Markdown/PDF]
 ```
@@ -37,7 +37,7 @@ graph LR
 
 出力:
   - cached_files: List[CachedFile]
-    - url: string
+    - url: pydantic.HttpUrl
     - local_path: Path
     - content_type: string
     - size: int
@@ -177,49 +177,6 @@ def auto(url: str, format: OutputFormat):
 
     # 標準出力
     sys.stdout.write(content)
-```
-
-## データフロー型定義
-
-```python
-from dataclasses import dataclass
-from pathlib import Path
-from typing import List, Optional
-
-@dataclass
-class CachedFile:
-    url: str
-    local_path: Path
-    content_type: str
-    size: int
-
-@dataclass
-class FetchResult:
-    cached_files: List[CachedFile]
-    cache_directory: Path
-    total_size: int
-    pages_count: int
-
-@dataclass
-class SelectorResult:
-    file_path: Path
-    selectors: List[str]
-    confidence: float
-    primary_selector: str  # 最も信頼度の高いセレクタ
-
-@dataclass
-class OrderedFile:
-    order: int
-    path: Path
-    title: str
-    level: int  # 階層レベル（0=トップ, 1=サブ, ...）
-    url: Optional[str]  # 元のURL
-
-@dataclass
-class OrderResult:
-    ordered_files: List[OrderedFile]
-    total_files: int
-    navigation_found: bool
 ```
 
 ## エラー処理

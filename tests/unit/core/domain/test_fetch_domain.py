@@ -390,12 +390,12 @@ class TestFetchService:
         # Act
         with patch("pathlib.Path.exists", return_value=True):
             result = fetch_service.fetch(request)
+            result.validate()  # 契約の確認
 
         # Assert
         assert result.pages_fetched >= 1
         assert result.pages_updated == 0
         assert result.total_size > 0
-        result.validate()  # 契約の確認
 
     def test_fetch_invalid_url(self, fetch_service):
         """無効なURLでのフェッチ"""
@@ -438,29 +438,27 @@ class TestCLIIntegration:
 
     def test_cli_fetch_command(self):
         """CLI fetch コマンドのテスト"""
-        # この段階では CLI 実装がないので、期待する振る舞いを定義
-        from click.testing import CliRunner
-
-        # 期待する CLI の振る舞い
-        expected_cli = Mock()
-        expected_cli.return_value = 0  # 終了コード
+        # Typer対応のテストランナーを使用
+        from typer.testing import CliRunner
+        from site2.cli import app
 
         runner = CliRunner()
-        with patch("site2.cli.fetch_command", expected_cli):
-            result = runner.invoke(expected_cli, ["https://example.com"])
+        # 実際のTyperアプリを実行してテスト
+        result = runner.invoke(app, ["fetch", "https://example.com"])
 
-            assert result.exit_code == 0
-            expected_cli.assert_called_once()
+        # 現在の実装では単純なechoなので、終了コードが0であることを確認
+        assert result.exit_code == 0
+        assert "https://example.com" in result.stdout
 
     def test_cli_list_command(self):
         """CLI list コマンドのテスト"""
-        from click.testing import CliRunner
-
-        expected_cli = Mock()
-        expected_cli.return_value = 0
+        from typer.testing import CliRunner
+        from site2.cli import app
 
         runner = CliRunner()
-        with patch("site2.cli.list_command", expected_cli):
-            result = runner.invoke(expected_cli, [])
+        # 実際のTyperアプリを実行してテスト
+        result = runner.invoke(app, ["fetch:list"])
 
-            assert result.exit_code == 0
+        # 現在の実装では単純なechoなので、終了コードが0であることを確認
+        assert result.exit_code == 0
+        assert "List cached URIs" in result.stdout
