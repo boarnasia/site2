@@ -22,12 +22,12 @@ Task 20（パイプライン統合テスト）で以下の重要な問題が発�
 class IDetectService(Protocol):
     async def detect_main_content(self, html: str) -> MainContent:
         ...
-    
+
     async def detect_navigation(self, html: str) -> Navigation:
         ...
-    
+
     async def detect_order(
-        self, 
+        self,
         cache_dir: Path,
         navigation: Navigation  # 追加
     ) -> DocumentOrder:
