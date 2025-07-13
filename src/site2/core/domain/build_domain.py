@@ -426,3 +426,52 @@ class DocumentMetadataBuilder:
             description=self._description,
             keywords=self._keywords,
         )
+
+
+class MarkdownDocument(BaseModel):
+    """
+    Markdownドキュメントのエンティティ
+
+    生成されたMarkdownドキュメント
+    """
+
+    title: str = Field(..., min_length=1, description="Document title")
+    content: str = Field(..., description="Markdown content")
+    metadata: Optional[DocumentMetadata] = Field(
+        default=None, description="Document metadata"
+    )
+    source_files: List[Path] = Field(
+        default_factory=list, description="Source file paths"
+    )
+
+    model_config = ConfigDict(frozen=False)  # mutable entity
+
+    def get_word_count(self) -> int:
+        """単語数を取得"""
+        return len(self.content.split())
+
+    def get_line_count(self) -> int:
+        """行数を取得"""
+        return len(self.content.splitlines())
+
+    def add_source_file(self, file_path: Path) -> None:
+        """ソースファイルを追加"""
+        if file_path not in self.source_files:
+            self.source_files.append(file_path)
+
+    def get_toc_markdown(self) -> str:
+        """目次のMarkdownを生成"""
+        lines = self.content.splitlines()
+        toc_lines = []
+
+        for line in lines:
+            if line.startswith("#"):
+                level = len(line) - len(line.lstrip("#"))
+                title = line.lstrip("# ").strip()
+                indent = "  " * (level - 1)
+                anchor = (
+                    title.lower().replace(" ", "-").replace("(", "").replace(")", "")
+                )
+                toc_lines.append(f"{indent}- [{title}](#{anchor})")
+
+        return "\n".join(toc_lines) if toc_lines else ""

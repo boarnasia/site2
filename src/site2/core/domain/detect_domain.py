@@ -308,3 +308,55 @@ class NavigationOrderService:
         return DocumentOrder(
             files=ordered_files, method="alphabetical", confidence=confidence
         )
+
+
+class MainContent(BaseModel):
+    """
+    メインコンテンツのエンティティ
+
+    HTMLページから検出されたメインコンテンツ
+    """
+
+    selector: str = Field(
+        ..., min_length=1, description="CSS selector for main content"
+    )
+    html_content: str = Field(..., description="HTML content")
+    text_content: str = Field(..., description="Extracted text content")
+    title: Optional[str] = Field(default=None, description="Content title")
+    confidence: DetectionScore = Field(
+        default_factory=DetectionScore.medium, description="Detection confidence"
+    )
+
+    model_config = ConfigDict(frozen=False)  # mutable entity
+
+    def get_word_count(self) -> int:
+        """単語数を取得"""
+        return len(self.text_content.split())
+
+    def is_substantial(self) -> bool:
+        """実質的なコンテンツかどうか（100文字以上）"""
+        return len(self.text_content) >= 100
+
+
+class Navigation(BaseModel):
+    """
+    ナビゲーションのエンティティ
+
+    HTMLページから検出されたナビゲーション構造
+    """
+
+    selector: str = Field(..., min_length=1, description="CSS selector for navigation")
+    structure: NavigationStructure = Field(..., description="Navigation structure")
+    confidence: DetectionScore = Field(
+        default_factory=DetectionScore.medium, description="Detection confidence"
+    )
+
+    model_config = ConfigDict(frozen=False)  # mutable entity
+
+    def get_link_count(self) -> int:
+        """リンク数を取得"""
+        return len(self.structure.links)
+
+    def has_hierarchical_structure(self) -> bool:
+        """階層構造を持つかどうか"""
+        return self.structure.max_depth > 0
