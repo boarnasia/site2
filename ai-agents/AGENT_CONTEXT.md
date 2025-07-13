@@ -102,7 +102,6 @@ rye run python -m pytest --cov=src
 ```
 ai-agents/tasks/        → Japanese
 ai-agents/reports/      → English (Agent間通信) + Japanese summary for user
-ai-agents/bootprompts/  → Mixed (Instructions in Japanese, rules in English)
 ai-agents/roles/        → Mixed (Description in Japanese, technical rules in English)
 src/                    → Japanese (Code)
 tests/                  → Japanese (Code)
