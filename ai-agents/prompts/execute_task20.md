@@ -1,4 +1,4 @@
-# Execute Task 02.5: パイプライン統合テストの実装
+# Execute Task 20: パイプライン統合テストの実装
 
 ## Commander Role: タスクの分析と設計
 
@@ -52,25 +52,25 @@ from site2.core.ports.repositories import IWebsiteCacheRepository
 
 class MockRepository(IWebsiteCacheRepository):
     """メモリ内でキャッシュを管理するモックリポジトリ"""
-    
+
     def __init__(self):
         self._cache = {}
-    
+
     async def save(self, cache: WebsiteCache) -> None:
         self._cache[cache.url] = cache
-    
+
     async def find_by_url(self, url: str) -> Optional[WebsiteCache]:
         return self._cache.get(url)
-    
+
     async def list_all(self) -> List[WebsiteCache]:
         return list(self._cache.values())
 
 class MockFetchService(IFetchService):
     """simple-siteのデータを返すモックサービス"""
-    
+
     def __init__(self, repository: IWebsiteCacheRepository):
         self.repository = repository
-    
+
     async def execute(self, url: str) -> FetchResult:
         # simple-siteのHTMLを読み込んで返す
         # tests/fixtures/websites/simple-site/ のデータを使用
@@ -78,22 +78,22 @@ class MockFetchService(IFetchService):
 
 class MockDetectService(IDetectService):
     """固定の検出結果を返すモックサービス"""
-    
+
     async def detect_main_content(self, html: str) -> MainContent:
         # main.content セレクタを返す
         pass
-    
+
     async def detect_navigation(self, html: str) -> Navigation:
         # nav.navigation セレクタを返す
         pass
-    
+
     async def detect_order(self, cache_dir: Path) -> DocumentOrder:
         # 固定の順序を返す
         pass
 
 class MockBuildService(IBuildService):
     """簡単なMarkdownを生成するモックサービス"""
-    
+
     async def build_markdown(self, contents: List[MainContent]) -> MarkdownDocument:
         # シンプルなMarkdownを生成
         pass
@@ -106,14 +106,14 @@ class MockBuildService(IBuildService):
 from dependency_injector import providers
 from site2.core.containers import TestContainer
 from tests.mocks.services import (
-    MockFetchService, MockDetectService, 
+    MockFetchService, MockDetectService,
     MockBuildService, MockRepository
 )
 
 def test_container_setup():
     """TestContainerが正しく設定されることを確認"""
     container = TestContainer()
-    
+
     # モックサービスで上書き
     container.website_cache_repository.override(
         providers.Singleton(MockRepository)
@@ -125,7 +125,7 @@ def test_container_setup():
         )
     )
     # 他のサービスも同様に設定
-    
+
     # 各サービスが正しく注入されることを確認
     fetch_service = container.fetch_service()
     assert isinstance(fetch_service, MockFetchService)
@@ -142,21 +142,21 @@ async def test_full_pipeline():
     """パイプライン全体の動作確認"""
     container = TestContainer()
     # モックサービスを設定
-    
+
     # Step 1: Fetch
     fetch_service = container.fetch_service()
     fetch_result = await fetch_service.execute("http://test-site")
-    
+
     # Step 2: Detect
     detect_service = container.detect_service()
     main_content = await detect_service.detect_main_content(
         fetch_result.html_files[0].content
     )
-    
+
     # Step 3: Build
     build_service = container.build_service()
     markdown = await build_service.build_markdown([main_content])
-    
+
     # 検証
     assert "# Welcome to Test Site" in markdown.content
 ```

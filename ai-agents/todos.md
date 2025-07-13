@@ -14,6 +14,7 @@
 - [x] [18. ドメインイベントのテスト実装](todos/20250711-18-domain-events-test-task.md)
 - [x] [19. 契約定義（Contracts）のPydantic移行](todos/20250712-19-migrate-contracts-to-pydantic.md)
 - [x] [02. 共通インフラストラクチャの実装](todos/20250706-02-common-infrastructure.md)
+- [ ] [20. パイプライン統合テストの実装](todos/20250713-20_pipeline_integration_test.md)
 - [ ] [03. Fetchサービスの実装](todos/20250706-03-implement-fetch-service.md)
 
 ### Phase 2: 検出機能の実装
