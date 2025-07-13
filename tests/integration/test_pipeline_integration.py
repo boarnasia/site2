@@ -62,14 +62,15 @@ class TestPipelineIntegration:
         assert len(navigation.structure.links) == 3
 
         doc_order = await detect_service.detect_order(
-            Path(fetch_result.cache_directory)
+            Path(fetch_result.cache_directory),
+            navigation,  # ナビゲーションデータを渡す
         )
         assert len(doc_order.files) == 3
         assert doc_order.method == "navigation"
 
         # Build Service のテスト
         build_service = self.container.build_service()
-        markdown_doc = await build_service.build_markdown([main_content])
+        markdown_doc = await build_service.build_markdown([main_content], doc_order)
 
         assert "Welcome to Test Site" in markdown_doc.title
         assert "Welcome to Test Site" in markdown_doc.content
@@ -85,24 +86,32 @@ class TestPipelineIntegration:
 
         # Step 2: Detect
         detect_service = self.container.detect_service()
-        main_content = await detect_service.detect_main_content(
-            fetch_result._html_content
-        )
-        navigation = await detect_service.detect_navigation(fetch_result._html_content)  # noqa: F841
-        doc_order = await detect_service.detect_order(  # noqa: F841
-            Path(fetch_result.cache_directory)
+        html_content = fetch_result._html_content
+
+        # 2.1: メインコンテンツの検出
+        main_content = await detect_service.detect_main_content(html_content)
+
+        # 2.2: ナビゲーションの検出
+        navigation = await detect_service.detect_navigation(html_content)
+
+        # 2.3: ナビゲーションを使って順序を決定
+        doc_order = await detect_service.detect_order(
+            Path(fetch_result.cache_directory),
+            navigation,  # 重要：ナビゲーションデータを渡す
         )
 
         # Step 3: Build
         build_service = self.container.build_service()
-        markdown = await build_service.build_markdown([main_content])
+        markdown = await build_service.build_markdown(
+            [main_content],
+            doc_order,  # 重要：順序データを渡す
+        )
 
         # 検証
         assert "Welcome to Test Site" in markdown.content
+        assert "Document Order: 3 files" in markdown.content  # 順序情報の確認
         assert markdown.metadata is not None
         assert markdown.metadata.source_url == "http://test-site"
-        assert markdown.get_word_count() > 0
-        assert markdown.get_line_count() > 0
 
     @pytest.mark.asyncio
     async def test_pipeline_with_multiple_contents(self):
@@ -122,8 +131,16 @@ class TestPipelineIntegration:
         main_content2.title = "Second Content"
         main_content2.text_content = "This is the second content section."
 
+        # ナビゲーションと順序を取得
+        navigation = await detect_service.detect_navigation(html_content)
+        doc_order = await detect_service.detect_order(
+            Path(fetch_result.cache_directory), navigation
+        )
+
         # Build
-        markdown = await build_service.build_markdown([main_content1, main_content2])
+        markdown = await build_service.build_markdown(
+            [main_content1, main_content2], doc_order
+        )
 
         # 最初のコンテンツのみが処理されることを確認（MockBuildServiceの仕様）
         assert "Welcome to Test Site" in markdown.content
@@ -135,9 +152,17 @@ class TestPipelineIntegration:
 
         # Build Service に空のコンテンツリストを渡す
         build_service = self.container.build_service()
+        detect_service = self.container.detect_service()  # noqa: F841
+
+        # ダミーのDocumentOrderを作成
+        from site2.core.domain.detect_domain import DocumentOrder, DetectionScore
+
+        dummy_order = DocumentOrder(
+            files=[], method="unknown", confidence=DetectionScore.none()
+        )
 
         with pytest.raises(ValueError, match="No content provided"):
-            await build_service.build_markdown([])
+            await build_service.build_markdown([], dummy_order)
 
     @pytest.mark.asyncio
     async def test_service_data_flow(self):
@@ -169,8 +194,14 @@ class TestPipelineIntegration:
         assert hasattr(main_content, "title")
         assert hasattr(main_content, "confidence")
 
+        # ナビゲーションと順序を取得
+        navigation = await detect_service.detect_navigation(html_content)
+        doc_order = await detect_service.detect_order(
+            Path(fetch_result.cache_directory), navigation
+        )
+
         # Build の結果を詳細に確認
-        markdown = await build_service.build_markdown([main_content])
+        markdown = await build_service.build_markdown([main_content], doc_order)
 
         assert hasattr(markdown, "title")
         assert hasattr(markdown, "content")
