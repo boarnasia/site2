@@ -9,10 +9,6 @@
 - **主要改善点**: Markdown出力対応、Clean Architecture採用、開発プロセスの明確化
 - **最終目標**: Markdown出力（ツール名の site2pdf は古い名残）
 
-### 現在の実装状況
-
-`ai-agents/todos.md` を参照
-
 ## 🏗️ 技術スタック & 開発環境
 
 ### 技術スタック
@@ -22,7 +18,7 @@
 - **テスト**: pytest, pytest-bdd, pytest-cov, pytest-asyncio
 - **Webクローリング**: wget (subprocess経由)
 - **HTML解析**: BeautifulSoup4
-- **PDF生成**: pypdf, Playwright
+- **PDF生成**: Playwright（HTMLからPDF生成）
 - **型チェック**: 型ヒント使用（将来的にmypy追加予定）
 - **依存性注入**: dependency-injector
 - **ドメインモデル**: Pydantic
@@ -37,6 +33,8 @@ rye run ipython
 # テスト
 rye run python -m pytest tests
 rye run pytest tests/integration/test_pipeline_integration.py -v
+rye run pytest tests/unit/test_fetch_domain.py::test_fetch_result_creation -v
+rye run pytest tests/features/pipeline.feature -v
 
 # 開発ツール
 rye run pre-commit run --all-files
@@ -222,30 +220,20 @@ Fetch → Detect (Navigation) → Detect (Order with Navigation) → Build (with
 ---
 ```
 
+### レポート保存場所
+- タスク実行後のレポートは `ai-agents/reports/` に保存
+- ファイル名: `task{番号}.md` または `task{番号}_{内容}.md`
+- 例: `task20.md`, `task21_dataflow_fix.md`
+
 ## ⚡ 実装時重要事項
 
 ### 1. 契約準拠
-すべての実装は`src/site2/core/ports/`に定義された契約（Protocol）に準拠すること：
+すべての実装は`src/site2/core/ports/`に定義された契約（Protocol）に準拠すること。
 
-```python
-class IDetectService(Protocol):
-    async def detect_order(
-        self,
-        cache_dir: Path,
-        navigation: Navigation  # 重要：ナビゲーション構造から順序を決定
-    ) -> DocumentOrder:
-        """ナビゲーション構造を基にドキュメントの順序を決定する"""
-        ...
-
-class IBuildService(Protocol):
-    async def build_markdown(
-        self,
-        contents: List[MainContent],
-        doc_order: DocumentOrder  # 重要：順序に従ってコンテンツを組み立て
-    ) -> MarkdownDocument:
-        """コンテンツリストを順序に従ってMarkdownドキュメントに変換する"""
-        ...
-```
+重要な原則：
+- サービス間のデータ依存関係を正しく理解する（Navigation → DocumentOrder → MarkdownDocument）
+- 各Protocolのメソッドシグネチャを厳守する
+- 非同期処理（async/await）の一貫性を保つ
 
 ### 2. 依存関係の方向
 - Core層（domain, use_cases）は外部に依存しない
@@ -259,12 +247,14 @@ class IBuildService(Protocol):
 4. テストが成功することを確認
 
 ### 4. エラーハンドリング
-契約で定義されたエラーを適切に処理：
-- `NetworkError` - ネットワーク関連
-- `InvalidURLError` - URL検証
-- `CachePermissionError` - ファイルシステム権限
-- `DetectError` - コンテンツ検出関連
-- `BuildError` - ドキュメント生成関連
+契約で定義されたエラーを適切に処理すること：
+- `NetworkError` - ネットワーク関連のエラー
+- `InvalidURLError` - URL検証エラー
+- `CachePermissionError` - ファイルシステム権限エラー
+- `DetectError` - コンテンツ検出関連のエラー
+- `BuildError` - ドキュメント生成関連のエラー
+
+各エラーは適切にハンドリングし、ユーザーに分かりやすいメッセージを表示すること。
 
 ### 5. コーディング規約
 - **命名規則**: PEP 8準拠
@@ -281,26 +271,30 @@ class IBuildService(Protocol):
 - `refactor:` リファクタリング
 
 ### 7. 最適化注意事項
-- gemini API を使用するときはオーダー数が増えすぎないように最適化を行う
-- 各Agentは必ず ai-agents/AGENT_CONTEXT.md を最初に読み込んでルールを確認する
+- API使用時は以下に注意：
+  - 大きなファイルは分割して処理
+  - バッチ処理でAPI呼び出し回数を削減
+  - レート制限を考慮した適切な待機時間の設定
+- 各Agentは必ず `ai-agents/AGENT_CONTEXT.md` を最初に読み込んでルールを確認する
 
-## 🔄 次の実装優先順位
+## 🔄 実装の進め方
 
-1. **FetchService実装** (`src/site2/core/use_cases/fetch_use_case.py`)
-   - `FetchServiceProtocol`を実装
-   - リポジトリとクローラーを依存性注入
+実装の優先順位と現在のフェーズは以下を参照：
+- `ai-agents/todos.md` - 優先順位付きタスクリスト
+- `ai-agents/PROJECT_STATUS.md` - 現在の実装フェーズと状態
 
-2. **WgetCrawler実装** (`src/site2/adapters/crawlers/wget_crawler.py`)
-   - `WebCrawlerProtocol`を実装
-   - subprocessでwgetを呼び出し
+基本的な実装順序：
+1. Core層の実装（ドメインモデル、ユースケース）
+2. Adapters層の実装（外部システム接続）
+3. CLI統合
+4. テストとドキュメントの整備
 
-3. **FileRepository実装** (`src/site2/adapters/storage/file_repository.py`)
-   - `WebsiteCacheRepositoryProtocol`を実装
-   - キャッシュの保存・読み込み
+## 📋 プロジェクト進捗の確認
 
-4. **CLI統合** (`src/site2/adapters/cli/fetch_command.py`)
-   - CLIとユースケースを接続
-   - 依存性注入の設定
+現在の進捗状況は以下のファイルを参照：
+- `ai-agents/todos.md` - タスク一覧と完了状況
+- `ai-agents/PROJECT_STATUS.md` - 現在のフェーズとサマリー
+- `ai-agents/reports/` - 各タスクの詳細な実行レポート
 
 ## 📚 参考情報
 
