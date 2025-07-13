@@ -76,7 +76,7 @@ from .pipeline_contracts import IPipelineService
 
 __all__ = [
     "IFetchService",
-    "IWebCrawler", 
+    "IWebCrawler",
     "IWebsiteCacheRepository",
     "IDetectService",
     "IBuildService",
