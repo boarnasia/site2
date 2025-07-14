@@ -20,7 +20,7 @@ FetchServiceは、site2の最初のステップとして、URLからWebサイト
 
 3. **FileRepository実装**
    - `src/site2/adapters/storage/file_repository.py`
-   - WebsiteCacheRepositoryProtocolの実装
+   - WebsiteCacheRepositoryProtocolの実装（読み取り専用）
 
 ## 実装詳細
 
@@ -44,10 +44,12 @@ class FetchService:
         """
         Webサイトをフェッチしてキャッシュ
 
+        注意: FetchServiceProtocolは同期メソッドとして定義されている
+
         1. URLの検証
-        2. 既存キャッシュの確認
+        2. 既存キャッシュの確認（force_refreshでない場合）
         3. クローリング実行
-        4. キャッシュ保存
+        4. キャッシュ保存（内部で実行）
         5. 結果の返却
         """
 ```
@@ -73,17 +75,18 @@ class WgetCrawler:
         - -k: リンクをローカル用に変換
         - -E: 適切な拡張子
         - -np: 親ディレクトリを辿らない
+
+        注意: CachedPageにはread_text()メソッドがある
         """
 ```
 
-### 3. FileRepository
+### 3. FileRepository（読み取り専用）
 
 ```python
 # src/site2/adapters/storage/file_repository.py
 
 class FileRepository:
-    def save(self, cache: WebsiteCache) -> None:
-        """キャッシュをファイルシステムに保存"""
+    # saveメソッドは実装しない（FetchServiceが内部で保存）
 
     def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
         """URLでキャッシュを検索"""
@@ -98,21 +101,24 @@ class FileRepository:
 
 - [ ] FetchServiceのテスト
   - [ ] 新規サイトのフェッチ
-  - [ ] キャッシュ済みサイトの更新
-  - [ ] エラーハンドリング
+  - [ ] キャッシュ済みサイトの確認（force_refresh=False）
+  - [ ] 強制更新（force_refresh=True）
+  - [ ] エラーハンドリング（NetworkError, InvalidURLError）
 
 - [ ] WgetCrawlerのテスト
   - [ ] wgetコマンドの構築
   - [ ] 出力の解析
+  - [ ] CachedPageの生成（read_text()メソッド含む）
   - [ ] エラー処理
 
 - [ ] FileRepositoryのテスト
-  - [ ] 保存と読み込み
-  - [ ] メタデータの永続化
+  - [ ] find_by_urlでの検索
+  - [ ] find_allでの一覧取得
+  - [ ] メタデータの読み込み
 
 ### 統合テスト
 
-- [ ] ローカルサーバーでの実際のフェッチ
+- [ ] パイプライン統合テストとの整合性確認
 - [ ] キャッシュの永続性確認
 
 ## 実装のポイント
@@ -126,22 +132,35 @@ class FileRepository:
    ```
    ~/.cache/site2/
    └── example.com_a1b2c3d4/
-       ├── cache.json      # メタデータ
+       ├── cache.json      # メタデータ（WebsiteCache）
        ├── index.html
        ├── about.html
        └── assets/
            └── style.css
    ```
 
-3. **差分更新**
-   - Last-Modifiedヘッダーの確認
-   - ETagの利用
-   - 強制更新オプション
+3. **CachedPageの実装**
+   - `read_text()`メソッドをサポート
+   - `is_root`フラグでメインページを識別
+
+4. **エラーハンドリング**
+   - `NetworkError`: ネットワーク接続エラー
+   - `InvalidURLError`: 無効なURL
+   - `CachePermissionError`: ファイルシステム権限エラー
+
+## 契約準拠のチェックリスト
+
+- [ ] `FetchServiceProtocol.fetch()`は同期メソッド
+- [ ] `WebsiteCacheRepositoryProtocol`にsaveメソッドはない
+- [ ] `CachedPage.read_text()`メソッドが実装されている
+- [ ] DTOベース（FetchRequest → FetchResult）
+- [ ] エラーは`fetch_contracts.py`で定義されたものを使用
 
 ## 受け入れ基準
 
 - [ ] すべてのテストがパス
 - [ ] 契約（Protocol）に準拠
+- [ ] Task 23の統合テストで使用可能
 - [ ] エラーハンドリングが適切
 - [ ] ログ出力が適切
 
@@ -153,6 +172,7 @@ class FileRepository:
 
 - [01. 設計ドキュメントの完成](20250706-01-complete-design-docs.md)
 - [02. 共通インフラストラクチャの実装](20250706-02-common-infrastructure.md)
+- [Task 23. パイプライン統合テストの再実装](20250714-23_reimplement_pipeline_tests.md)
 
 ## 次のタスク
 
@@ -166,10 +186,16 @@ class FileRepository:
 契約定義:
 - src/site2/core/ports/fetch_contracts.py
 
+重要な変更点:
+1. WebsiteCacheRepositoryProtocolにsaveメソッドはありません（読み取り専用）
+2. FetchServiceは内部でキャッシュを保存します
+3. CachedPageにはread_text()メソッドがあります
+4. FetchServiceProtocolのfetchメソッドは同期です（asyncではない）
+
 要件:
 1. FetchServiceProtocolを実装
 2. 依存性注入を使用
-3. 適切なエラーハンドリング
+3. 適切なエラーハンドリング（NetworkError, InvalidURLError, CachePermissionError）
 4. ログ出力（loguru使用）
 
 テストケース:
