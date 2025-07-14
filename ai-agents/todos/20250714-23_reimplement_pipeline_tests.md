@@ -20,10 +20,10 @@ Task 20を閉じ、正しいインターフェースに基づいた実装を行�
 # saveメソッドを削除（FetchServiceが内部で保存するため）
 class WebsiteCacheRepositoryProtocol(Protocol):
     # def save(self, cache: WebsiteCache) -> None:  # 削除
-    
+
     def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
         ...
-    
+
     def find_all(self) -> List[WebsiteCache]:
         ...
 ```
@@ -33,7 +33,7 @@ class WebsiteCacheRepositoryProtocol(Protocol):
 # src/site2/core/domain/fetch_domain.py
 class CachedPage(BaseModel):
     # 既存のフィールド...
-    
+
     def read_text(self, encoding: str = "utf-8") -> str:
         """キャッシュされたHTMLコンテンツを読み込む"""
         return Path(self.local_path).read_text(encoding=encoding)
@@ -62,17 +62,17 @@ async def test_full_pipeline(self):
     # Step 1: Fetch
     fetch_service = self.container.fetch_service()
     fetch_result = await fetch_service.execute("http://test-site")
-    
+
     # Step 2: リポジトリからキャッシュを取得
     repository = self.container.website_cache_repository()
     cache = await repository.find_by_url(
         WebsiteURL(str(fetch_result.root_url))
     )
-    
+
     # Step 3: メインページのHTMLを読み込み
     main_page = next((p for p in cache.pages if p.is_root), None)
     html_content = main_page.read_text()
-    
+
     # Step 4: Detect
     detect_service = self.container.detect_service()
     main_content = await detect_service.detect_main_content(html_content)
@@ -81,7 +81,7 @@ async def test_full_pipeline(self):
         Path(fetch_result.cache_directory),
         navigation
     )
-    
+
     # Step 5: Build
     build_service = self.container.build_service()
     markdown = await build_service.build_markdown(
@@ -97,11 +97,11 @@ def get_main_page_html(fetch_result: FetchResult, repository: WebsiteCacheReposi
     cache = repository.find_by_url(WebsiteURL(str(fetch_result.root_url)))
     if not cache:
         raise ValueError("Cache not found")
-    
+
     main_page = next((p for p in cache.pages if p.is_root), None)
     if not main_page:
         raise ValueError("Main page not found")
-    
+
     return main_page.read_text()
 ```
 

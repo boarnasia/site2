@@ -32,23 +32,23 @@ WebsiteCacheRepository.find_by_url() → WebsiteCache
 
 class CachedPage(BaseModel):
     """キャッシュされたページ"""
-    
+
     relative_url: str = Field(..., description="相対URL")
     local_path: str = Field(..., description="ローカルファイルパス")
     size_bytes: int = Field(..., ge=0, description="ファイルサイズ")
     content_hash: str = Field(..., description="コンテンツハッシュ")
     last_fetched: datetime = Field(..., description="最終取得日時")
     is_root: bool = Field(default=False, description="ルートページかどうか")
-    
+
     def read_text(self, encoding: str = "utf-8") -> str:
         """キャッシュされたHTMLコンテンツを読み込む
-        
+
         Args:
             encoding: 文字エンコーディング（デフォルト: utf-8）
-            
+
         Returns:
             HTMLコンテンツ
-            
+
         Raises:
             FileNotFoundError: ファイルが存在しない場合
             UnicodeDecodeError: エンコーディングエラー
@@ -64,13 +64,13 @@ class CachedPage(BaseModel):
 
 class WebsiteCacheRepositoryProtocol(Protocol):
     """キャッシュリポジトリの契約（読み取り専用）"""
-    
+
     # def save(self, cache: WebsiteCache) -> None:  # 削除
-    
+
     def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
         """URLでキャッシュを検索"""
         ...
-    
+
     def find_all(self) -> List[WebsiteCache]:
         """すべてのキャッシュを取得"""
         ...
@@ -84,16 +84,16 @@ class WebsiteCacheRepositoryProtocol(Protocol):
 
 class MockRepository(WebsiteCacheRepositoryProtocol):
     """メモリ内でキャッシュを管理するモックリポジトリ"""
-    
+
     def __init__(self):
         self._cache = {}
         self._setup_test_data()
-    
+
     def _setup_test_data(self):
         """テスト用のデータを準備"""
         # simple-siteのHTMLコンテンツを準備
         test_html = Path("tests/fixtures/websites/simple-site/index.html").read_text()
-        
+
         # テスト用のWebsiteCacheを作成
         test_cache = WebsiteCache(
             id="test-cache-001",
@@ -113,10 +113,10 @@ class MockRepository(WebsiteCacheRepositoryProtocol):
             last_updated=datetime.now(),
         )
         self._cache["http://test-site/"] = test_cache
-    
+
     async def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
         return self._cache.get(str(url))
-    
+
     async def find_all(self) -> List[WebsiteCache]:
         return list(self._cache.values())
 ```
@@ -125,10 +125,10 @@ class MockRepository(WebsiteCacheRepositoryProtocol):
 ```python
 class MockFetchService(FetchServiceProtocol):
     """テスト用のフェッチサービス"""
-    
+
     def __init__(self, repository: WebsiteCacheRepositoryProtocol):
         self.repository = repository
-    
+
     async def execute(self, url: str) -> FetchResult:
         # リポジトリにキャッシュが存在することを前提
         return FetchResult(
@@ -149,24 +149,24 @@ class MockFetchService(FetchServiceProtocol):
 
 async def test_full_pipeline(self):
     """パイプライン全体の動作確認（正しいインターフェース使用）"""
-    
+
     # Step 1: Fetch
     fetch_service = self.container.fetch_service()
     fetch_result = await fetch_service.execute("http://test-site")
-    
+
     # Step 2: リポジトリからキャッシュを取得
     repository = self.container.website_cache_repository()
     cache = await repository.find_by_url(
         WebsiteURL(str(fetch_result.root_url))
     )
     assert cache is not None, "Cache should exist"
-    
+
     # Step 3: メインページのHTMLを読み込み
     main_page = next((p for p in cache.pages if p.is_root), None)
     assert main_page is not None, "Main page should exist"
-    
+
     html_content = main_page.read_text()
-    
+
     # Step 4: Detect
     detect_service = self.container.detect_service()
     main_content = await detect_service.detect_main_content(html_content)
@@ -175,14 +175,14 @@ async def test_full_pipeline(self):
         Path(fetch_result.cache_directory),
         navigation
     )
-    
+
     # Step 5: Build
     build_service = self.container.build_service()
     markdown = await build_service.build_markdown(
         [main_content],
         doc_order
     )
-    
+
     # 検証
     assert "Welcome to Test Site" in markdown.content
     assert markdown.metadata.source_url == "http://test-site"
@@ -199,29 +199,29 @@ async def get_html_from_fetch_result(
     page_filter: Optional[Callable[[CachedPage], bool]] = None
 ) -> str:
     """FetchResultからHTMLコンテンツを取得するヘルパー関数
-    
+
     Args:
         fetch_result: Fetch結果
         repository: キャッシュリポジトリ
         page_filter: ページフィルター関数（デフォルト: is_root=True）
-        
+
     Returns:
         HTMLコンテンツ
-        
+
     Raises:
         ValueError: キャッシュまたはページが見つからない場合
     """
     if page_filter is None:
         page_filter = lambda p: p.is_root
-    
+
     cache = await repository.find_by_url(WebsiteURL(str(fetch_result.root_url)))
     if not cache:
         raise ValueError(f"Cache not found for URL: {fetch_result.root_url}")
-    
+
     page = next((p for p in cache.pages if page_filter(p)), None)
     if not page:
         raise ValueError("No matching page found in cache")
-    
+
     return page.read_text()
 ```
 
