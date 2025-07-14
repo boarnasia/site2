@@ -6,8 +6,9 @@
 
 from typing import List, Optional
 from pathlib import Path
+from datetime import datetime
 
-from site2.core.domain.fetch_domain import WebsiteCache
+from site2.core.domain.fetch_domain import WebsiteCache, WebsiteURL, CachedPage
 from site2.core.domain.detect_domain import (
     MainContent,
     Navigation,
@@ -32,14 +33,43 @@ class MockRepository(WebsiteCacheRepositoryProtocol):
 
     def __init__(self):
         self._cache = {}
+        self._setup_test_data()
 
-    async def save(self, cache: WebsiteCache) -> None:
-        self._cache[str(cache.url.value)] = cache
+    def _setup_test_data(self):
+        """テスト用のWebsiteCacheデータを準備"""
+        # テストフィクスチャのパス
+        fixture_dir = (
+            Path(__file__).parent.parent / "fixtures" / "websites" / "simple-site"
+        )
+        index_file = fixture_dir / "index.html"
 
-    async def find_by_url(self, url: str) -> Optional[WebsiteCache]:
-        return self._cache.get(url)
+        # WebsiteURLを作成
+        test_url = WebsiteURL(value="http://test-site/")
 
-    async def list_all(self) -> List[WebsiteCache]:
+        # CachedPageを作成
+        cached_page = CachedPage(
+            page_url=test_url,
+            local_path=index_file,
+            content_type="text/html",
+            size_bytes=1024,
+            fetched_at=datetime.now(),
+        )
+
+        # WebsiteCacheを作成
+        test_cache = WebsiteCache(
+            root_url=test_url,
+            cache_directory=fixture_dir,
+            pages=[cached_page],
+            created_at=datetime.now(),
+        )
+
+        # キャッシュに追加
+        self._cache["http://test-site/"] = test_cache
+
+    def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
+        return self._cache.get(str(url.value))
+
+    def find_all(self) -> List[WebsiteCache]:
         return list(self._cache.values())
 
 
@@ -50,34 +80,22 @@ class MockFetchService(FetchServiceProtocol):
         self.repository = repository
 
     async def execute(self, url: str) -> FetchResult:
-        """simple-siteのHTMLを読み込んで返す"""
+        """リポジトリと連携したFetch結果を返す"""
         # テストフィクスチャのパス
         fixture_dir = (
             Path(__file__).parent.parent / "fixtures" / "websites" / "simple-site"
         )
-        index_file = fixture_dir / "index.html"
 
-        if not index_file.exists():
-            raise FileNotFoundError(f"Test fixture not found: {index_file}")
-
-        # HTMLファイルを読み込み
-        html_content = index_file.read_text(encoding="utf-8")
-
-        # FetchResultにhtml_contentを含める簡易実装
-        # 実際のFetchResultに合わせて属性を追加
-        result = FetchResult(
-            cache_id="test-cache",
-            root_url=url,
+        # 正しいFetchResultを返す（repositoryにキャッシュが存在することを前提）
+        return FetchResult(
+            cache_id="test-cache-001",
+            root_url=url + "/" if not url.endswith("/") else url,
             pages_fetched=1,
-            pages_updated=1,
-            total_size=len(html_content.encode("utf-8")),
+            pages_updated=0,
+            total_size=1024,
             cache_directory=str(fixture_dir),
+            errors=[],
         )
-
-        # テスト用にhtml_contentを追加（動的属性）
-        result._html_content = html_content
-
-        return result
 
 
 class MockDetectService(DetectServiceProtocol):

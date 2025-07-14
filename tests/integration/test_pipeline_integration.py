@@ -9,6 +9,7 @@ from pathlib import Path
 from dependency_injector import providers
 
 from site2.core.containers import TestContainer
+from tests.integration.helpers import get_main_page_html
 from tests.mocks.services import (
     MockFetchService,
     MockDetectService,
@@ -49,9 +50,11 @@ class TestPipelineIntegration:
         assert fetch_result.pages_fetched == 1
         assert fetch_result.total_size > 0
 
-        # Detect Service のテスト
+        # Detect Service のテスト - ヘルパー関数を使用
+        repository = self.container.website_cache_repository()
+        html_content = get_main_page_html(fetch_result, repository)
+
         detect_service = self.container.detect_service()
-        html_content = fetch_result._html_content
 
         main_content = await detect_service.detect_main_content(html_content)
         assert main_content.selector == "main.content"
@@ -84,23 +87,26 @@ class TestPipelineIntegration:
         fetch_service = self.container.fetch_service()
         fetch_result = await fetch_service.execute("http://test-site")
 
-        # Step 2: Detect
-        detect_service = self.container.detect_service()
-        html_content = fetch_result._html_content
+        # Step 2: ヘルパー関数でHTMLを取得
+        repository = self.container.website_cache_repository()
+        html_content = get_main_page_html(fetch_result, repository)
 
-        # 2.1: メインコンテンツの検出
+        # Step 4: Detect
+        detect_service = self.container.detect_service()
+
+        # 4.1: メインコンテンツの検出
         main_content = await detect_service.detect_main_content(html_content)
 
-        # 2.2: ナビゲーションの検出
+        # 4.2: ナビゲーションの検出
         navigation = await detect_service.detect_navigation(html_content)
 
-        # 2.3: ナビゲーションを使って順序を決定
+        # 4.3: ナビゲーションを使って順序を決定
         doc_order = await detect_service.detect_order(
             Path(fetch_result.cache_directory),
             navigation,  # 重要：ナビゲーションデータを渡す
         )
 
-        # Step 3: Build
+        # Step 5: Build
         build_service = self.container.build_service()
         markdown = await build_service.build_markdown(
             [main_content],
@@ -123,7 +129,10 @@ class TestPipelineIntegration:
         build_service = self.container.build_service()
 
         fetch_result = await fetch_service.execute("http://test-site")
-        html_content = fetch_result._html_content
+
+        # ヘルパー関数でHTMLを取得
+        repository = self.container.website_cache_repository()
+        html_content = get_main_page_html(fetch_result, repository)
 
         # 複数のMainContentを作成（実際のシナリオを模擬）
         main_content1 = await detect_service.detect_main_content(html_content)
@@ -180,8 +189,9 @@ class TestPipelineIntegration:
         assert hasattr(fetch_result, "cache_directory")
         assert hasattr(fetch_result, "pages_fetched")
 
-        # HTMLコンテンツが取得できることを確認
-        html_content = fetch_result._html_content
+        # HTMLコンテンツがヘルパー関数で取得できることを確認
+        repository = self.container.website_cache_repository()
+        html_content = get_main_page_html(fetch_result, repository)
         assert isinstance(html_content, str)
         assert len(html_content) > 0
 

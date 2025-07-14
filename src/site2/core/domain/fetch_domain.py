@@ -66,6 +66,24 @@ class CachedPage(BaseModel):
         age = datetime.now() - self.fetched_at
         return age.total_seconds() > cache_duration_hours * 3600
 
+    def read_text(self, encoding: str = "utf-8") -> str:
+        """キャッシュされたHTMLコンテンツを読み込む
+
+        Args:
+            encoding: 文字エンコーディング（デフォルト: utf-8）
+
+        Returns:
+            HTMLコンテンツ
+
+        Raises:
+            FileNotFoundError: ファイルが存在しない場合
+            UnicodeDecodeError: エンコーディングエラー
+        """
+        return self.local_path.read_text(encoding=encoding)
+
+
+# is_root_page メソッドは削除 - FetchResult.root_urlを直接使用する方がシンプル
+
 
 class WebsiteCache(BaseModel):
     """Webサイトのキャッシュ（集約ルート）"""
@@ -91,6 +109,8 @@ class WebsiteCache(BaseModel):
     def page_count(self) -> int:
         """キャッシュされたページ数"""
         return len(self.pages)
+
+    # get_root_page メソッドは削除 - FetchResult.root_urlを直接使用する方がシンプル
 
     def add_page(self, page: CachedPage) -> None:
         """ページを追加（ビジネスルール）"""

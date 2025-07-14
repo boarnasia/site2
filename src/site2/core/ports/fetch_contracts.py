@@ -107,20 +107,9 @@ class FetchServiceProtocol(Protocol):
 
 # リポジトリインターフェース（ポート）
 class WebsiteCacheRepositoryProtocol(Protocol):
-    """キャッシュリポジトリの契約"""
+    """キャッシュリポジトリの契約（読み取り専用）"""
 
-    def save(self, cache: WebsiteCache) -> None:
-        """
-        キャッシュを保存
-
-        事前条件:
-        - cache は有効なWebsiteCacheインスタンス
-
-        事後条件:
-        - キャッシュがファイルシステムに保存される
-        - メタデータが更新される
-        """
-        ...
+    # def save(self, cache: WebsiteCache) -> None:  # FetchServiceが内部で保存するため削除
 
     def find_by_url(self, url: WebsiteURL) -> Optional[WebsiteCache]:
         """
