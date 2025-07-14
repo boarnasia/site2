@@ -2,10 +2,13 @@
 site2 detect機能の契約定義（Contract-First Development）
 """
 
-from typing import Protocol, List, Optional
+from typing import Protocol, List, Optional, TYPE_CHECKING
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
+
+if TYPE_CHECKING:
+    from ..domain.detect_domain import Navigation
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
@@ -132,8 +135,9 @@ class DetectOrderRequest(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     cache_directory: Path = Field(..., description="キャッシュディレクトリ")
+    navigation: "Navigation" = Field(..., description="ナビゲーション構造")
     nav_selector: Optional[str] = Field(
-        default=None, description="ナビゲーションセレクタ"
+        default=None, description="ナビゲーションセレクタ（後方互換性）"
     )
 
     @field_validator("cache_directory")

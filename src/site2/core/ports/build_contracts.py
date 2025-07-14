@@ -9,7 +9,7 @@ from enum import Enum
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 if TYPE_CHECKING:
-    from ..domain.detect_domain import OrderedFile
+    from ..domain.detect_domain import OrderedFile, DocumentOrder
 
 
 # エニュメーション
@@ -32,6 +32,9 @@ class BuildRequest(BaseModel):
     )
     ordered_files: List["OrderedFile"] = Field(
         ..., min_length=1, description="順序付きファイル一覧"
+    )
+    doc_order: "DocumentOrder" = Field(
+        ..., description="ドキュメント順序（Task 21で追加）"
     )
     format: OutputFormat = Field(..., description="出力フォーマット")
     output_path: Optional[Path] = Field(default=None, description="出力パス")
