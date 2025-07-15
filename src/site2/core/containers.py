@@ -11,6 +11,12 @@ from ..config.settings import Settings
 # 実装クラスは後で追加
 from ..adapters.storage.file_repository import FileRepository
 from ..adapters.crawlers.wget_crawler import WgetCrawler
+from ..adapters.parsers.beautifulsoup_parser import (
+    BeautifulSoupAnalyzer,
+    BeautifulSoupParser,
+    LLMPreprocessor,
+)
+from ..adapters.parsers.chardet_detector import ChardetDetector
 from ..core.use_cases.fetch_service import FetchService
 # from ..core.use_cases.detect_service import DetectService
 # from ..core.use_cases.build_service import BuildService
@@ -18,6 +24,8 @@ from ..core.use_cases.fetch_service import FetchService
 
 class Container(containers.DeclarativeContainer):
     """アプリケーションのDIコンテナ"""
+
+    config = providers.Configuration()
 
     # 設定オブジェクト
     settings = providers.Singleton(
@@ -29,6 +37,14 @@ class Container(containers.DeclarativeContainer):
         FileRepository,
         cache_dir=settings.provided.cache_dir,
     )
+
+    # パーサー層 (Adapters)
+    encoding_detector = providers.Factory(ChardetDetector)
+    html_parser = providers.Factory(
+        BeautifulSoupParser,
+    )
+    html_analyzer = providers.Factory(BeautifulSoupAnalyzer)
+    llm_preprocessor = providers.Factory(LLMPreprocessor)
 
     # インフラストラクチャ層
     web_crawler = providers.Factory(

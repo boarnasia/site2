@@ -19,10 +19,13 @@
 - [x] [22. インターフェース定義の統合と整理](todos/20250714-22_unify_interfaces.md)
 - [x] [23. パイプライン統合テストの再実装（インターフェース準拠）](todos/20250714-23_reimplement_pipeline_tests.md)
 - [x] [03. Fetchサービスの実装](todos/20250706-03-implement-fetch-service.md)
+- [x] [24. CLIのfetch/fetch:listコマンド実装](todos/20250715-24_cli_fetch_commands.md)
 
 ### Phase 2: 検出機能の実装
 
-- [ ] [04. HTMLパーサーの実装](todos/20250706-04-implement-html-parser.md)
+- [x] [04. HTML解析契約の定義](todos/20250715-04-define-parser-contracts.md)
+- [x] [25. HTMLパーサーアダプターの実装](todos/20250715-25-implement-parser-adapter.md)
+- [x] [26. HTMLパーサーの単体テスト実装](todos/20250715-26-implement-parser-tests.md)
 - [ ] [05. Detect:Mainサービスの実装](todos/20250706-05-implement-detect-main.md)
 - [ ] [06. Detect:Navサービスの実装](todos/20250706-06-implement-detect-nav.md)
 - [ ] [07. Detect:Orderサービスの実装](todos/20250706-07-implement-detect-order.md)
@@ -59,3 +62,7 @@
 2. テストが先に存在することを確認してから実装
 3. 契約（Protocol）に準拠した実装を行う
 4. コードレビューを経てからマージ
+
+---
+**次のタスク**: [25. HTMLパーサーアダプターの実装](todos/20250715-25-implement-parser-adapter.md)
+---
