@@ -9,9 +9,9 @@ from dependency_injector import containers, providers
 from ..config.settings import Settings
 
 # 実装クラスは後で追加
-# from ..adapters.repositories.file_repository import FileRepository
-# from ..adapters.crawlers.wget_crawler import WgetCrawler
-# from ..core.use_cases.fetch_service import FetchService
+from ..adapters.storage.file_repository import FileRepository
+from ..adapters.crawlers.wget_crawler import WgetCrawler
+from ..core.use_cases.fetch_service import FetchService
 # from ..core.use_cases.detect_service import DetectService
 # from ..core.use_cases.build_service import BuildService
 
@@ -29,15 +29,13 @@ class Container(containers.DeclarativeContainer):
 
     # リポジトリ層
     website_cache_repository = providers.Factory(
-        # FileRepository,  # 実装後に有効化
-        providers.Object("placeholder"),  # 一時的なプレースホルダー
+        FileRepository,
         cache_dir=settings.provided.cache_dir,
     )
 
     # インフラストラクチャ層
     web_crawler = providers.Factory(
-        # WgetCrawler,  # 実装後に有効化
-        providers.Object("placeholder"),  # 一時的なプレースホルダー
+        WgetCrawler,
         timeout=settings.provided.wget_timeout,
         user_agent=settings.provided.user_agent,
         delay=settings.provided.crawl_delay,
@@ -45,10 +43,10 @@ class Container(containers.DeclarativeContainer):
 
     # アプリケーションサービス層
     fetch_service = providers.Factory(
-        # FetchService,  # 実装後に有効化
-        providers.Object("placeholder"),  # 一時的なプレースホルダー
+        FetchService,
         crawler=web_crawler,
         repository=website_cache_repository,
+        cache_dir=settings.provided.cache_dir,
     )
 
     detect_service = providers.Factory(

@@ -19,12 +19,16 @@ from ...core.ports.fetch_contracts import WebCrawlerProtocol, NetworkError
 class WgetCrawler(WebCrawlerProtocol):
     """wgetを使用したWebクローラーの実装"""
 
-    def __init__(self, timeout: int = 300):
+    def __init__(self, timeout: int = 300, user_agent: str = None, delay: float = 0.5):
         """
         Args:
             timeout: wgetのタイムアウト秒数（デフォルト: 300秒）
+            user_agent: User-Agent文字列（デフォルト: Mozilla/5.0 (compatible; site2/1.0)）
+            delay: リクエスト間の遅延秒数（デフォルト: 0.5秒）
         """
         self.timeout = timeout
+        self.user_agent = user_agent or "Mozilla/5.0 (compatible; site2/1.0)"
+        self.delay = delay
 
     def crawl(
         self,
@@ -111,9 +115,9 @@ class WgetCrawler(WebCrawlerProtocol):
             str(output_dir),  # 出力ディレクトリ
             "--no-check-certificate",  # SSL証明書の検証をスキップ（開発用）
             "--user-agent",
-            "Mozilla/5.0 (compatible; site2/1.0)",
+            self.user_agent,
             "--wait",
-            "0.5",  # サーバーへの負荷軽減
+            str(self.delay),  # サーバーへの負荷軽減
             "--random-wait",  # ランダムな待機時間
             "--quota",
             "100m",  # 最大ダウンロードサイズ

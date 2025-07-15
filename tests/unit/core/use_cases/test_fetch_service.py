@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 from pathlib import Path
 from datetime import datetime
 
-from site2.core.use_cases.fetch_use_case import FetchService
+from site2.core.use_cases.fetch_service import FetchService
 from site2.core.domain.fetch_domain import (
     WebsiteURL,
     WebsiteCache,

@@ -7,6 +7,7 @@ DIコンテナにモックサービスを注入してテストする
 from dependency_injector import providers
 
 from site2.core.containers import TestContainer
+from site2.adapters.storage.file_repository import FileRepository
 from tests.mocks.services import (
     MockFetchService,
     MockDetectService,
@@ -80,5 +81,5 @@ def test_container_isolation():
     repo2 = container2.website_cache_repository()
 
     assert isinstance(repo1, MockRepository)
-    # container2は元のプレースホルダーのまま
-    assert repo2 == "placeholder"
+    # container2は元の実装のまま
+    assert isinstance(repo2, FileRepository)

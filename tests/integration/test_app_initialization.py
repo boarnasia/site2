@@ -8,6 +8,9 @@ from unittest.mock import patch
 import os
 
 from site2.app import create_app
+from site2.core.use_cases.fetch_service import FetchService
+from site2.adapters.crawlers.wget_crawler import WgetCrawler
+from site2.adapters.storage.file_repository import FileRepository
 
 
 class TestAppInitialization:
@@ -64,21 +67,25 @@ class TestAppInitialization:
         """サービスプレースホルダーの確認テスト"""
         container = create_app(test_mode=True)
 
-        # プレースホルダーサービスが正しく注入されることを確認
+        # 実装済みサービスが正しく注入されることを確認
         fetch_service = container.fetch_service()
-        assert fetch_service == "placeholder"
+        assert isinstance(fetch_service, FetchService)
+        assert hasattr(fetch_service, "fetch")
 
+        web_crawler = container.web_crawler()
+        assert isinstance(web_crawler, WgetCrawler)
+        assert hasattr(web_crawler, "crawl")
+
+        repository = container.website_cache_repository()
+        assert isinstance(repository, FileRepository)
+        assert hasattr(repository, "find_by_url")
+
+        # 未実装のサービスはプレースホルダーのまま
         detect_service = container.detect_service()
         assert detect_service == "placeholder"
 
         build_service = container.build_service()
         assert build_service == "placeholder"
-
-        web_crawler = container.web_crawler()
-        assert web_crawler == "placeholder"
-
-        repository = container.website_cache_repository()
-        assert repository == "placeholder"
 
     def test_environment_variable_override(self):
         """環境変数での設定上書きテスト"""

@@ -35,21 +35,27 @@ class TestContainerClass:
         container = Container()
         container.config.from_pydantic(Settings())
 
-        # プレースホルダーが正しく設定されていることを確認
+        # FetchServiceは実装済みなので実際のインスタンスが返される
         fetch_service = container.fetch_service()
-        assert fetch_service == "placeholder"
+        assert fetch_service is not None
+        assert hasattr(fetch_service, "fetch")
 
+        # プレースホルダーが正しく設定されていることを確認
         detect_service = container.detect_service()
         assert detect_service == "placeholder"
 
         build_service = container.build_service()
         assert build_service == "placeholder"
 
+        # WebCrawlerも実装済みなので実際のインスタンスが返される
         web_crawler = container.web_crawler()
-        assert web_crawler == "placeholder"
+        assert web_crawler is not None
+        assert hasattr(web_crawler, "crawl")
 
+        # WebsiteCacheRepositoryも実装済みなので実際のインスタンスが返される
         repository = container.website_cache_repository()
-        assert repository == "placeholder"
+        assert repository is not None
+        assert hasattr(repository, "find_by_url")
 
     def test_provider_configuration(self):
         """プロバイダーの設定テスト"""
