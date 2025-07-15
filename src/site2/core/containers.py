@@ -19,9 +19,6 @@ from ..core.use_cases.fetch_service import FetchService
 class Container(containers.DeclarativeContainer):
     """アプリケーションのDIコンテナ"""
 
-    # 設定の注入
-    config = providers.Configuration()
-
     # 設定オブジェクト
     settings = providers.Singleton(
         Settings,

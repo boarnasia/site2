@@ -26,9 +26,6 @@ def create_app(test_mode: bool = False) -> Container:
     else:
         container = Container()
 
-    # 設定の初期化
-    container.config.from_pydantic(Settings())
-
     # ワイヤリング（CLIコマンドなど）
     # プレースホルダー段階では、まだ実装されていないモジュールのワイヤリングは行わない
     # container.wire(modules=[

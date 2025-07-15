@@ -22,7 +22,6 @@ class TestContainerClass:
     def test_settings_singleton(self):
         """設定のシングルトンテスト"""
         container = Container()
-        container.config.from_pydantic(Settings(test_mode=True))
 
         settings1 = container.settings()
         settings2 = container.settings()
@@ -33,7 +32,6 @@ class TestContainerClass:
     def test_placeholder_services(self):
         """プレースホルダーサービスのテスト"""
         container = Container()
-        container.config.from_pydantic(Settings())
 
         # FetchServiceは実装済みなので実際のインスタンスが返される
         fetch_service = container.fetch_service()
@@ -94,7 +92,6 @@ class TestContainerTestClass:
     def test_test_container_isolation(self):
         """テスト用コンテナの分離テスト"""
         main_container = Container()
-        main_container.config.from_pydantic(Settings(test_mode=False))
 
         test_container = TestContainer()
 
@@ -119,7 +116,6 @@ class TestContainerTestClass:
     def test_container_reset(self):
         """コンテナのリセットテスト"""
         container = Container()
-        container.config.from_pydantic(Settings(test_mode=True))
 
         # 初回取得
         settings1 = container.settings()

@@ -1,11 +1,10 @@
 # site2プロジェクト - 現在の状態
 
-最終更新: 2025-01-14
+最終更新: 2025-01-15
 
 ## 📍 現在のフェーズ
 
-**Task 22完了** - インターフェース定義の統合完了
-**Task 23準備中** - パイプライン統合テストの再実装
+**Task 24準備中** - CLIのfetch/fetch:listコマンド実装
 
 ## ✅ 完了したタスク
 
@@ -14,7 +13,13 @@
 - Pydanticベースのドメインモデル設計
 - 契約（Protocol）定義
 
-### Task 20: パイプライン統合テスト（問題あり）
+### Task 03: FetchService実装
+- FetchService（コアユースケース）
+- WgetCrawler（wgetを使用したクローラー）
+- FileRepository（キャッシュリポジトリ、読み取り専用）
+- 全30テストがPASS
+
+### Task 20: パイプライン統合テスト（問題あり→差し戻し）
 - モックサービス実装
 - DIコンテナ（TestContainer）設定
 - 統合テスト作成
@@ -32,11 +37,17 @@
 - `*_contracts.py`に統一（統合型アプローチ）
 - Protocol命名は`*Protocol`サフィックスを維持（Python慣習）
 
+### Task 23: パイプライン統合テストの再実装
+- インターフェース準拠の実装
+- `CachedPage.read_text()`メソッドの活用
+- 正しいデータフロー実装
+- 全6統合テストがPASS
+
 ## 🎯 次のタスク
 
-**Task 23: パイプライン統合テストの再実装**
-- Task 20の問題を解決
-- 正しいインターフェースに準拠した実装
+**Task 24: CLIのfetch/fetch:listコマンド実装**
+- 実装したFetchServiceを実際に使用可能に
+- 動作確認しながら開発を進める
 
 ## 🔧 技術的な状態
 
@@ -44,35 +55,31 @@
 - ✅ Protocol定義の統一（`*_contracts.py`に集約）
 - ✅ データフロー設計：Navigation → DocumentOrder → MarkdownDocument
 - ✅ Protocol命名規則（Pythonらしく`*Protocol`サフィックス）
+- ✅ パイプライン統合テストのインターフェース準拠
+- ✅ FetchService実装完了
 
 ### 未解決の技術課題
-- [ ] パイプライン統合テストのインターフェース準拠
 - [ ] エラーハンドリングパターンの統一
-- [ ] 実サービスの実装
+- [ ] Detectサービスの実装
+- [ ] Buildサービスの実装
 - [ ] 非同期処理の最適化
-
-### Task 23で解決予定
-- `WebsiteCacheRepositoryProtocol.save`メソッドの削除
-- `CachedPage.read_text()`メソッドの追加
-- 正しいデータフロー：FetchResult → Repository → CachedPage → HTML
 
 ## 📊 実装優先順位
 
-1. **Task 23完了**
-   - インターフェース準拠の統合テスト
-   - 正しいデータフローの確立
+1. **Task 24: CLI実装**
+   - `site2 fetch <url>`コマンド
+   - `site2 fetch:list`コマンド
 
-2. **FetchService実装** (`src/site2/core/use_cases/fetch_service.py`)
-   - `FetchServiceProtocol`の実装
-   - リポジトリとクローラーの依存性注入
+2. **Phase 2: 検出機能**
+   - Task 04: HTMLパーサーの実装
+   - Task 05: Detect:Mainサービスの実装
+   - Task 06: Detect:Navサービスの実装
+   - Task 07: Detect:Orderサービスの実装
 
-3. **WgetCrawler実装** (`src/site2/adapters/crawlers/wget_crawler.py`)
-   - `WebCrawlerProtocol`の実装
-   - subprocessでwgetを呼び出し
-
-4. **FileRepository実装** (`src/site2/adapters/storage/file_repository.py`)
-   - `WebsiteCacheRepositoryProtocol`の実装
-   - キャッシュの読み込み（saveは不要）
+3. **Phase 3: 変換機能**
+   - Task 08: Markdownコンバーターの実装
+   - Task 09: PDFコンバーターの実装
+   - Task 10: Buildサービスの実装
 
 ## 📝 重要な技術的決定事項
 
@@ -81,8 +88,8 @@
    - 新規モデルは全てPydanticで実装
 
 2. **非同期処理**
-   - 全サービスメソッドをasync/awaitで統一
-   - pytest-asyncioでテスト
+   - サービスメソッドは状況に応じて同期/非同期を選択
+   - FetchServiceProtocolは同期的
 
 3. **依存性注入**
    - dependency-injectorを使用
@@ -91,6 +98,10 @@
 4. **インターフェース設計**
    - 統合型アプローチ（`*_contracts.py`）
    - Contract-First開発
+
+5. **リポジトリパターン**
+   - WebsiteCacheRepositoryは読み取り専用
+   - FetchServiceが内部でキャッシュ保存
 
 ## 🚀 開発サイクル
 
