@@ -62,7 +62,7 @@
    - インターフェース準拠の統合テスト
    - 正しいデータフローの確立
 
-2. **FetchService実装** (`src/site2/core/use_cases/fetch_use_case.py`)
+2. **FetchService実装** (`src/site2/core/use_cases/fetch_service.py`)
    - `FetchServiceProtocol`の実装
    - リポジトリとクローラーの依存性注入
 

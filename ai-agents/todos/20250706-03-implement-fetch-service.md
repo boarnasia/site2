@@ -11,7 +11,7 @@ FetchServiceは、site2の最初のステップとして、URLからWebサイト
 ## 成果物
 
 1. **FetchService実装**
-   - `src/site2/core/use_cases/fetch_use_case.py`
+   - `src/site2/core/use_cases/fetch_service.py`
    - FetchServiceProtocolの実装
 
 2. **WgetCrawler実装**
@@ -27,7 +27,7 @@ FetchServiceは、site2の最初のステップとして、URLからWebサイト
 ### 1. FetchService
 
 ```python
-# src/site2/core/use_cases/fetch_use_case.py
+# src/site2/core/use_cases/fetch_service.py
 
 class FetchService:
     def __init__(
@@ -199,7 +199,7 @@ class FileRepository:
 4. ログ出力（loguru使用）
 
 テストケース:
-- tests/unit/core/use_cases/test_fetch_use_case.py
+- tests/unit/core/use_cases/test_fetch_service.py
 
 制約:
 - wgetは必ずsubprocessで呼び出す

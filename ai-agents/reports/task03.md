@@ -9,7 +9,7 @@ Task 03「Fetchサービスの実装」を完了しました。これはsite2パ
 
 ## 実装内容
 
-### 1. FetchService (`src/site2/core/use_cases/fetch_use_case.py`)
+### 1. FetchService (`src/site2/core/use_cases/fetch_service.py`)
 - `FetchServiceProtocol`の実装
 - 同期的な`fetch()`メソッド（Protocolに準拠）
 - キャッシュディレクトリの管理

@@ -2251,7 +2251,7 @@ Clean Architecture に基づいた構造：
 > │       │   │   └── common.py
 > │       │   ├── use_cases/     # ユースケース
 > │       │   │   ├── __init__.py
-> │       │   │   └── fetch_use_case.py
+> │       │   │   └── fetch_service.py
 > │       │   └── ports/         # インターフェース定義
 > │       │       ├── __init__.py
 > │       │       ├── fetch_contracts.py
@@ -2281,7 +2281,7 @@ Clean Architecture に基づいた構造：
 > │   │   │   ├── domain/
 > │   │   │   │   └── test_fetch_domain.py
 > │   │   │   └── use_cases/
-> │   │   │       └── test_fetch_use_case.py
+> │   │   │       └── test_fetch_service.py
 > │   │   └── adapters/
 > │   │       ├── crawlers/
 > │   │       │   └── test_wget_crawler.py
@@ -2457,12 +2457,12 @@ AIに実装を依頼する際のガイドライン：
 > >
 > > ### 実装するクラス/関数
 > > - クラス名: `FetchService`
-> > - 実装場所: `src/site2/core/use_cases/fetch_use_case.py`
+> > - 実装場所: `src/site2/core/use_cases/fetch_service.py`
 > > - 依存: `WebsiteCacheRepositoryProtocol`, `WebCrawlerProtocol`
 > >
 > > ### テストケース
 > > 以下のテストがパスすること：
-> > - `tests/unit/core/use_cases/test_fetch_use_case.py`
+> > - `tests/unit/core/use_cases/test_fetch_service.py`
 > >
 > > ### 制約事項
 > > - wgetコマンドは`subprocess`で呼び出すこと
@@ -2694,7 +2694,7 @@ AIに実装を依頼する際のガイドライン：
 > > 4. Add appropriate logging
 > >
 > > ## Implementation location
-> > src/site2/core/use_cases/fetch_use_case.py
+> > src/site2/core/use_cases/fetch_service.py
 > >
 > > Please provide a complete implementation.
 > > EOF
@@ -2708,7 +2708,7 @@ AIに実装を依頼する際のガイドライン：
 >
 > > ```bash
 > > # ユースケースの実装
-> > vim src/site2/core/use_cases/fetch_use_case.py
+> > vim src/site2/core/use_cases/fetch_service.py
 > >
 > > # クローラーアダプターの実装
 > > vim src/site2/adapters/crawlers/wget_crawler.py
@@ -2782,7 +2782,7 @@ AIに実装を依頼する際のガイドライン：
 > フィードバックに基づいて修正：
 >
 > > ```python
-> > # src/site2/core/use_cases/fetch_use_case.py
+> > # src/site2/core/use_cases/fetch_service.py
 > > class FetchService:
 > >     def __init__(self,
 > >                  repository: WebsiteCacheRepositoryProtocol,
