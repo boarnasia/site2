@@ -38,9 +38,10 @@ class TestContainerClass:
         assert fetch_service is not None
         assert hasattr(fetch_service, "fetch")
 
-        # プレースホルダーが正しく設定されていることを確認
+        # DetectServiceは実装済みなので実際のインスタンスが返される
         detect_service = container.detect_service()
-        assert detect_service == "placeholder"
+        assert detect_service is not None
+        assert hasattr(detect_service, "detect_main")
 
         build_service = container.build_service()
         assert build_service == "placeholder"

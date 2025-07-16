@@ -269,7 +269,39 @@ Fetch → Detect (Navigation) → Detect (Order with Navigation) → Build (with
 - `test:` テスト
 - `refactor:` リファクタリング
 
-### 7. 最適化注意事項
+### 7. クリーンアーキテクチャ遵守ガイドライン
+
+#### レイヤー分離の確認事項
+- **Domain層**: ビジネスロジックのみ、外部依存なし
+- **Ports層**: インターフェース定義のみ、実装詳細なし
+- **Use Case層**: アプリケーションロジック、抽象に依存
+- **Adapters層**: 外部システム接続、プロトコル実装
+
+#### 重複防止チェックリスト
+1. **機能重複の確認**: 新しいファイル作成前に類似機能の既存実装をチェック
+2. **ドメインモデルの一元化**: ドメインモデルは`core/domain/`層でのみ定義
+3. **プロトコル継承の明示化**: すべてのアダプター実装でプロトコル継承を明記
+4. **DIコンテナの抽象依存**: 具象クラスではなくファクトリーメソッドを使用
+
+#### 実装時必須チェック
+```python
+# ✅ 良い例: プロトコル継承の明示
+class HeuristicMainContentDetector(MainContentDetectorProtocol):
+
+# ✅ 良い例: DIコンテナでの抽象依存
+providers.Factory(DetectorFactory.create, method="heuristic")
+
+# ❌ 悪い例: DIコンテナでの直接依存
+providers.Factory(HeuristicMainContentDetector)
+```
+
+#### 定期レビュー項目
+- レイヤー間の依存関係が適切か
+- 機能重複が発生していないか
+- ドメインモデルがPorts層に漏出していないか
+- プロトコル実装が明示されているか
+
+### 8. 最適化注意事項
 - API使用時は以下に注意：
   - 大きなファイルは分割して処理
   - バッチ処理でAPI呼び出し回数を削減

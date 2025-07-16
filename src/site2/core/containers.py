@@ -17,8 +17,9 @@ from ..adapters.parsers.beautifulsoup_parser import (
     LLMPreprocessor,
 )
 from ..adapters.parsers.chardet_detector import ChardetDetector
+from ..adapters.detectors.detector_factory import DetectorFactory
 from ..core.use_cases.fetch_service import FetchService
-# from ..core.use_cases.detect_service import DetectService
+from ..core.use_cases.detect_service import DetectService
 # from ..core.use_cases.build_service import BuildService
 
 
@@ -46,6 +47,20 @@ class Container(containers.DeclarativeContainer):
     html_analyzer = providers.Factory(BeautifulSoupAnalyzer)
     llm_preprocessor = providers.Factory(LLMPreprocessor)
 
+    # 検出器層 (Adapters)
+    main_content_detector = providers.Factory(
+        DetectorFactory.create,
+        method="heuristic",  # 設定可能にする
+        html_analyzer=html_analyzer,
+        options=providers.Dict(
+            enable_semantic_selectors=True,
+            enable_content_analysis=True,
+            enable_exclusion_filter=True,
+            min_text_density=0.05,
+            min_paragraph_count=2,
+        ),
+    )
+
     # インフラストラクチャ層
     web_crawler = providers.Factory(
         WgetCrawler,
@@ -63,8 +78,10 @@ class Container(containers.DeclarativeContainer):
     )
 
     detect_service = providers.Factory(
-        # DetectService,  # 実装後に有効化
-        providers.Object("placeholder"),  # 一時的なプレースホルダー
+        DetectService,
+        html_parser=html_parser,
+        html_analyzer=html_analyzer,
+        main_content_detector=main_content_detector,
     )
 
     build_service = providers.Factory(

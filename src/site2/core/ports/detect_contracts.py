@@ -6,6 +6,10 @@ from typing import Protocol, List, Optional, TYPE_CHECKING
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
+from bs4 import BeautifulSoup
+
+# ドメインモデルをimport
+from ..domain.detect_domain import SelectorCandidate, NavLink, OrderedFile
 
 if TYPE_CHECKING:
     from ..domain.detect_domain import Navigation
@@ -28,15 +32,6 @@ class DetectMainRequest(BaseModel):
         if v.suffix.lower() not in [".html", ".htm"]:
             raise ValueError(f"File must be HTML: {v}")
         return v
-
-
-class SelectorCandidate(BaseModel):
-    """セレクタ候補"""
-
-    selector: str = Field(..., min_length=1, description="CSSセレクタ")
-    score: float = Field(..., ge=0.0, le=1.0, description="スコア(0.0-1.0)")
-    reasoning: str = Field(..., min_length=1, description="選定理由")
-    element_count: int = Field(..., ge=0, description="要素数")
 
 
 class DetectMainResult(BaseModel):
@@ -87,15 +82,6 @@ class DetectNavRequest(BaseModel):
         if v.suffix.lower() not in [".html", ".htm"]:
             raise ValueError(f"File must be HTML: {v}")
         return v
-
-
-class NavLink(BaseModel):
-    """ナビゲーションリンク"""
-
-    text: str = Field(..., min_length=1, description="リンクテキスト")
-    href: str = Field(..., min_length=1, description="リンク先URL")
-    level: int = Field(default=0, ge=0, description="階層レベル")
-    is_external: bool = Field(default=False, description="外部リンクフラグ")
 
 
 class DetectNavResult(BaseModel):
@@ -151,18 +137,6 @@ class DetectOrderRequest(BaseModel):
         return v
 
 
-class OrderedFile(BaseModel):
-    """順序付きファイル"""
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    file_path: Path = Field(..., description="ファイルパス")
-    title: str = Field(..., min_length=1, description="ファイルタイトル")
-    order: int = Field(..., ge=0, description="順序番号")
-    level: int = Field(default=0, ge=0, description="階層レベル")
-    parent_path: Optional[Path] = Field(default=None, description="親ファイルパス")
-
-
 class DetectOrderResult(BaseModel):
     """順序検出結果の契約"""
 
@@ -199,6 +173,50 @@ class DetectOrderResult(BaseModel):
                 raise ValueError(f"File must exist: {file.file_path}")
 
         return v
+
+
+class MainContentDetectionResult(BaseModel):
+    """メインコンテンツ検出結果（低レベル）"""
+
+    candidates: List[SelectorCandidate] = Field(
+        default_factory=list, description="検出候補一覧"
+    )
+    confidence: float = Field(..., ge=0.0, le=1.0, description="信頼度(0.0-1.0)")
+    primary_selector: str = Field(default="", description="メインセレクタ")
+
+
+class MainContentDetectorProtocol(Protocol):
+    """
+    メインコンテンツ検出器の契約
+
+    複数の実装方式をサポート:
+    - ヒューリスティック（BeautifulSoup）
+    - AI（Gemini API）
+    - ハイブリッド（複数手法の組み合わせ）
+    """
+
+    def detect_main_content(self, soup: BeautifulSoup) -> MainContentDetectionResult:
+        """
+        メインコンテンツを検出
+
+        Args:
+            soup: BeautifulSoupオブジェクト
+
+        Returns:
+            MainContentDetectionResult: 検出結果
+
+        事前条件:
+        - soup は有効なBeautifulSoupオブジェクト
+
+        事後条件:
+        - MainContentDetectionResultが返される
+        - confidence は0.0-1.0の範囲
+        - candidatesは信頼度順にソートされている
+
+        例外:
+        - DetectError: 検出処理に失敗した場合
+        """
+        ...
 
 
 # サービスインターフェース（ポート）
@@ -287,3 +305,30 @@ class NavigationNotFoundError(DetectError):
     """ナビゲーションが見つからないエラー"""
 
     code: str = "NAVIGATION_NOT_FOUND"
+
+
+class HeuristicDetectionError(DetectError):
+    """ヒューリスティック検出エラー"""
+
+    code: str = "HEURISTIC_DETECTION_ERROR"
+
+
+class AIDetectionError(DetectError):
+    """AI検出エラー"""
+
+    code: str = "AI_DETECTION_ERROR"
+
+
+# Pydanticの循環参照解決のため、model_rebuildを実行
+def _rebuild_models():
+    """モデルの再構築を実行"""
+    try:
+        from ..domain.detect_domain import Navigation  # noqa: F401
+
+        DetectOrderRequest.model_rebuild()
+    except ImportError:
+        # Navigationが定義されていない場合はスキップ
+        pass
+
+
+_rebuild_models()

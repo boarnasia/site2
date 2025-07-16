@@ -26,9 +26,10 @@
 - [x] [04. HTML解析契約の定義](todos/20250715-04-define-parser-contracts.md)
 - [x] [25. HTMLパーサーアダプターの実装](todos/20250715-25-implement-parser-adapter.md)
 - [x] [26. HTMLパーサーの単体テスト実装](todos/20250715-26-implement-parser-tests.md)
-- [ ] [05. Detect:Mainサービスの実装](todos/20250706-05-implement-detect-main.md)
-- [ ] [06. Detect:Navサービスの実装](todos/20250706-06-implement-detect-nav.md)
-- [ ] [07. Detect:Orderサービスの実装](todos/20250706-07-implement-detect-order.md)
+- [x] [05. Detect:Mainサービスの実装](todos/20250706-05-implement-detect-main.md)
+- [x] [06. Detect:Navサービスの実装](todos/20250706-06-implement-detect-nav.md)
+- [x] [07. Detect:Orderサービスの実装](todos/20250706-07-implement-detect-order.md)
+- [x] [27. DetectService アーキテクチャの改善とMainContentDetectorの分離](todos/20250717-27-refactoring-architecture.md)
 
 ### Phase 3: ビルド機能の実装
 

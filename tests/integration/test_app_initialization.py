@@ -9,6 +9,7 @@ import os
 
 from site2.app import create_app
 from site2.core.use_cases.fetch_service import FetchService
+from site2.core.use_cases.detect_service import DetectService
 from site2.adapters.crawlers.wget_crawler import WgetCrawler
 from site2.adapters.storage.file_repository import FileRepository
 
@@ -80,9 +81,10 @@ class TestAppInitialization:
         assert isinstance(repository, FileRepository)
         assert hasattr(repository, "find_by_url")
 
-        # 未実装のサービスはプレースホルダーのまま
+        # DetectServiceは実装済みなので実際のインスタンスが返される
         detect_service = container.detect_service()
-        assert detect_service == "placeholder"
+        assert isinstance(detect_service, DetectService)
+        assert hasattr(detect_service, "detect_main")
 
         build_service = container.build_service()
         assert build_service == "placeholder"

@@ -19,6 +19,7 @@ class SelectorCandidate(BaseModel):
     score: float = Field(..., ge=0.0, le=1.0, description="Score between 0.0 and 1.0")
     reasoning: str = Field(..., min_length=1, description="Reasoning for the score")
     element_count: int = Field(..., ge=0, description="Number of elements matched")
+    metadata: dict = Field(default_factory=dict, description="Additional metadata")
 
     model_config = ConfigDict(frozen=True)
 
