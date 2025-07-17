@@ -2,22 +2,20 @@
 site2 build機能の契約定義（Contract-First Development）
 """
 
-from typing import Protocol, List, Optional, Dict, Any, Union, TYPE_CHECKING
+from typing import Protocol, List, Optional, Dict, Any, Union, runtime_checkable
 from pathlib import Path
-from enum import Enum
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
-if TYPE_CHECKING:
-    from ..domain.detect_domain import OrderedFile, DocumentOrder
-
-
-# エニュメーション
-class OutputFormat(Enum):
-    """出力フォーマット"""
-
-    MARKDOWN = "md"
-    PDF = "pdf"
+# ドメインモデルをインポート
+from ..domain.build_domain import (
+    OutputFormat,
+    ExtractedContent,
+    ConvertResult,
+    MarkdownConvertRequest,
+    PDFConvertRequest,
+)
+from ..domain.detect_domain import OrderedFile, DocumentOrder
 
 
 # DTOs (Data Transfer Objects) - 外部とのやり取り用
@@ -30,10 +28,10 @@ class BuildRequest(BaseModel):
     main_selector: str = Field(
         ..., min_length=1, description="メインコンテンツセレクタ"
     )
-    ordered_files: List["OrderedFile"] = Field(
+    ordered_files: List[OrderedFile] = Field(
         ..., min_length=1, description="順序付きファイル一覧"
     )
-    doc_order: "DocumentOrder" = Field(
+    doc_order: DocumentOrder = Field(
         ..., description="ドキュメント順序（Task 21で追加）"
     )
     format: OutputFormat = Field(..., description="出力フォーマット")
@@ -60,24 +58,12 @@ class BuildRequest(BaseModel):
 
     @field_validator("ordered_files")
     @classmethod
-    def validate_ordered_files(cls, v: List["OrderedFile"]) -> List["OrderedFile"]:
+    def validate_ordered_files(cls, v: List[OrderedFile]) -> List[OrderedFile]:
         """順序付きファイルの検証"""
         for file in v:
             if not file.file_path.exists():
                 raise ValueError(f"File must exist: {file.file_path}")
         return v
-
-
-class ExtractedContent(BaseModel):
-    """抽出されたコンテンツ"""
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    file_path: Path = Field(..., description="ファイルパス")
-    title: str = Field(..., min_length=1, description="タイトル")
-    content: str = Field(..., description="抽出コンテンツ")
-    heading_level: int = Field(default=1, ge=1, le=6, description="見出しレベル")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="メタデータ")
 
 
 class BuildResult(BaseModel):
@@ -115,61 +101,8 @@ class BuildResult(BaseModel):
         return v
 
 
-class ConvertRequest(BaseModel):
-    """変換要求の基底クラス"""
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    file_path: Path = Field(..., description="変換対象ファイル")
-    main_selector: str = Field(..., min_length=1, description="メインセレクタ")
-    options: Dict[str, Any] = Field(default_factory=dict, description="変換オプション")
-
-    @field_validator("file_path")
-    @classmethod
-    def validate_file_path(cls, v: Path) -> Path:
-        """ファイルパスの検証"""
-        if not v.exists():
-            raise ValueError(f"File must exist: {v}")
-        return v
-
-    @field_validator("main_selector")
-    @classmethod
-    def validate_main_selector(cls, v: str) -> str:
-        """メインセレクタの検証"""
-        if not v.strip():
-            raise ValueError("Main selector cannot be empty")
-        return v
-
-
-class MarkdownConvertRequest(ConvertRequest):
-    """Markdown変換要求"""
-
-    include_toc: bool = Field(default=True, description="目次含むフラグ")
-    heading_offset: int = Field(default=0, ge=0, le=5, description="見出しオフセット")
-
-
-class PDFConvertRequest(ConvertRequest):
-    """PDF変換要求"""
-
-    pdf_options: Dict[str, Any] = Field(
-        default_factory=dict, description="PDF変換オプション"
-    )
-
-
-class ConvertResult(BaseModel):
-    """変換結果"""
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    original_file: Path = Field(..., description="元ファイル")
-    content: Union[str, bytes] = Field(..., description="変換コンテンツ")
-    format: OutputFormat = Field(..., description="出力フォーマット")
-    title: str = Field(..., min_length=1, description="タイトル")
-    extracted_text_length: int = Field(..., ge=0, description="抽出テキスト長")
-    warnings: List[str] = Field(default_factory=list, description="警告一覧")
-
-
 # サービスインターフェース（ポート）
+@runtime_checkable
 class BuildServiceProtocol(Protocol):
     """Buildサービスの契約"""
 
@@ -195,6 +128,7 @@ class BuildServiceProtocol(Protocol):
         ...
 
 
+@runtime_checkable
 class MarkdownConverterProtocol(Protocol):
     """Markdownコンバーターの契約"""
 
@@ -218,6 +152,7 @@ class MarkdownConverterProtocol(Protocol):
         ...
 
 
+@runtime_checkable
 class PDFConverterProtocol(Protocol):
     """PDFコンバーターの契約"""
 
@@ -257,34 +192,3 @@ class PDFConverterProtocol(Protocol):
         - ConvertError: 変換または結合に失敗
         """
         ...
-
-
-# エラー定義
-class BuildError(Exception):
-    """Build機能の基底エラー"""
-
-    code: str = "BUILD_ERROR"
-
-
-class ConvertError(BuildError):
-    """変換エラー"""
-
-    code: str = "CONVERT_ERROR"
-
-
-class InvalidSelectorError(BuildError):
-    """無効なセレクタエラー"""
-
-    code: str = "INVALID_SELECTOR"
-
-
-class ContentNotFoundError(BuildError):
-    """コンテンツが見つからないエラー"""
-
-    code: str = "CONTENT_NOT_FOUND"
-
-
-class OutputFormatError(BuildError):
-    """出力フォーマットエラー"""
-
-    code: str = "OUTPUT_FORMAT_ERROR"

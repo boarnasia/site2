@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     cache_duration_hours: int = 24
 
     # クローラー設定
-    wget_timeout: int = 30
+    wget_timeout: int = 30  # 各ページ取得のタイムアウト（秒）
     max_depth: int = 10
     user_agent: str = "site2/1.0"
     crawl_delay: float = 1.0  # 秒

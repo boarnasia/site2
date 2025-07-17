@@ -8,19 +8,20 @@ from dependency_injector import containers, providers
 
 from ..config.settings import Settings
 
-# 実装クラスは後で追加
-from ..adapters.storage.file_repository import FileRepository
-from ..adapters.crawlers.wget_crawler import WgetCrawler
-from ..adapters.parsers.beautifulsoup_parser import (
-    BeautifulSoupAnalyzer,
-    BeautifulSoupParser,
-    LLMPreprocessor,
-)
-from ..adapters.parsers.chardet_detector import ChardetDetector
+# Factoryクラスをインポート
+from ..adapters.storage.repository_factory import RepositoryFactory
+from ..adapters.crawlers.crawler_factory import CrawlerFactory
+from ..adapters.parsers.parser_factory import ParserFactory
 from ..adapters.detectors.detector_factory import DetectorFactory
 from ..core.use_cases.fetch_service import FetchService
 from ..core.use_cases.detect_service import DetectService
-# from ..core.use_cases.build_service import BuildService
+from ..core.use_cases.build_service import BuildService
+
+# Converters
+from ..adapters.converters.markdown_converter import MarkdownifyConverter
+from ..adapters.converters.pdf_converter import PlaywrightPDFConverter
+from ..adapters.converters.markdownify_config import DEFAULT_MARKDOWNIFY_CONFIG
+from ..adapters.converters.playwright_config import DEFAULT_PLAYWRIGHT_PDF_CONFIG
 
 
 class Container(containers.DeclarativeContainer):
@@ -35,17 +36,28 @@ class Container(containers.DeclarativeContainer):
 
     # リポジトリ層
     website_cache_repository = providers.Factory(
-        FileRepository,
+        RepositoryFactory.create,
+        method="file",
         cache_dir=settings.provided.cache_dir,
     )
 
     # パーサー層 (Adapters)
-    encoding_detector = providers.Factory(ChardetDetector)
-    html_parser = providers.Factory(
-        BeautifulSoupParser,
+    encoding_detector = providers.Factory(
+        ParserFactory.create_encoding_detector,
+        method="chardet",
     )
-    html_analyzer = providers.Factory(BeautifulSoupAnalyzer)
-    llm_preprocessor = providers.Factory(LLMPreprocessor)
+    html_parser = providers.Factory(
+        ParserFactory.create_parser,
+        method="beautifulsoup",
+    )
+    html_analyzer = providers.Factory(
+        ParserFactory.create_analyzer,
+        method="beautifulsoup",
+    )
+    llm_preprocessor = providers.Factory(
+        ParserFactory.create_preprocessor,
+        method="llm",
+    )
 
     # 検出器層 (Adapters)
     main_content_detector = providers.Factory(
@@ -63,7 +75,8 @@ class Container(containers.DeclarativeContainer):
 
     # インフラストラクチャ層
     web_crawler = providers.Factory(
-        WgetCrawler,
+        CrawlerFactory.create,
+        method="wget",
         timeout=settings.provided.wget_timeout,
         user_agent=settings.provided.user_agent,
         delay=settings.provided.crawl_delay,
@@ -84,9 +97,23 @@ class Container(containers.DeclarativeContainer):
         main_content_detector=main_content_detector,
     )
 
+    # コンバーター層
+    markdown_converter = providers.Factory(
+        MarkdownifyConverter,
+        config=providers.Dict(DEFAULT_MARKDOWNIFY_CONFIG),
+    )
+
+    pdf_converter = providers.Factory(
+        PlaywrightPDFConverter,
+        config=providers.Dict(DEFAULT_PLAYWRIGHT_PDF_CONFIG),
+    )
+
+    # ビルドサービス
     build_service = providers.Factory(
-        # BuildService,  # 実装後に有効化
-        providers.Object("placeholder"),  # 一時的なプレースホルダー
+        BuildService,
+        markdown_converter=markdown_converter,
+        pdf_converter=pdf_converter,
+        html_parser=html_parser,
     )
 
 

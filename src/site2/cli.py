@@ -4,6 +4,8 @@ site2 CLI - Convert websites to Markdown/PDF
 """
 
 from typing import List, Optional
+from pathlib import Path
+import sys
 
 import typer
 from loguru import logger
@@ -77,12 +79,145 @@ def callback(
 @app.command("auto")
 def auto(
     uri: str = typer.Argument(..., help="The URI to fetch and process."),
+    output: str = typer.Argument(..., help="Output file path."),
     format: OutputFormat = typer.Option(
         "md", "--format", "-f", help="Output format (md or pdf)."
     ),
 ):
-    """Convert website to single markdown or PDF file and output to stdout."""
-    console.print(f"Fetching {uri} and outputting as {format.name}.")
+    """Convert website to single markdown or PDF file and output to specified file."""
+    from pathlib import Path
+
+    try:
+        # 出力パスの検証
+        output_path = Path(output)
+        if output_path.exists() and not typer.confirm(
+            f"File {output} already exists. Overwrite?"
+        ):
+            console.print("Operation cancelled.")
+            sys.exit(0)
+        # DIコンテナの初期化
+        from .core.containers import Container
+
+        container = Container()
+        container.config.from_dict({})
+
+        # 各サービスの取得
+        fetch_service = container.fetch_service()
+        detect_service = container.detect_service()
+        build_service = container.build_service()
+
+        console.print(f"🌐 Fetching: {uri}")
+
+        # 1. fetch - Webサイトの取得
+        from .core.ports.fetch_contracts import FetchRequest
+
+        fetch_request = FetchRequest(url=uri)
+        fetch_result = fetch_service.fetch(fetch_request)
+
+        console.print(f"✅ Cached to: {fetch_result.cache_directory}")
+        console.print(f"📁 Files: {len(fetch_result.cached_files)} downloaded")
+
+        # 2. detect:main - メインコンテンツ検出
+        console.print("🔍 Detecting main content...")
+
+        # インデックスファイルの検索
+        index_file = _find_index_file(fetch_result.cached_files)
+        if not index_file:
+            console.print("❌ Error: No index file found")
+            sys.exit(1)
+
+        # メインコンテンツセレクタの検出
+        from .core.domain.detect_domain import MainContentDetectionRequest
+
+        main_request = MainContentDetectionRequest(file_path=index_file)
+        main_result = detect_service.detect_main_content(main_request)
+
+        console.print(f"🎯 Main selector: {main_result.main_selector}")
+
+        # 3. detect:order - ドキュメント順序検出
+        console.print("📋 Detecting document order...")
+
+        from .core.domain.detect_domain import DocumentOrderRequest
+
+        order_request = DocumentOrderRequest(
+            directory_path=fetch_result.cache_directory, file_patterns=["*.html"]
+        )
+        order_result = detect_service.detect_document_order(order_request)
+
+        console.print(f"📚 Found {len(order_result.ordered_files)} documents")
+
+        # 4. build - ドキュメント生成
+        console.print(f"🔨 Building {format.name.upper()} document...")
+
+        from .core.ports.build_contracts import BuildRequest
+        from .core.domain.build_domain import OutputFormat as BuildOutputFormat
+
+        # OutputFormatの変換
+        build_format = (
+            BuildOutputFormat.MARKDOWN
+            if format.name.lower() == "md"
+            else BuildOutputFormat.PDF
+        )
+
+        build_request = BuildRequest(
+            cache_directory=fetch_result.cache_directory,
+            main_selector=main_result.main_selector,
+            ordered_files=order_result.ordered_files,
+            doc_order=order_result,
+            format=build_format,
+            output_path=output_path,
+            options={},
+        )
+
+        build_result = build_service.build(build_request)
+
+        # 5. ファイルへの出力
+        if isinstance(build_result.content, str):
+            # Markdownの場合
+            output_path.write_text(build_result.content, encoding="utf-8")
+        else:
+            # PDFの場合
+            output_path.write_bytes(build_result.content)
+
+        # 成功メッセージと統計情報の出力
+        stats = build_result.statistics
+        console.print(f"✅ Generated {build_format.value}: {output_path}")
+        console.print(
+            f"📊 Stats: {stats.get('total_files', 0)} files, "
+            f"{stats.get('total_text_length', 0)} characters"
+        )
+
+    except Exception as e:
+        sys.stderr.write(f"❌ Error: {str(e)}\n")
+        sys.exit(1)
+
+
+def _find_index_file(cached_files: list) -> Path:
+    """
+    インデックスファイルを検索
+
+    Args:
+        cached_files: キャッシュされたファイルのリスト
+
+    Returns:
+        Path: インデックスファイルのパス（見つからない場合はNone）
+    """
+
+    # index.html を優先的に検索
+    for file_path in cached_files:
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
+        if file_path.name.lower() == "index.html":
+            return file_path
+
+    # index.html が見つからない場合は最初の .html ファイルを使用
+    for file_path in cached_files:
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
+        if file_path.suffix.lower() == ".html":
+            return file_path
+
+    return None
 
 
 @app.command("fetch")
@@ -247,7 +382,57 @@ def detect_main(
     uri: str = typer.Argument(..., help="The URI to detect main block."),
 ):
     """Detect CSS selector for main content block."""
-    console.print(f"Detectting main block from: {uri}")
+    import json
+
+    try:
+        # DIコンテナの初期化
+        from .core.containers import Container
+
+        container = Container()
+        container.config.from_dict({})
+
+        # サービスの取得
+        fetch_service = container.fetch_service()
+        detect_service = container.detect_service()
+
+        # 1. Webサイトの取得
+        from .core.ports.fetch_contracts import FetchRequest
+
+        fetch_request = FetchRequest(url=uri)
+        fetch_result = fetch_service.fetch(fetch_request)
+
+        # 2. インデックスファイルの検索
+        index_file = _find_index_file(fetch_result.cached_files)
+        if not index_file:
+            sys.stderr.write("❌ Error: No index file found\n")
+            sys.exit(1)
+
+        # 3. メインコンテンツセレクタの検出
+        from .core.domain.detect_domain import MainContentDetectionRequest
+
+        main_request = MainContentDetectionRequest(file_path=index_file)
+        main_result = detect_service.detect_main_content(main_request)
+
+        # 4. JSON形式で結果を出力
+        result = {
+            "main_selector": main_result.main_selector,
+            "confidence": main_result.confidence,
+            "file_path": str(index_file),
+            "detected_candidates": [
+                {
+                    "selector": candidate.selector,
+                    "score": candidate.score,
+                    "reasons": candidate.reasons,
+                }
+                for candidate in main_result.candidates
+            ],
+        }
+
+        json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
+
+    except Exception as e:
+        sys.stderr.write(f"❌ Error: {str(e)}\n")
+        sys.exit(1)
 
 
 @app.command("detect:nav")
@@ -255,7 +440,53 @@ def detect_nav(
     uri: str = typer.Argument(..., help="The URI to detect navication block."),
 ):
     """Detect CSS selector for navigation block."""
-    console.print(f"Detecting navication block from: {uri}")
+    import json
+
+    try:
+        # DIコンテナの初期化
+        from .core.containers import Container
+
+        container = Container()
+        container.config.from_dict({})
+
+        # サービスの取得
+        fetch_service = container.fetch_service()
+        detect_service = container.detect_service()
+
+        # 1. Webサイトの取得
+        from .core.ports.fetch_contracts import FetchRequest
+
+        fetch_request = FetchRequest(url=uri)
+        fetch_result = fetch_service.fetch(fetch_request)
+
+        # 2. インデックスファイルの検索
+        index_file = _find_index_file(fetch_result.cached_files)
+        if not index_file:
+            sys.stderr.write("❌ Error: No index file found\n")
+            sys.exit(1)
+
+        # 3. ナビゲーションセレクタの検出
+        from .core.domain.detect_domain import NavigationDetectionRequest
+
+        nav_request = NavigationDetectionRequest(file_path=index_file)
+        nav_result = detect_service.detect_navigation(nav_request)
+
+        # 4. JSON形式で結果を出力
+        result = {
+            "navigation_selector": nav_result.nav_selector,
+            "confidence": nav_result.confidence,
+            "file_path": str(index_file),
+            "detected_links": [
+                {"url": link.url, "text": link.text, "order": link.order}
+                for link in nav_result.navigation_links
+            ],
+        }
+
+        json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
+
+    except Exception as e:
+        sys.stderr.write(f"❌ Error: {str(e)}\n")
+        sys.exit(1)
 
 
 @app.command("detect:order")
@@ -263,7 +494,53 @@ def detect_order(
     uri: str = typer.Argument(..., help="The URI to detect order of URIs."),
 ):
     """Detect and output document order to stdout."""
-    console.print(f"Detectting URIs order from: {uri}")
+    import json
+
+    try:
+        # DIコンテナの初期化
+        from .core.containers import Container
+
+        container = Container()
+        container.config.from_dict({})
+
+        # サービスの取得
+        fetch_service = container.fetch_service()
+        detect_service = container.detect_service()
+
+        # 1. Webサイトの取得
+        from .core.ports.fetch_contracts import FetchRequest
+
+        fetch_request = FetchRequest(url=uri)
+        fetch_result = fetch_service.fetch(fetch_request)
+
+        # 2. ドキュメント順序の検出
+        from .core.domain.detect_domain import DocumentOrderRequest
+
+        order_request = DocumentOrderRequest(
+            directory_path=fetch_result.cache_directory, file_patterns=["*.html"]
+        )
+        order_result = detect_service.detect_document_order(order_request)
+
+        # 3. JSON形式で結果を出力
+        result = {
+            "ordered_files": [
+                {
+                    "order": file_info.order,
+                    "path": str(file_info.path),
+                    "title": file_info.title,
+                    "level": file_info.level,
+                }
+                for file_info in order_result.ordered_files
+            ],
+            "total_files": len(order_result.ordered_files),
+            "cache_directory": str(fetch_result.cache_directory),
+        }
+
+        json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
+
+    except Exception as e:
+        sys.stderr.write(f"❌ Error: {str(e)}\n")
+        sys.exit(1)
 
 
 @app.command("build")
@@ -274,7 +551,92 @@ def build(
     ),
 ):
     """Build and merge files/URIs to specified format and output to stdout."""
-    console.print(f"Build {format.name} from: {', '.join(files_or_uris)}")
+    from pathlib import Path
+
+    try:
+        # DIコンテナの初期化
+        from .core.containers import Container
+
+        container = Container()
+        container.config.from_dict({})
+
+        # サービスの取得
+        build_service = container.build_service()
+
+        # ファイルパスのリストを作成
+        file_paths = []
+        for item in files_or_uris:
+            if item.startswith(("http://", "https://")):
+                # URIの場合はエラー（この実装では直接URIをサポートしない）
+                sys.stderr.write(
+                    f"❌ Error: URI support not implemented in build command: {item}\n"
+                )
+                sys.stderr.write("Hint: Use 'auto' command for URI processing\n")
+                sys.exit(1)
+            else:
+                # ファイルパスとして処理
+                path = Path(item)
+                if not path.exists():
+                    sys.stderr.write(f"❌ Error: File not found: {path}\n")
+                    sys.exit(1)
+                file_paths.append(path)
+
+        # BuildRequestの作成
+        from .core.ports.build_contracts import BuildRequest
+        from .core.domain.build_domain import (
+            OutputFormat as BuildOutputFormat,
+            DocumentOrder,
+            OrderedFile,
+        )
+
+        # OutputFormatの変換
+        build_format = (
+            BuildOutputFormat.MARKDOWN
+            if format.name.lower() == "md"
+            else BuildOutputFormat.PDF
+        )
+
+        # 簡単なDocumentOrderとOrderedFileの作成
+        ordered_files = [
+            OrderedFile(order=i + 1, path=path, title=path.stem, level=1)
+            for i, path in enumerate(file_paths)
+        ]
+
+        doc_order = DocumentOrder(
+            ordered_files=ordered_files, total_files=len(ordered_files)
+        )
+
+        build_request = BuildRequest(
+            cache_directory=file_paths[0].parent if file_paths else Path.cwd(),
+            main_selector="body",  # デフォルトセレクタ
+            ordered_files=ordered_files,
+            doc_order=doc_order,
+            format=build_format,
+            output_path=None,  # stdoutに出力するためNone
+            options={},
+        )
+
+        # ビルド実行
+        build_result = build_service.build(build_request)
+
+        # 標準出力への出力
+        if isinstance(build_result.content, str):
+            # Markdownの場合
+            sys.stdout.write(build_result.content)
+        else:
+            # PDFの場合
+            sys.stdout.buffer.write(build_result.content)
+
+        # 統計情報の出力（stderr）
+        stats = build_result.statistics
+        console.print(
+            f"✅ Built {build_format.value}: {stats.get('total_files', 0)} files, "
+            f"{stats.get('total_text_length', 0)} characters"
+        )
+
+    except Exception as e:
+        sys.stderr.write(f"❌ Error: {str(e)}\n")
+        sys.exit(1)
 
 
 def setup_container() -> Container:

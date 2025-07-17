@@ -13,6 +13,7 @@
 annotated-types==0.7.0
     # via pydantic
 beautifulsoup4==4.13.4
+    # via markdownify
     # via site2
 chardet==5.2.0
     # via site2
@@ -26,6 +27,8 @@ loguru==0.7.3
     # via site2
 markdown-it-py==3.0.0
     # via rich
+markdownify==1.1.0
+    # via site2
 mdurl==0.1.2
     # via markdown-it-py
 playwright==1.53.0
@@ -43,12 +46,16 @@ pygments==2.19.2
     # via rich
 pypdf==5.7.0
     # via site2
+pypdf2==3.0.1
+    # via site2
 python-dotenv==1.1.1
     # via pydantic-settings
 rich==14.0.0
     # via typer
 shellingham==1.5.4
     # via typer
+six==1.17.0
+    # via markdownify
 soupsieve==2.7
     # via beautifulsoup4
 typer==0.16.0

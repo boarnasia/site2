@@ -30,12 +30,16 @@
 - [x] [06. Detect:Navサービスの実装](todos/20250706-06-implement-detect-nav.md)
 - [x] [07. Detect:Orderサービスの実装](todos/20250706-07-implement-detect-order.md)
 - [x] [27. DetectService アーキテクチャの改善とMainContentDetectorの分離](todos/20250717-27-refactoring-architecture.md)
+- [x] [28. Build契約のドメイン分離修正](todos/20250717-28-build-domain.md)
+- [x] [29. Adapter実装のProtocol継承明示化](todos/20250717-29-adapter-protocol.md)
+- [x] [30. DIコンテナのFactory化とAdapter直接依存の解消](todos/20250717-30-di-factory.md)
+- [x] [31. Use Case層のAdapter依存検証](todos/20250717-31-use-case-verification.md)
 
 ### Phase 3: ビルド機能の実装
 
-- [ ] [08. Markdownコンバーターの実装](todos/20250706-08-implement-markdown-converter.md)
-- [ ] [09. PDFコンバーターの実装](todos/20250706-09-implement-pdf-converter.md)
-- [ ] [10. Buildサービスの実装](todos/20250706-10-implement-build-service.md)
+- [x] [08. Markdownコンバーターの実装](todos/20250706-08-implement-markdown-converter.md)
+- [x] [09. PDFコンバーターの実装](todos/20250706-09-implement-pdf-converter.md)
+- [x] [10. Buildサービスの実装](todos/20250706-10-implement-build-service.md)
 
 ### Phase 4: 統合とCLI
 

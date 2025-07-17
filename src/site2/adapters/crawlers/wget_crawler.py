@@ -19,10 +19,10 @@ from ...core.ports.fetch_contracts import WebCrawlerProtocol, NetworkError
 class WgetCrawler(WebCrawlerProtocol):
     """wgetを使用したWebクローラーの実装"""
 
-    def __init__(self, timeout: int = 300, user_agent: str = None, delay: float = 0.5):
+    def __init__(self, timeout: int = 30, user_agent: str = None, delay: float = 0.5):
         """
         Args:
-            timeout: wgetのタイムアウト秒数（デフォルト: 300秒）
+            timeout: 各ページ取得のタイムアウト秒数（デフォルト: 30秒）
             user_agent: User-Agent文字列（デフォルト: Mozilla/5.0 (compatible; site2/1.0)）
             delay: リクエスト間の遅延秒数（デフォルト: 0.5秒）
         """
@@ -61,9 +61,7 @@ class WgetCrawler(WebCrawlerProtocol):
         # wgetの実行
         try:
             logger.debug(f"Executing: {' '.join(wget_command)}")
-            result = subprocess.run(
-                wget_command, capture_output=True, text=True, timeout=self.timeout
-            )
+            result = subprocess.run(wget_command, capture_output=True, text=True)
 
             if result.returncode != 0:
                 stderr = result.stderr.strip()
@@ -72,9 +70,6 @@ class WgetCrawler(WebCrawlerProtocol):
                 )
                 raise NetworkError(f"Wget failed: {stderr}")
 
-        except subprocess.TimeoutExpired:
-            logger.error(f"Wget timeout after {self.timeout} seconds")
-            raise NetworkError(f"Wget timeout after {self.timeout} seconds")
         except Exception as e:
             logger.error(f"Failed to execute wget: {e}")
             raise NetworkError(f"Failed to execute wget: {e}") from e
@@ -120,7 +115,13 @@ class WgetCrawler(WebCrawlerProtocol):
             str(self.delay),  # サーバーへの負荷軽減
             "--random-wait",  # ランダムな待機時間
             "--quota",
-            "100m",  # 最大ダウンロードサイズ
+            "50m",  # 最大ダウンロードサイズを50MBに削減
+            "--accept",
+            "html,htm",  # HTMLファイルのみダウンロード
+            "--reject",
+            "css,js,png,jpg,jpeg,gif,svg,ico,pdf,zip,tar,gz,exe,dmg,mp4,mp3,avi,mov,webm",  # 不要なファイルタイプを除外
+            "--timeout",
+            str(self.timeout),  # 各ページ取得のタイムアウト
         ]
 
         # 既存キャッシュがある場合は差分更新モード

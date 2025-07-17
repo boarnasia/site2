@@ -18,7 +18,7 @@ class FetchRequest(BaseModel):
 
     url: HttpUrl = Field(..., description="Fetch対象のURL")
     depth: CrawlDepth = Field(
-        default_factory=lambda: CrawlDepth(value=3), description="クロール深度"
+        default_factory=lambda: CrawlDepth(value=1), description="クロール深度"
     )
     force_refresh: bool = Field(default=False, description="強制更新フラグ")
     cache_dir: Optional[str] = Field(default=None, description="キャッシュディレクトリ")
