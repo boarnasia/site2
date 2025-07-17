@@ -228,7 +228,7 @@ class TestDetectService:
 
             assert links[2].text == "External"
             assert links[2].href == "https://external.com"
-            assert not links[2].is_external
+            assert links[2].is_external
 
         finally:
             # テストファイルを削除
