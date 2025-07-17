@@ -30,10 +30,10 @@
 - [x] [06. Detect:Navサービスの実装](todos/20250706-06-implement-detect-nav.md)
 - [x] [07. Detect:Orderサービスの実装](todos/20250706-07-implement-detect-order.md)
 - [x] [27. DetectService アーキテクチャの改善とMainContentDetectorの分離](todos/20250717-27-refactoring-architecture.md)
-- [ ] [28. Build契約のドメイン分離修正](todos/20250717-28-build-domain.md)
-- [ ] [29. Adapter実装のProtocol継承明示化](todos/20250717-29-adapter-protocol.md)
-- [ ] [30. DIコンテナのFactory化とAdapter直接依存の解消](todos/20250717-30-di-factory.md)
-- [ ] [31. Use Case層のAdapter依存検証](todos/20250717-31-use-case-verification.md)
+- [x] [28. Build契約のドメイン分離修正](todos/20250717-28-build-domain.md)
+- [x] [29. Adapter実装のProtocol継承明示化](todos/20250717-29-adapter-protocol.md)
+- [x] [30. DIコンテナのFactory化とAdapter直接依存の解消](todos/20250717-30-di-factory.md)
+- [x] [31. Use Case層のAdapter依存検証](todos/20250717-31-use-case-verification.md)
 
 ### Phase 3: ビルド機能の実装
 
