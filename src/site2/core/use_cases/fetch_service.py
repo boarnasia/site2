@@ -164,6 +164,7 @@ class FetchService(FetchServiceProtocol):
             pages_updated=pages_updated,
             total_size=total_size,
             cache_directory=str(cache_directory),
+            cached_files=[page.local_path for page in moved_pages],
             errors=[],
         )
 
@@ -222,6 +223,7 @@ class FetchService(FetchServiceProtocol):
             pages_updated=0,
             total_size=total_size,
             cache_directory=str(cache.cache_directory),
+            cached_files=[page.local_path for page in cache.pages],
             errors=[],
         )
 

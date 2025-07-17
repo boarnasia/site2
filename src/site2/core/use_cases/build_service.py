@@ -194,9 +194,9 @@ class BuildService(BuildServiceProtocol):
 
         # ContentFragmentを作成
         fragment = ContentFragment(
-            content=text_result.extracted_text,
             content_type=ContentType.PARAGRAPH,  # 簡単のため全てPARAGRAPHとする
             raw_content=str(main_element),
+            formatted_content=text_result.extracted_text,  # フォーマット済みコンテンツ
             metadata={},
         )
 

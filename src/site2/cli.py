@@ -127,26 +127,48 @@ def auto(
             sys.exit(1)
 
         # メインコンテンツセレクタの検出
-        from .core.domain.detect_domain import MainContentDetectionRequest
+        from .core.ports.detect_contracts import DetectMainRequest
 
-        main_request = MainContentDetectionRequest(file_path=index_file)
-        main_result = detect_service.detect_main_content(main_request)
+        main_request = DetectMainRequest(file_path=index_file)
+        main_result = detect_service.detect_main(main_request)
 
-        console.print(f"🎯 Main selector: {main_result.main_selector}")
+        console.print(f"🎯 Main selector: {main_result.primary_selector}")
 
-        # 3. detect:order - ドキュメント順序検出
+        # 3. detect:nav - ナビゲーション検出
+        console.print("🧭 Detecting navigation...")
+
+        from .core.ports.detect_contracts import DetectNavRequest
+
+        nav_request = DetectNavRequest(file_path=index_file)
+        nav_result = detect_service.detect_nav(nav_request)
+
+        # 4. detect:order - ドキュメント順序検出
         console.print("📋 Detecting document order...")
 
-        from .core.domain.detect_domain import DocumentOrderRequest
+        # ナビゲーション結果から Navigation オブジェクトを作成
+        from .core.domain.detect_domain import NavigationStructure, NavLink, Navigation
 
-        order_request = DocumentOrderRequest(
-            directory_path=fetch_result.cache_directory, file_patterns=["*.html"]
+        nav_links = [
+            NavLink(text=link.text, href=link.href, level=0, is_external=False)
+            for link in nav_result.nav_links
+        ]
+        nav_structure = NavigationStructure(
+            root_selector=nav_result.primary_selector, links=nav_links
         )
-        order_result = detect_service.detect_document_order(order_request)
+        navigation = Navigation(
+            selector=nav_result.primary_selector, structure=nav_structure
+        )
+
+        from .core.ports.detect_contracts import DetectOrderRequest
+
+        order_request = DetectOrderRequest(
+            cache_directory=Path(fetch_result.cache_directory), navigation=navigation
+        )
+        order_result = detect_service.detect_order(order_request)
 
         console.print(f"📚 Found {len(order_result.ordered_files)} documents")
 
-        # 4. build - ドキュメント生成
+        # 5. build - ドキュメント生成
         console.print(f"🔨 Building {format.name.upper()} document...")
 
         from .core.ports.build_contracts import BuildRequest
@@ -159,11 +181,20 @@ def auto(
             else BuildOutputFormat.PDF
         )
 
+        # DocumentOrderオブジェクトの作成
+        from .core.domain.detect_domain import DocumentOrder, DetectionScore
+
+        doc_order = DocumentOrder(
+            files=order_result.ordered_files,
+            method=order_result.method,
+            confidence=DetectionScore(value=order_result.confidence),
+        )
+
         build_request = BuildRequest(
             cache_directory=fetch_result.cache_directory,
-            main_selector=main_result.main_selector,
+            main_selector=main_result.primary_selector,
             ordered_files=order_result.ordered_files,
-            doc_order=order_result,
+            doc_order=doc_order,
             format=build_format,
             output_path=output_path,
             options={},
@@ -171,7 +202,7 @@ def auto(
 
         build_result = build_service.build(build_request)
 
-        # 5. ファイルへの出力
+        # 6. ファイルへの出力
         if isinstance(build_result.content, str):
             # Markdownの場合
             output_path.write_text(build_result.content, encoding="utf-8")

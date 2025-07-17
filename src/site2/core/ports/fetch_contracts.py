@@ -37,6 +37,9 @@ class FetchResult(BaseModel):
     cache_directory: str = Field(
         ..., min_length=1, description="キャッシュディレクトリ"
     )
+    cached_files: List[Path] = Field(
+        default_factory=list, description="キャッシュされたファイルのパス一覧"
+    )
     errors: List[Dict[str, str]] = Field(default_factory=list, description="エラー一覧")
 
     @field_validator("cache_directory")
