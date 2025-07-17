@@ -341,6 +341,37 @@ class PDFConverter(FormatConverter):
         return OutputFormat.PDF
 
 
+# エラー定義
+class BuildError(Exception):
+    """Build機能の基底エラー"""
+
+    code: str = "BUILD_ERROR"
+
+
+class ConvertError(BuildError):
+    """変換エラー"""
+
+    code: str = "CONVERT_ERROR"
+
+
+class InvalidSelectorError(BuildError):
+    """無効なセレクタエラー"""
+
+    code: str = "INVALID_SELECTOR"
+
+
+class ContentNotFoundError(BuildError):
+    """コンテンツが見つからないエラー"""
+
+    code: str = "CONTENT_NOT_FOUND"
+
+
+class OutputFormatError(BuildError):
+    """出力フォーマットエラー"""
+
+    code: str = "OUTPUT_FORMAT_ERROR"
+
+
 # ファクトリー
 class ContentExtractorFactory:
     """コンテンツ抽出器のファクトリー"""
